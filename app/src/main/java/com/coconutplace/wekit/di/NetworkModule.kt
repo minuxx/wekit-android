@@ -20,7 +20,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "http://13.124.127.29:9003/"
+const val BASE_URL = "https://wekitlife.com/"
 
 val networkModule: Module = module {
     fun provideHeaderInterceptor(sharedPreferenceManager: SharedPreferencesManager) =
