@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.coconutplace.wekit.ui.login.LoginViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/login_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        tools:context=".ui.login.LoginActivity">
+
+        <TextView
+            android:id="@+id/login_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:textSize="16sp"
+            android:textColor="@color/activity_title"
+            android:fontFamily="@font/notosanskr_regular"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/login_bg_character"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_bg_character_login"
+            android:layout_marginTop="27dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_title_tv"
+            android:contentDescription="@string/home_cd_bg_character"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/login_character_lottie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_title_tv"
+            app:layout_constraintTop_toTopOf="@+id/login_bg_character"
+            app:layout_constraintBottom_toBottomOf="@+id/login_bg_character"
+            android:layout_marginBottom="50dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/cat_food" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_id_et_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:errorEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_bg_character"
+            style="@style/TextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_id_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.id}"
+                android:textSize="16sp"
+                android:textColor="@color/login_info"
+                android:fontFamily="@font/notosanskr_regular"
+                android:hint="@string/login_id"
+                android:textColorHint="@color/login_hint"
+                android:inputType="text"
+                android:maxLines="1"
+                android:maxLength="15"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_pw_et_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:errorEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_id_et_layout"
+            style="@style/TextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_pw_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.pw}"
+                android:textSize="16sp"
+                android:textColor="@color/login_info"
+                android:fontFamily="@font/notosanskr_regular"
+                android:hint="@string/login_password"
+                android:textColorHint="@color/login_hint"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:maxLength="16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/login_login_btn"
+            android:layout_width="240dp"
+            android:layout_height="52dp"
+            android:text="@string/login"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/notosanskr_medium"
+            android:background="@drawable/bg_primary_button"
+            android:elevation="20dp"
+            android:onClick="@{() -> viewModel.login()}"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_pw_et_layout"/>
+
+        <TextView
+            android:id="@+id/login_first_wekit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_first_wekit"
+            android:textSize="12sp"
+            android:textColor="@color/login_first_wekit"
+            android:fontFamily="@font/notosanskr_regular"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_login_btn" />
+
+        <TextView
+            android:id="@+id/login_signup_tv"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/login_signup"
+            android:textSize="12sp"
+            android:textColor="@color/login_basic_text"
+            android:fontFamily="@font/notosanskr_medium"
+            android:layout_marginTop="2dp"
+            android:paddingBottom="20dp"
+            android:gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_first_wekit_tv" />
+
+        <ProgressBar
+            android:id="@+id/login_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:indeterminateTint="@color/network_progress"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

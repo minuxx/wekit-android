@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="dark_gray">#FF2F2F2F</color>
+    <color name="gray">#FF7E7E7E</color>
+    <color name="light_gray">#FFF1F1F1</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="cursor">#7d6ce9</color>
+
+    <!--common-->
+    <color name="primary">#7d6ce9</color>
+    <color name="activity_title">#000</color>
+    <color name="primary_button">#7d6ce9</color>
+    <color name="network_progress">#7d6ce9</color>
+    <color name="hint">#b9b9b9</color>
+    <color name="passwordToggle">#c4c4c4</color>
+    <color name="dialog_wekit_bg">#fff</color>
+    <color name="dialog_wekit_title">#000</color>
+    <color name="dialog_wekit_button_text">#7D6CE9</color>
+    <color name="default_border">#f1f1f1</color>
+
+    <!--login-->
+    <color name="login_basic_text">#000</color>
+    <color name="login_first_wekit">#7e7e7e</color>
+    <color name="login_hint">#b9b9b9</color>
+    <color name="login_info">#2f2f2f</color>
+    <color name="login_textinput_sold">#fff</color>
+    <color name="login_textinput_border">#7d6ce9</color>
+
+    <!--signup-->
+    <color name="signup_basic_text">#000</color>
+    <color name="signup_complete_button">#7d6ce9</color>
+    <color name="signup_hint">#b9b9b9</color>
+    <color name="signup_info">#2f2f2f</color>
+    <color name="signup_tnc">#7e7e7e</color>
+    <color name="signup_textinput_solid">#fff</color>
+    <color name="signup_text_input_border">#7d6ce9</color>
+
+    <!--poll-->
+    <color name="poll_info">#2f2f2f</color>
+
+    <!--tutorial-->
+    <color name="tutorial_bg">#ada3ff</color>
+    <color name="tutorial_step_text">#fff</color>
+    <color name="tutorial_button">#2f2f2f</color>
+    <color name="tutorial_button_text">#fff</color>
+    <color name="tutorial_selected_indicator">#fff</color>
+    <color name="tutorial_unselected_indicator">#66ffffff</color>
+
+    <!--home-->
+    <color name="home_greeting">#000</color>
+    <color name="home_certification_title">#2f2f2f</color>
+    <color name="home_certification_sub_title">#7e7e7e</color>
+    <color name="home_certification_words">#2f2f2f</color>
+    <color name="home_certification_counts">#2f2f2f</color>
+    <color name="home_certification_pb_bg">#f1f1f1</color>
+    <color name="home_certification_pb_fill">#7d6ce9</color>
+    <color name="home_certification_percentage">#2f2f2f</color>
+    <color name="home_certification_percentage_inactive">#7e7e7e</color>
+
+    <color name="body_graph_line">#7d6ce9</color>
+    <color name="home_chart_x">#7e7e7e</color>
+    <color name="body_graph_value">#2f2f2f</color>
+    <color name="body_graph_grid">#F3EBEB</color>
+
+    <color name="home_target_weight_title">#2f2f2f </color>
+    <color name="home_target_weight_sub_title">#7e7e7e</color>
+
+    <!--create_channel-->
+    <color name="create_channel_bg">#d17d6ce9</color>
+    <color name="create_channel_separator_view">#b9b9b9</color>
+    <color name="create_channel_underline_view">#c9c0ff</color>
+    <color name="create_channel_spinner">#ff9d8cf9</color>
+
+    <!--enter_channel-->
+    <color name="enter_channel_bg">#d17d6ce9</color>
+    <color name="enter_channel_light_violet">#c9c0ff</color>
+
+    <!--channel-->
+    <color name="channel_myroom_explain_text">#c9c0ff</color>
+    <color name="channel_myroom_cardview_bg">#f3f3f3</color>
+    <color name="channel_myroom_cardview_no_room_text">#a2a3a6</color>
+    <color name="channel_search_edittext_bg">#f2f3f7</color>
+
+    <!--chat-->
+    <color name="chat_send_message_hint">#7e7e7e</color>
+    <color name="chat_dialog_spinner_bg">#ededed</color>
+    <color name="chat_dialog_exit_text">#e53c0e</color>
+    <color name="chat_image_message_placeholder_text">#a2a3a6</color>
+
+    <!--diary-->
+    <color name="diary_selected_date">#7d6ce9</color>
+    <color name="diary_year">#b9b9b9</color>
+    <color name="diary_month">#000000</color>
+    <color name="diary_active_day">#2f2f2f</color>
+    <color name="diary_inactive_day">#b9b9b9</color>
+    <color name="diary_sunday">#e53c0e</color>
+    <color name="diary_saturday">#2908fb</color>
+    <color name="diary_line">#f1f1f1</color>
+    <color name="diary_item_title">#000000</color>
+    <color name="diary_item_time">#7e7e7e</color>
+    <color name="diary_today">#968AE4</color>
+    <color name="diary_written_day">#000000</color>
+
+    <!--write diary-->
+    <color name="write_diary_selected_indicator">#7d6ce9</color>
+    <color name="write_diary_unselected_indicator">#fff</color>
+    <color name="write_diary_basic_text">#2f2f2f</color>
+    <color name="write_diary_timezone_selected">#7d6ce9</color>
+    <color name="write_diary_timezone_unselected">#b9b9b9</color>
+
+    <!--edit photo-->
+    <color name="choice_photo_date">#000000</color>
+    <color name="choice_photo_add_item_bg">#fafafa</color>
+    <color name="choice_photo_add_item_border">#b9b9b9</color>
+    <color name="edit_photo_button_text">#fff</color>
+    <color name="edit_photo_button">#7d6ce9</color>
+    <color name="edit_photo_add">#fafafa</color>
+
+    <!--set-->
+    <color name="set_name">#2f2f2f</color>
+    <color name="set_nim">#7e7e7e</color>
+    <color name="set_list_text">#2f2f2f</color>
+    <color name="set_list_item_bg">#fff</color>
+    <color name="set_list_item_border">#f1f1f1</color>
+    <color name="set_logout">#7e7e7e</color>
+
+    <!--input body-->
+    <color name="input_body_basic_text">#2f2f2f</color>
+
+    <!--body graph-->
+    <color name="body_graph_chart_title">#2f2f2f</color>
+    <color name="body_graph_chart_y_label">#7e7e7e</color>
+    
+    <!--set-->
+    <color name="profile_nickname">#2f2f2f</color>
+    <color name="profile_user_withdrawal">#7e7e7e</color>
+    <color name="profile_edit_password_btn_border_active">#7d6ce9</color>
+    <color name="profile_edit_password_btn_border_inactive">#b9b9b9</color>
+
+    <!--set-->
+    <color name="certify_email_guide_01">#000</color>
+    <color name="certify_email_guide_02">#7e7e7e</color>
+    <color name="certify_email_input_text">#000</color>
+    <color name="certify_email_input_hint">#b9b9b9</color>
+    <color name="certify_email_send_certification_number_btn_active">#7d6ce9</color>
+    <color name="certify_email_send_certification_number_btn_inactive">#c4c4c4</color>
+    <color name="certify_email_send_certification_number_btn_text">#fff</color>
+
+    <!--notice-->
+    <color name="notice_category">#000000</color>
+    <color name="notice_title">#000000</color>
+    <color name="notice_date">#7e7e7e</color>
+
+    <!-- opensource -->
+    <color name="opensource_license_content_bg">#FAFAFA</color>
+    <color name="opensource_library_name">#000</color>
+    <color name="opensource_license_copyright">#B1B1B1</color>
+    <color name="opensource_license_by">#000</color>
+    <color name="opensource_license_name">#000</color>
+    <color name="opensource_license_content">#9F9F9F</color>
+
+    <!--badge-->
+    <color name="badge_no_data">#a2a3a6</color>
+
+    <!--channel_filter-->
+    <color name="channel_filter_reset_button">#cac1ff</color>
+</resources>

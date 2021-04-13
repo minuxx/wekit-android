@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.coconutplace.wekit.ui.home.HomeViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/home_root_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+<!--            <TextView-->
+<!--                android:id="@+id/home_title_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:fontFamily="@font/notosanskr_regular"-->
+<!--                android:text="@string/home_title"-->
+<!--                android:textColor="@color/activity_title"-->
+<!--                android:textSize="16sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+            <ImageView
+                android:id="@+id/home_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/home_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/home_cd_text_logo"/>
+
+            <ImageButton
+                android:id="@+id/home_setting_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/cd_ic_back"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="12dp"
+                android:src="@drawable/icn_settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/home_character_bg_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/home_cd_bg_character"
+                android:src="@drawable/img_bg_character"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_title_tv" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/home_character_lottie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                app:layout_constraintBottom_toBottomOf="@+id/home_character_bg_iv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/home_character_bg_iv"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/cat_food" />
+
+            <TextView
+                android:id="@+id/home_greeting_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:fontFamily="@font/notosanskr_regular"
+                android:paddingBottom="30dp"
+                android:text="@string/home_greeting_default"
+                android:textColor="@color/home_greeting"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/home_character_bg_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/home_character_bg_iv" />
+
+            <TextView
+                android:id="@+id/home_certification_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/notosanskr_medium"
+                android:text="@string/home_certification_title"
+                android:textColor="@color/home_certification_title"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_character_bg_iv" />
+
+            <TextView
+                android:id="@+id/home_certification_sub_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/notosanskr_regular"
+                android:text="@string/home_certification_sub_title"
+                android:textColor="@color/home_certification_sub_title"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_certification_title_tv" />
+
+            <TextView
+                android:id="@+id/home_certification_words_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/notosanskr_regular"
+                android:text="@string/home_certification_words"
+                android:textColor="@color/home_certification_words"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_certification_sub_title_tv" />
+
+            <TextView
+                android:id="@+id/home_certification_counts_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="18dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:text="@string/home_certification_counts"
+                android:textColor="@color/home_certification_counts"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_certification_sub_title_tv" />
+
+            <ProgressBar
+                android:id="@+id/home_certification_pb"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="18dp"
+                android:max="100"
+                android:maxHeight="20dp"
+                android:minHeight="20dp"
+                android:progress="0"
+                android:progressDrawable="@drawable/wekit_progressbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_certification_words_tv" />
+
+            <View
+                android:id="@+id/home_percent_view"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintHorizontal_weight="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_certification_pb" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/home_certification_percentage_tv"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="18dp"-->
+<!--                android:fontFamily="@font/notosanskr_bold"-->
+<!--                android:text="@string/home_certification_percentage"-->
+<!--                android:textColor="@color/home_certification_percentage_inactive"-->
+<!--                android:textSize="12sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_weight="100"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/home_percent_view"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_certification_pb" />-->
+
+            <TextView
+                android:id="@+id/home_target_weight_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/notosanskr_medium"
+                android:text="@string/home_target_weight_title"
+                android:textColor="@color/home_certification_title"
+                android:textSize="16sp"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_percent_view" />
+
+            <TextView
+                android:id="@+id/home_target_weight_sub_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/notosanskr_regular"
+                android:text="@string/home_target_weight_sub_title"
+                android:textColor="@color/home_certification_sub_title"
+                android:textSize="12sp"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_target_weight_title_tv" />
+
+            <TextView
+                android:id="@+id/home_target_weight_more_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@null"
+                android:contentDescription="@string/cd_ic_more"
+                android:paddingStart="12dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="12dp"
+                android:src="@drawable/icn_more_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_percent_view"
+                app:drawableEndCompat="@drawable/icn_more_black" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/home_weight_chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="invisible"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                app:layout_constraintTop_toBottomOf="@+id/home_target_weight_sub_title_tv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ProgressBar
+                android:id="@+id/home_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/network_progress"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

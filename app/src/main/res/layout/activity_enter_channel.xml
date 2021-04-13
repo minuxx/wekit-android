@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="mEnterChannelViewModel"
+            type="com.coconutplace.wekit.ui.enter_channel.EnterChannelViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/enter_channel_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/enter_channel_bg">
+
+        <FrameLayout
+            android:id="@+id/enter_channel_back_btn_frame_layout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp">
+
+            <ImageButton
+                android:id="@+id/enter_channel_back_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="0dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="0dp"
+                android:layout_gravity="center"
+                android:src="@drawable/icn_cancel_white_right"
+                android:background="@color/transparent"
+                android:contentDescription="@string/enter_channel_cancel_img"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/enter_channel_duration_text"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="110dp"
+            android:layout_marginStart="30dp"
+            android:gravity="center_vertical"
+            android:text="@{mEnterChannelViewModel.duration}"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/notosanskr_medium"/>
+
+        <TextView
+            android:id="@+id/enter_channel_started_text"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/enter_channel_duration_text"
+            android:layout_marginTop="110dp"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:text="@{mEnterChannelViewModel.isStarted}"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/notosanskr_regular"/>
+
+        <TextView
+            android:id="@+id/enter_channel_name_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintTop_toBottomOf="@+id/enter_channel_duration_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:text="@{mEnterChannelViewModel.name}"
+            android:textSize="28sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/notosanskr_medium"/>
+
+        <TextView
+            android:id="@+id/enter_channel_explain_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            app:layout_constraintTop_toBottomOf="@+id/enter_channel_name_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:text="@{mEnterChannelViewModel.explain}"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/notosanskr_regular"
+            android:maxLines="10"
+            android:ellipsize="end"/>
+
+        <co.lujun.androidtagview.TagContainerLayout
+            android:id="@+id/create_channel_tag_container_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/enter_channel_explain_text"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="5dp"
+            app:container_enable_drag="false"
+            app:horizontal_interval="10dp"
+            app:vertical_interval="10dp"
+            app:tag_text_size="12sp"
+            app:tag_vertical_padding="6dp"
+            app:tag_clickable="true"
+            app:container_background_color="@color/transparent"
+            app:container_border_color = "@color/transparent"/>
+
+        <ImageView
+            android:id="@+id/enter_channel_small_profile_img"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/create_channel_tag_container_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="29dp"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/icn_small_profile"
+            android:background="@color/transparent"
+            android:contentDescription="@string/enter_channel_profile_img" />
+
+        <TextView
+            android:id="@+id/enter_channel_current_member_text"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            app:layout_constraintTop_toBottomOf="@+id/create_channel_tag_container_layout"
+            app:layout_constraintLeft_toRightOf="@+id/enter_channel_small_profile_img"
+            android:layout_marginTop="26dp"
+            android:layout_marginStart="6dp"
+            android:gravity="center_vertical"
+            android:text="@{mEnterChannelViewModel.currentMember}"
+            android:textSize="14sp"
+            android:textColor="@color/enter_channel_light_violet"
+            android:fontFamily="@font/notosanskr_regular" />
+
+        <ImageView
+            android:id="@+id/enter_channel_small_food_img"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/enter_channel_small_profile_img"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/icn_small_food"
+            android:background="@color/transparent"
+            android:contentDescription="@string/enter_channel_food_img" />
+
+        <TextView
+            android:id="@+id/enter_channel_auth_count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            app:layout_constraintTop_toBottomOf="@+id/enter_channel_small_profile_img"
+            app:layout_constraintLeft_toRightOf="@+id/enter_channel_small_food_img"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="6dp"
+            android:gravity="center_vertical"
+            android:text="@{mEnterChannelViewModel.authCount}"
+            android:textSize="14sp"
+            android:textColor="@color/enter_channel_light_violet"
+            android:fontFamily="@font/notosanskr_regular" />
+
+        <Button
+            android:id="@+id/enter_channel_entrance_btn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:background="@color/white"
+            android:onClick="@{() -> mEnterChannelViewModel.enterRoom()}"
+            android:text="@string/enter_channel_entrance"
+            android:textSize="16sp"
+            android:textColor="@color/dark_gray"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,15 @@
+package com.coconutplace.wekit.data.entities
+
+import com.google.gson.annotations.SerializedName
+
+data class User(
+    @SerializedName(value = "id") val id: String = "",
+    @SerializedName(value = "email") val email: String = "",
+    @SerializedName(value = "pw") val pw: String = "",
+    @SerializedName(value = "newPw") val newPw: String = "",
+    @SerializedName(value = "confirmPw") val confirmPw: String = "",
+    @SerializedName(value = "profileImg") val profileImg: String = "",
+    @SerializedName(value = "nickname") val nickname: String = "",
+    @SerializedName(value = "gender") val gender: String = "",
+    @SerializedName(value = "birthday") val birthday: String = ""
+)

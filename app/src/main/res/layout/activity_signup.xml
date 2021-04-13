@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.coconutplace.wekit.ui.signup.SignUpViewModel"/>
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/signup_root_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            tools:context=".ui.signup.SignUpActivity">
+
+            <ImageButton
+                android:id="@+id/signup_back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icn_back"
+                android:background="@null"
+                android:paddingStart="20dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/cd_ic_back"/>
+
+            <TextView
+                android:id="@+id/signup_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup"
+                android:textSize="16sp"
+                android:textColor="@color/activity_title"
+                android:fontFamily="@font/notosanskr_regular"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/signup_bg_character"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_bg_character_login"
+                android:layout_marginTop="27dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_title_tv"
+                android:contentDescription="@string/home_cd_bg_character"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/signup_character_lottie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/signup_bg_character"
+                app:layout_constraintBottom_toBottomOf="@+id/signup_bg_character"
+                android:layout_marginBottom="50dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/cat_food" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_email_et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_bg_character"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_email_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.email}"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_info"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:hint="@string/signup_email"
+                    android:textColorHint="@color/hint"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_id_et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_email_et_layout"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_id_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.id}"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_info"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:hint="@string/signup_id"
+                    android:textColorHint="@color/hint"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="15"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_pw_et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_id_et_layout"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_pw_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.pw}"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_info"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:hint="@string/signup_password"
+                    android:textColorHint="@color/hint"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:maxLength="16" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_pw_check_et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_pw_et_layout"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_pw_check_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.pwCheck}"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_info"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:hint="@string/signup_password_check"
+                    android:textColorHint="@color/hint"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:maxLength="16" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_nickname_et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_pw_check_et_layout"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_nickname_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.nickname}"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_info"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:hint="@string/signup_nickname"
+                    android:textColorHint="@color/hint"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="10"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/signup_gender_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_gender"
+                android:textSize="16sp"
+                android:textColor="@color/signup_info"
+                android:fontFamily="@font/notosanskr_medium"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_nickname_et_layout"/>
+
+            <CheckBox
+                android:id="@+id/signup_man_cb"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/checkbox_checked"
+                android:button="@null"
+                android:checked="@={viewModel.gender}"
+                android:onClick="onGenderCheckboxClicked"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_gender_tv"/>
+
+            <TextView
+                android:id="@+id/signup_man_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_man"
+                android:textSize="16sp"
+                android:textColor="@color/signup_info"
+                android:fontFamily="@font/notosanskr_regular"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="13dp"
+                app:layout_constraintStart_toEndOf="@+id/signup_man_cb"
+                app:layout_constraintTop_toBottomOf="@+id/signup_gender_tv"/>
+
+            <CheckBox
+                android:id="@+id/signup_woman_cb"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/checkbox_unchecked"
+                android:button="@null"
+                android:checked="false"
+                android:onClick="onGenderCheckboxClicked"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toEndOf="@+id/signup_man_tv"
+                app:layout_constraintTop_toBottomOf="@+id/signup_gender_tv"/>
+
+            <TextView
+                android:id="@+id/signup_woman_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_woman"
+                android:textSize="16sp"
+                android:textColor="@color/signup_info"
+                android:fontFamily="@font/notosanskr_regular"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="13dp"
+                app:layout_constraintStart_toEndOf="@+id/signup_woman_cb"
+                app:layout_constraintTop_toBottomOf="@+id/signup_gender_tv"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_birthday_et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_man_cb"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_birthday_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.birthday}"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_info"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:hint="@string/signup_birthday"
+                    android:textColorHint="@color/hint"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:maxLength="10"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/signup_tnc_cb"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/checkbox_unchecked"
+                android:button="@null"
+                android:checked="@={viewModel.tncAgree}"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_birthday_et_layout"/>
+
+            <TextView
+                android:id="@+id/signup_tnc_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_tnc"
+                android:textSize="16sp"
+                android:textColor="@color/signup_tnc"
+                android:fontFamily="@font/notosanskr_regular"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="13dp"
+                app:layout_constraintTop_toBottomOf="@+id/signup_birthday_et_layout"
+                app:layout_constraintStart_toEndOf="@+id/signup_tnc_cb"/>
+
+            <Button
+                android:id="@+id/signup_complete_btn"
+                android:layout_width="240dp"
+                android:layout_height="52dp"
+                android:text="@string/signup_complete"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/notosanskr_medium"
+                android:background="@drawable/bg_primary_button"
+                android:elevation="20dp"
+                android:onClick="@{() -> viewModel.signUp()}"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_tnc_cb"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ProgressBar
+                android:id="@+id/signup_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:indeterminateTint="@color/network_progress"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

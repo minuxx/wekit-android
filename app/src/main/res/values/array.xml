@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="create_channel_auth_count_array">
+        <item>1회</item>
+        <item>2회</item>
+        <item>3회</item>
+        <item>4회</item>
+        <item>5회</item>
+    </string-array>
+
+    <string-array name="create_channel_member_count_array">
+        <item>4명</item>
+        <item>5명</item>
+        <item>6명</item>
+    </string-array>
+
+    <string-array name="chat_dialog_expel_reason_array">
+        <item>낚시/도배</item>
+        <item>욕설 및 비방</item>
+        <item>음란물/불건전한 대화</item>
+        <item>방 성격에 부적절함</item>
+        <item>상업적 광고 및 판매</item>
+    </string-array>
+
+    <string-array name="chat_dialog_report_reason_array">
+        <item>욕설 및 비방</item>
+        <item>음란물/불건전한 대화</item>
+        <item>상업적 광고 및 판매</item>
+        <item>사칭/사기</item>
+        <item>불건전 프로필 신고</item>
+    </string-array>
+</resources>

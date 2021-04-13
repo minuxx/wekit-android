@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "43502193565",
+    "project_id": "wekit-a56e6",
+    "storage_bucket": "wekit-a56e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43502193565:android:6e6368b14f956de4923d74",
+        "android_client_info": {
+          "package_name": "com.coconutplace.wekit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43502193565-jjh5n4mu8tljhap0fjjtfih5ej7oqqr3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coconutplace.wekit",
+            "certificate_hash": "30f16093b8f65fd3771391fec32c562924d9d13f"
+          }
+        },
+        {
+          "client_id": "43502193565-13fsl0o3d8q940j13snd7e6t8mun3vap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvW-tYgOwMkC4jmfLI_Ara0WUwKulmSrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43502193565-13fsl0o3d8q940j13snd7e6t8mun3vap.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "43502193565-jig9fjg8v3aq61m6vlhlqr0b5ev93itp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "yeeun.WEKIT"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

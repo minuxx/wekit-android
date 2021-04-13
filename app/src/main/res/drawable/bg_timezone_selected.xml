@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid
+        android:color="@color/white" />
+    <padding
+        android:left="26dp"
+        android:top="6dp"
+        android:right="26dp"
+        android:bottom="6dp" />
+    <corners
+        android:radius="30dp" />
+
+    <stroke android:color="@color/write_diary_timezone_selected" android:width="2dp"/>
+</shape>

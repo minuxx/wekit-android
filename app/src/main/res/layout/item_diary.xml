@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="diary"
+            type="com.coconutplace.wekit.data.entities.Diary" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/item_diary_thumbnail_iv"
+                android:layout_width="136dp"
+                android:layout_height="116dp"
+                android:layout_margin="10dp"
+                android:contentDescription="@string/diary_cd_img_thumbnail"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:urlImage="@{diary.thumbnailUrl}" />
+
+            <TextView
+                android:id="@+id/item_diary_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/notosanskr_regular"
+                android:maxLines="1"
+                android:textColor="@color/diary_item_title"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/item_diary_emoji_iv"
+                app:layout_constraintStart_toEndOf="@+id/item_diary_thumbnail_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="한끼"
+                bind:convertTimezone="@{diary.timezone}"/>
+
+            <TextView
+                android:id="@+id/item_diary_time_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/notosanskr_regular"
+                android:maxLines="1"
+                android:textColor="@color/diary_item_time"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/item_diary_thumbnail_iv"
+                app:layout_constraintTop_toBottomOf="@+id/item_diary_title_tv"
+                tools:text="오후 12시 14분"
+                bind:convertTime="@{diary.time}"/>
+
+            <ImageView
+                android:id="@+id/item_diary_emoji_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="15dp"
+                android:contentDescription="@string/diary_cd_ic_satisfaction"
+                app:layout_constraintCircleRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:emojiResImage="@{diary.satisfaction}"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
+
+

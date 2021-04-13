@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.coconutplace.wekit.ui.diary.DiaryViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/diary_root_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/diary_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/notosanskr_regular"
+                android:text="@string/diary_title"
+                android:textColor="@color/activity_title"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/diary_write_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/cd_ic_back"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="12dp"
+                android:src="@drawable/icn_plus"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/diary_year_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:textColor="@color/diary_year"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/diary_month_tv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_title_tv"
+                tools:text="2021" />
+
+            <TextView
+                android:id="@+id/diary_month_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:paddingStart="6dp"
+                android:paddingEnd="0dp"
+                android:textColor="@color/diary_month"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@+id/diary_year_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_title_tv"
+                tools:text="09" />
+
+            <TextView
+                android:id="@+id/diary_sunday_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:gravity="center"
+                android:text="@string/diary_sunday"
+                android:textColor="@color/diary_sunday"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/diary_monday_tv"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_year_tv" />
+
+            <TextView
+                android:id="@+id/diary_monday_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:gravity="center"
+                android:text="@string/diary_monday"
+                android:textColor="@color/diary_active_day"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/diary_tuesday_tv"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/diary_sunday_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_year_tv" />
+
+            <TextView
+                android:id="@+id/diary_tuesday_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:gravity="center"
+                android:text="@string/diary_tuesday"
+                android:textColor="@color/diary_active_day"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/diary_wednesday_tv"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/diary_monday_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_year_tv" />
+
+            <TextView
+                android:id="@+id/diary_wednesday_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:gravity="center"
+                android:text="@string/diary_wednesday"
+                android:textColor="@color/diary_active_day"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/diary_thursday_tv"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/diary_tuesday_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_year_tv" />
+
+            <TextView
+                android:id="@+id/diary_thursday_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:gravity="center"
+                android:text="@string/diary_thursday"
+                android:textColor="@color/diary_active_day"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/diary_friday_tv"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/diary_wednesday_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_year_tv" />
+
+            <TextView
+                android:id="@+id/diary_friday_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:gravity="center"
+                android:text="@string/diary_friday"
+                android:textColor="@color/diary_active_day"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/diary_saturday_tv"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/diary_thursday_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_year_tv" />
+
+            <TextView
+                android:id="@+id/diary_saturday_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:gravity="center"
+                android:text="@string/diary_saturday"
+                android:textColor="@color/diary_saturday"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/diary_friday_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_year_tv" />
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/diary_calendar_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_sunday_tv"
+                app:mcv_calendarMode="month"
+                app:mcv_dateTextAppearance="@style/CalendarDateText"
+                app:mcv_firstDayOfWeek="sunday"
+                app:mcv_selectionColor="@color/diary_selected_date"
+                app:mcv_selectionMode="single"
+                app:mcv_showWeekDays="false" />
+
+            <View
+                android:id="@+id/diary_line_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/diary_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_calendar_view" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/diary_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:paddingTop="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_line_view"
+                bind:setDiaries="@{viewModel.diaries}"
+                tools:listitem="@layout/item_diary" />
+
+            <ProgressBar
+                android:id="@+id/diary_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/network_progress"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.495" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

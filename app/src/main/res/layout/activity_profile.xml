@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.coconutplace.wekit.ui.profile.ProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/profile_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@string/cd_ic_back"
+            android:paddingStart="20dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="12dp"
+            android:src="@drawable/icn_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/notosanskr_regular"
+            android:text="@string/profile"
+            android:textColor="@color/activity_title"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_edit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosanskr_regular"
+            android:paddingStart="12dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="12dp"
+            android:text="@string/profile_edit"
+            android:textColor="@color/activity_title"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile_profile_img_bg_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/home_cd_bg_character"
+            android:src="@drawable/img_bg_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_title_tv" />
+
+        <ImageView
+            android:id="@+id/profile_profile_img_iv"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:contentDescription="@string/chat_cd_profile_img"
+            android:src="@drawable/character_big_basic"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_profile_img_bg_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profile_profile_img_bg_iv" />
+
+        <ImageView
+            android:id="@+id/profile_profile_img_edit_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/chat_cd_profile_img"
+            android:src="@drawable/icn_picture"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_profile_img_iv"
+            app:layout_constraintEnd_toEndOf="@+id/profile_profile_img_iv" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_nickname_et_layout"
+            style="@style/TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_profile_img_iv">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_nickname_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosanskr_regular"
+                android:hint="@string/profile_nickname_hint"
+                android:inputType="text"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:text="@={viewModel.nickname}"
+                android:textColor="@color/profile_nickname"
+                android:textColorHint="@color/hint"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/profile_edit_password_tv"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_edit_password_button_inactive"
+            android:fontFamily="@font/notosanskr_medium"
+            android:gravity="center"
+            android:text="@string/profile_edit_password"
+            android:textColor="@color/profile_edit_password_btn_border_inactive"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_nickname_et_layout" />
+
+
+        <TextView
+            android:id="@+id/profile_delete_user_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/notosanskr_medium"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:text="@string/profile_delete_user"
+            android:textColor="@color/profile_user_withdrawal"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_edit_password_tv" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_pw_et_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:errorEnabled="true"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_delete_user_tv"
+            style="@style/TextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_pw_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.oldPassword}"
+                android:textSize="16sp"
+                android:textColor="@color/signup_info"
+                android:fontFamily="@font/notosanskr_regular"
+                android:hint="@string/signup_password"
+                android:textColorHint="@color/hint"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:maxLength="16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/profile_delete_user_complete_btn"
+            android:layout_width="240dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_primary_button"
+            android:elevation="20dp"
+            android:fontFamily="@font/notosanskr_medium"
+            android:text="@string/profile_delete_user_complete"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_pw_et_layout" />
+
+        <TextView
+            android:id="@+id/profile_edit_complete_btn"
+            android:layout_width="240dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_primary_button"
+            android:elevation="20dp"
+            android:fontFamily="@font/notosanskr_medium"
+            android:text="@string/profile_complete"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_delete_user_tv" />
+
+        <ProgressBar
+            android:id="@+id/profile_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/network_progress"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

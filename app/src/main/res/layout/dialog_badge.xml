@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/chat_dialog_badge_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_badge_dialog"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/chat_dialog_badge_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/notosanskr_medium"/>
+
+    <ImageView
+        android:id="@+id/chat_dialog_badge_img"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        app:layout_constraintTop_toBottomOf="@+id/chat_dialog_badge_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="53dp"
+        android:contentDescription="@string/chat_dialog_badge_img" />
+
+    <TextView
+        android:id="@+id/chat_dialog_badge_explain_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/chat_dialog_badge_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/notosanskr_regular"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@id/chat_dialog_badge_explain_text"
+        android:layout_marginTop="42dp"
+        android:background="@color/transparent" />
+
+    <ImageButton
+        android:id="@+id/chat_dialog_badge_cancel_img"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="24dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="5dp"
+        android:src="@drawable/icn_cancel_white_right"
+        android:background="@color/transparent"
+        android:contentDescription="@string/chat_dialog_cancel_img" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,535 @@
+<resources>
+    <string name="app_name">WEKIT</string>
+    <string name="network_error">네트워크 연결이 원활하지 않습니다.</string>
+    <string name="kakao_app_key">4bf95a8bc8e02e07223e286cac7df2b1</string>
+    <string name="sendbird_app_key">6B8F5013-5158-41D8-898F-58E9B7D6C6B4</string>
+    <string name="kakao_channel_id">_yQBxcK</string>
+    <string name="notice_cd_dropdown">dropdown icon</string>
+
+    <!--common-->
+    <string name="percentage">%</string>
+    <string name="cd_ic_back">icon back</string>
+    <string name="cd_character_primary">primary character image</string>
+    <string name="cd_ic_setting">icon setting</string>
+    <string name="cd_ic_more">icon more black</string>
+    <string name="guide_update">추후 업데이트 예정입니다.</string>
+    <string name="password_validation">패스워드는  영어, 숫자, 특수문자를 조합한 10~16자리이여야 합니다.</string>
+    <string name="password_check">비밀번호가 일치하지 않습니다.</string>
+    <string name="dialog_wekit_check">확인</string>
+    <string name="dialog_wekit_cancel">취소</string>
+
+    <!--splash-->
+    <string name="splash_cd_logo">logo image</string>
+    <string name="dialog_title_server_check">긴급점검중입니다. 서비스이용에 불편을 드려 죄송합니다.</string>
+    <string name="dialog_title_version_update">WEKIT이 새롭게 업데이트되었습니다! 업데이트 후 이용이 가능합니다.</string>
+
+    <!--login-->
+    <string name="login">로그인</string>
+    <string name="login_first_wekit">WEKIT에 처음이신가요?</string>
+    <string name="login_signup"><u>회원가입</u></string>
+    <string name="login_id">ID</string>
+    <string name="login_password">Password</string>
+    <string name="login_id_validation">아이디는 형식이 올바르지 않습니다.</string>
+    <string name="login_pw_validation">패스워드 형식이 올바르지 않습니다.</string>
+
+    <!--signup-->
+    <string name="signup">회원가입</string>
+    <string name="signup_email">Email</string>
+    <string name="signup_nickname">닉네임</string>
+    <string name="signup_gender">성별</string>
+    <string name="signup_man">남자</string>
+    <string name="signup_woman">여자</string>
+    <string name="signup_birthday">생년월일</string>
+    <string name="signup_id">ID</string>
+    <string name="signup_password">비밀번호</string>
+    <string name="signup_password_check">비밀번호 확인</string>
+    <string name="signup_complete">완료</string>
+    <string name="signup_tnc"><b>이용약관</b> 및 <b>개인정보처리방침</b>에 동의합니다.</string>
+    <string name="signup_email_validation">이메일 형식이 올바르지 않습니다.</string>
+    <string name="signup_nickname_validation">닉네임은 한글, 영어, 숫자를 조합한 1~10자리이여야 합니다.</string>
+    <string name="signup_id_validation">아이디는 영어 혹은 영어, 숫자를 조합한 6~15자리이여야 합니다.</string>
+    <string name="signup_birthday_validation">생년월일 형식이 올바르지 않습니다. ex) YYYY\-mm\-dd</string>
+
+    <!--poll-->
+    <string name="poll">설문조사</string>
+    <string name="poll_height">키</string>
+    <string name="poll_weight">몸무게</string>
+    <string name="poll_target_weight">목표몸무게</string>
+    <string name="poll_complete">확인</string>
+
+    <!--tutorial-->
+    <string name="tutorial_step_01">나와 같은 목표를 가진\n<b>채팅방을 검색</b>해보세요</string>
+    <string name="tutorial_step_02">인증한 사진을\n<b>일기로 기록</b>하세요</string>
+    <string name="tutorial_step_03"><b>식단을 인증</b>하고,\n<b>일상을 공유</b>해보세요</string>
+    <string name="tutorial_step_04">얼마나 꾸준히 했는지\n<b>캘린더로 확인</b>해보세요</string>
+    <string name="tutorial_next">NEXT</string>
+    <string name="tutorial_start">START</string>
+    <string name="tutorial_cd_tutorial_img">tutorial image</string>
+
+    <!--chat-->
+    <string name="chat_chatting">채팅</string>
+    <string name="chat_send_message_hint">메시지를 입력해 주세요</string>
+    <string name="chat_cd_ic_menu">menu icon</string>
+    <string name="chat_cd_ic_send_message">send message icon</string>
+    <string name="chat_cd_send_picture_button_img">send picture icon</string>
+    <string name="chat_cd_profile_img">profile img</string>
+    <string name="chat_nav_menu_button_img">navigation menu icon</string>
+    <string name="chat_nav_bell_img">navigation bell icon</string>
+    <string name="chat_nav_exit_img">navigation exit icon</string>
+    <string name="chat_message_img">image file message</string>
+    <string name="chat_dialog_send_auth">인증 사진 보내기</string>
+    <string name="chat_dialog_send_normal">일반 사진 보내기</string>
+    <string name="chat_dialog_expel_member_name">추방할 멤버 이름</string>
+    <string name="chat_dialog_expel_reason">추방 사유</string>
+    <string name="chat_dialog_expel">추방하기</string>
+    <string name="chat_dialog_expel_member">멤버 추방하기</string>
+    <string name="chat_dialog_report">신고하기</string>
+    <string name="chat_dialog_report_room">방 신고하기</string>
+    <string name="chat_dialog_report_reason">신고 사유</string>
+    <string name="chat_dialog_exit_title">채팅방을 나가시겠습니까?</string>
+    <string name="chat_dialog_exit_complete">나가기</string>
+    <string name="chat_dialog_exit_cancel">취소</string>
+    <string name="chat_challenge_start">챌린지 시작</string>
+    <string name="chat_member_host_img">chat member host icon</string>
+    <string name="chat_dialog_badge_img">chat dialog badge image</string>
+    <string name="chat_dialog_cancel_img">chat dialog cancel image</string>
+
+    <!--channel-->
+    <string name="channel_list">채팅방 목록</string>
+    <string name="channel_search_chat_room_img">search chat room icon</string>
+    <string name="channel_create_chat_room_img">create chat room icon</string>
+    <string name="channel_reset">reset</string>
+    <string name="channel_my_chat_room">MY 채팅방</string>
+    <string name="channel_my_chat_room_img">my chat room icon</string>
+    <string name="channel_lookup_chat_room">채팅방 살펴보기</string>
+    <string name="channel_myroom_no_room_img">channel no room icon</string>
+    <string name="channel_no_room_main">아직 참여중인 채팅방이 없으시네요!</string>
+    <string name="channel_no_room_sub">마음에 드는 채팅방에 입장하여\n같은 목표를 가진 멤버들과 함께 달려보세요.</string>
+    <string name="channel_look_all_room">모든 채팅방 보기</string>
+    <string name="channel_lookup_recent_chat_room">최신순으로 정렬됩니다</string>
+    <string name="channel_filter_setting">필터 설정</string>
+    <string name="channel_keyword_suggestion">이런 키워드는 어떠세요?</string>
+    <string name="channel_filter_img">channel filter icon</string>
+    <string name="channel_cancel_chat_room_img">cancel chat room icon</string>
+
+    <!--main-->
+    <string name="home">Home</string>
+    <string name="chat">Chat</string>
+    <string name="diary">Diary</string>
+
+    <!--home-->
+    <string name="home_title">WEKIT</string>
+    <string name="home_greeting_default"><b>WEKIT</b>과\n오늘도 함께해요!</string>
+    <string name="home_greeting">\n오늘도 함께해요!</string>
+
+    <string name="home_certification_title">우리의 도전은 시작되었어!</string>
+    <string name="home_certification_sub_title">참여하고 계신 채팅방의 챌린지 진행 정도입니다.</string>
+    <string name="home_certification_words">정말 훌륭한 여정인걸!</string>
+    <string name="home_certification_counts">0/0</string>
+    <string name="home_certification_percentage">0%</string>
+
+    <string name="home_target_weight_title">목표 몸무게 : </string>
+    <string name="home_target_weight_sub_title">목표몸무게에 가까워지고 있나요? </string>
+    <string name="home_cd_bg_character">character background image</string>
+    <string name="home_cd_text_logo">home text logo icon</string>
+
+    <!--diary-->
+    <string name="diary_title">식단일기</string>
+    <string name="diary_sunday">Sun</string>
+    <string name="diary_monday">Mon</string>
+    <string name="diary_tuesday">Tue</string>
+    <string name="diary_wednesday">Wed</string>
+    <string name="diary_thursday">Thu</string>
+    <string name="diary_friday">Fri</string>
+    <string name="diary_saturday">Sat</string>
+    <string name="diary_warning_future_day">현재나 과거의 일기만 작성할 수 있습니다.</string>
+    <string name="diary_cd_img_thumbnail">image thumbnail</string>
+    <string name="diary_cd_ic_satisfaction">icon satisfaction</string>
+
+    <!--write diary-->
+    <string name="write_diary">식단일기</string>
+    <string name="write_diary_write">식단작성</string>
+    <string name="write_diary_edit">편집</string>
+    <string name="write_diary_satisfaction">음식 만족도</string>
+    <string name="write_diary_meal">식사</string>
+    <string name="write_diary_breakfast">아침</string>
+    <string name="write_diary_blunch">아점</string>
+    <string name="write_diary_lunch">점심</string>
+    <string name="write_diary_linner">점저</string>
+    <string name="write_diary_dinner">저녁</string>
+    <string name="write_diary_time">시간</string>
+    <string name="write_diary_memo">메모</string>
+    <string name="write_diary_memo_hint">간단한 메모를 남겨주세요.(선택)</string>
+    <string name="write_diary_not_match_date">날짜가 일치하지 않습니다.</string>
+    <string name="write_diary_max_photo_count">사진은 최대 5개까지 첨부가능합니다.</string>
+    <string name="write_diary_save">저장하기</string>
+    <string name="write_diary_send">보내기</string>
+    <string name="write_diary_cd_photo">diary photo image</string>
+    <string name="write_diary_cd_satisfaction">satisfaction icon</string>
+    <string name="wirte_diary_cd_default_img">diary default image</string>
+
+    <!-- edit photo -->
+    <string name="edit_photo">사진편집</string>
+    <string name="edit_sav_image">이미지 저장</string>
+    <string name="edit_photo_cut">자르기</string>
+    <string name="edit_photo_save">저장하기</string>
+    <string name="edit_photo_cd_image">item image</string>
+    <string name="edit_photo_cd_add_icon">item add icon</string>
+    <string name="edit_photo_cd_cancel_icon">item cancel icon</string>
+
+    <!--create_channel-->
+    <string name="create_channel_title_text">방 만들기</string>
+    <string name="create_channel_cancel_img">create channel cancel icon</string>
+    <string name="create_channel_name">채팅방 이름</string>
+    <string name="create_channel_explain">방 설명</string>
+    <string name="create_channel_duration">방기간</string>
+    <string name="create_channel_two_week_challenge">2주 도전방</string>
+    <string name="create_channel_four_week_challenge">한달 도전방</string>
+    <string name="create_channel_auth_count">하루 인증 횟수</string>
+    <string name="create_channel_member_count">방인원</string>
+    <string name="create_channel_tag">방 태그</string>
+    <string name="create_channel_add_tag">입력</string>
+    <string name="create_channel_cancel">취소</string>
+    <string name="create_channel_complete">완료</string>
+    <string name="create_channel_name_hint">2글자~20자리로 입력해주세요</string>
+    <string name="create_channel_explain_hint">50글자 이하로 작성해주세요 </string>
+    <string name="create_channel_tag_hint">최대 5개까지 가능합니다.</string>
+
+    <!--enter channel-->
+    <string name="enter_channel_cancel_img">enter channel cancel icon</string>
+    <string name="enter_channel_profile_img">enter channel profile icon</string>
+    <string name="enter_channel_food_img">enter channel food icon</string>
+    <string name="enter_channel_entrance">입장하기</string>
+    <string name="enter_channel_friendship">우리의 친밀도</string>
+
+    <!--set-->
+    <string name="set">설정</string>
+    <string name="set_nim">님</string>
+    <string name="set_notice">공지사항</string>
+    <string name="set_badge">배지 보관함</string>
+    <string name="set_alarm_set">푸시알람 설정</string>
+    <string name="set_inquiry">1:1 문의</string>
+    <string name="set_terms_n_conditions">개인정보 이용약관</string>
+    <string name="set_opensource">오픈소스 리스트</string>
+    <string name="set_tutorial">튜토리얼</string>
+    <string name="set_logout">Log Out</string>
+
+    <!--profile-->
+    <string name="profile">프로필</string>
+    <string name="profile_edit">편집</string>
+    <string name="profile_nickname_hint">닉네임</string>
+    <string name="profile_edit_password">비밀번호 수정</string>
+    <string name="profile_delete_user"><u>회원탈퇴</u></string>
+    <string name="profile_complete">완료</string>
+    <string name="profile_cancel">취소</string>
+    <string name="profile_delete_user_cancel"><u>취소</u></string>
+    <string name="profile_delete_user_complete">탈퇴</string>
+
+    <!--profile-->
+    <string name="certify_email">이메일 인증</string>
+    <string name="certify_email_guide_01">비밀번호 수정을 위해\n이메일 인증이 필요합니다.</string>
+    <string name="certify_email_guide_02">아래 이메일로 인증코드가 발송됩니다.</string>
+    <string name="certify_email_email">이메일</string>
+    <string name="certify_email_certification_number">인증번호</string>
+    <string name="certify_email_send_certification_number">인증번호 보내기</string>
+    <string name="certify_email_certify">인증하기</string>
+    <string name="certify_email_cd_input_email">email input icon</string>
+
+    <!--input body-->
+    <string name="input_body_height_hint">키</string>
+    <string name="input_body_weight_hint">몸무게</string>
+    <string name="input_body_target_weight_hint">목표몸무게</string>
+    <string name="input_body_warning">소수점 둘 째자리까지 입력이 가능합니다.</string>
+    <string name="input_body_complete">완료</string>
+
+    <!--body graph-->
+    <string name="body_graph">신체정보 그래프</string>
+    <string name="body_graph_total">전체</string>
+    <string name="body_graph_recent">최신</string>
+    <string name="body_graph_weight">몸무게</string>
+    <string name="body_graph_basal_metabolism_chart">기초대사량</string>
+    <string name="body_graph_bmi">BMI</string>
+
+    <!--edit password-->
+    <string name="edit_password">비밀번호 수정</string>
+    <string name="edit_password_cur_password">현재 비밀번호</string>
+    <string name="edit_password_new_password">새로운 비밀번호</string>
+    <string name="edit_password_new_password_check">새로운 비밀번호 확인</string>
+    <string name="edit_password_complete">확인</string>
+
+    <!--notice-->
+    <string name="notice">공지사항</string>
+
+    <!--gallery-->
+    <string name="gallery_photo_img">gallery photo image</string>
+
+    <!--photo viewer-->
+    <string name="photo_viewer_save_img">이미지 저장</string>
+    <string name="photo_viewer_save">저장하기</string>
+
+    <!--channel filter-->
+    <string name="channel_filter_auth_count">하루 인증 횟수</string>
+    <string name="channel_filter_one">1번</string>
+    <string name="channel_filter_five">5번</string>
+    <string name="channel_filter_duration">기간</string>
+    <string name="channel_filter_two_week">2주방</string>
+    <string name="channel_filter_four_week">한달방</string>
+    <string name="channel_filter_recruit_count">모집 인원</string>
+    <string name="channel_filter_challenge_progress">챌린지 진행 상황</string>
+    <string name="channel_filter_ongoing_progress">진행 중</string>
+    <string name="channel_filter_before_progress">시작 전</string>
+    <string name="channel_filter_apply">적용하기</string>
+    <string name="channel_filter_reset">초기화</string>
+
+    <!--badge-->
+    <string name="badge_nickname">WEKIT님의 배지</string>
+    <string name="badge_challenge">도전 중인 배지</string>
+    <string name="badge_storage">배지 보관함</string>
+    <string name="badge_no_data_title">아직 데이터가 없어요</string>
+    <string name="badge_no_data_explain">데이터를 입력하고\n매일 목표에 가까워지는 당신의 변화를 기록해보세요</string>
+    <string name="badge_no_data_img">badge no data icon</string>
+
+    <!--choice photo-->
+    <string name="choice_photo">사진 선택</string>
+    <string name="choice_photo_save">저장하기</string>
+    <string name="choice_photo_label_select_image">이미지 선택</string>
+
+    <!--certify email-->
+    <string name="certify_email_certification_number_validation">인증번호는 숫자 4자리입니다.</string>
+    <string name="certify_email_certification_number_invalid">인증번호가 일치하지 않습니다.</string>
+
+    <!--opensource-->
+    <string name="opensource">오픈소스 리스트</string>
+    <string name="opensource_mit_license_name">MIT License</string>
+    <string name="opensource_mit_license_content">
+        <![CDATA[<p>
+MIT License<br>
+
+Copyright (c) 2017 gwiazdorrr
+
+
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+
+of this software and associated documentation files (the "Software"), to deal
+
+in the Software without restriction, including without limitation the rights
+
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+
+copies of the Software, and to permit persons to whom the Software is
+
+furnished to do so, subject to the following conditions:
+
+
+
+The above copyright notice and this permission notice shall be included in all
+
+copies or substantial portions of the Software.
+
+
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+
+SOFTWARE.
+</p>]]>
+    </string>
+    <string name="opensource_apache_license_name">Apache License 2.0</string>
+    <string name="opensource_apache_license_content">
+        <![CDATA[<div style="margin: 3em 10%; font-family:serif;text-align:justify; border: 1px solid black; padding: 2em;   box-shadow: 4px 8px #888888;">
+
+<p style="text-align:center">
+<strong>Apache License<br><br>Version 2.0, January 2004<br><br></strong>
+<strong><a href="http://www.apache.org/licenses/">http://www.apache.org/licenses/</a></strong>
+</p>
+
+<p>TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION</p>
+
+<p><strong><a name="definitions">1. Definitions</a></strong>.</p>
+
+<div style="margin-left: 1em;">
+
+  <p>"<strong>License</strong>" shall mean the terms and conditions for use, reproduction, and
+distribution as defined by Sections 1 through 9 of this document.</p>
+
+  <p>"<strong>Licensor</strong>" shall mean the copyright owner or entity authorized by the
+copyright owner that is granting the License.</p>
+
+  <p>"<strong>Legal Entity</strong>" shall mean the union of the acting entity and all other
+entities that control, are controlled by, or are under common control with
+that entity. For the purposes of this definition, "<strong>control</strong>" means (i) the
+power, direct or indirect, to cause the direction or management of such
+entity, whether by contract or otherwise, or (ii) ownership of fifty
+percent (50%) or more of the outstanding shares, or (iii) beneficial
+ownership of such entity.</p>
+
+  <p>"<strong>You</strong>" (or "<strong>Your</strong>") shall mean an individual or Legal Entity exercising
+permissions granted by this License.</p>
+
+  <p>"<strong>Source</strong>" form shall mean the preferred form for making modifications,
+including but not limited to software source code, documentation source,
+and configuration files.</p>
+
+  <p>"<strong>Object</strong>" form shall mean any form resulting from mechanical transformation
+or translation of a Source form, including but not limited to compiled
+object code, generated documentation, and conversions to other media types.</p>
+
+  <p>"<strong>Work</strong>" shall mean the work of authorship, whether in Source or Object form,
+made available under the License, as indicated by a copyright notice that
+is included in or attached to the work (an example is provided in the
+Appendix below).</p>
+
+  <p>"<strong>Derivative Works</strong>" shall mean any work, whether in Source or Object form,
+that is based on (or derived from) the Work and for which the editorial
+revisions, annotations, elaborations, or other modifications represent, as
+a whole, an original work of authorship. For the purposes of this License,
+Derivative Works shall not include works that remain separable from, or
+merely link (or bind by name) to the interfaces of, the Work and Derivative
+Works thereof.</p>
+
+  <p>"<strong>Contribution</strong>" shall mean any work of authorship, including the original
+version of the Work and any modifications or additions to that Work or
+Derivative Works thereof, that is intentionally submitted to Licensor for
+inclusion in the Work by the copyright owner or by an individual or Legal
+Entity authorized to submit on behalf of the copyright owner. For the
+purposes of this definition, "<strong>submitted</strong>" means any form of electronic,
+verbal, or written communication sent to the Licensor or its
+representatives, including but not limited to communication on electronic
+mailing lists, source code control systems, and issue tracking systems that
+are managed by, or on behalf of, the Licensor for the purpose of discussing
+and improving the Work, but excluding communication that is conspicuously
+marked or otherwise designated in writing by the copyright owner as "<strong>Not a
+Contribution.</strong>"</p>
+
+  <p>"<strong>Contributor</strong>" shall mean Licensor and any individual or Legal Entity on
+behalf of whom a Contribution has been received by Licensor and
+subsequently incorporated within the Work.</p>
+
+</div>
+
+<p><strong><a name="copyright">2. Grant of Copyright License</a></strong>. Subject to the
+terms and conditions of this License, each Contributor hereby grants to You
+a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+copyright license to reproduce, prepare Derivative Works of, publicly
+display, publicly perform, sublicense, and distribute the Work and such
+Derivative Works in Source or Object form.</p>
+
+<p><strong><a name="patent">3. Grant of Patent License</a></strong>. Subject to the terms
+and conditions of this License, each Contributor hereby grants to You a
+perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+(except as stated in this section) patent license to make, have made, use,
+offer to sell, sell, import, and otherwise transfer the Work, where such
+license applies only to those patent claims licensable by such Contributor
+that are necessarily infringed by their Contribution(s) alone or by
+combination of their Contribution(s) with the Work to which such
+Contribution(s) was submitted. If You institute patent litigation against
+any entity (including a cross-claim or counterclaim in a lawsuit) alleging
+that the Work or a Contribution incorporated within the Work constitutes
+direct or contributory patent infringement, then any patent licenses
+granted to You under this License for that Work shall terminate as of the
+date such litigation is filed.</p>
+
+<p><strong><a name="redistribution">4. Redistribution</a></strong>. You may reproduce and
+distribute copies of the Work or Derivative Works thereof in any medium,
+with or without modifications, and in Source or Object form, provided that
+You meet the following conditions:</p>
+
+<ol style="list-style: lower-latin;">
+<li>You must give any other recipients of the Work or Derivative Works a
+copy of this License; and</li>
+
+<li>You must cause any modified files to carry prominent notices stating
+that You changed the files; and</li>
+
+<li>You must retain, in the Source form of any Derivative Works that You
+distribute, all copyright, patent, trademark, and attribution notices from
+the Source form of the Work, excluding those notices that do not pertain to
+any part of the Derivative Works; and</li>
+
+<li>If the Work includes a "<strong>NOTICE</strong>" text file as part of its distribution,
+then any Derivative Works that You distribute must include a readable copy
+of the attribution notices contained within such NOTICE file, excluding
+those notices that do not pertain to any part of the Derivative Works, in
+at least one of the following places: within a NOTICE text file distributed
+as part of the Derivative Works; within the Source form or documentation,
+if provided along with the Derivative Works; or, within a display generated
+by the Derivative Works, if and wherever such third-party notices normally
+appear. The contents of the NOTICE file are for informational purposes only
+and do not modify the License. You may add Your own attribution notices
+within Derivative Works that You distribute, alongside or as an addendum to
+the NOTICE text from the Work, provided that such additional attribution
+notices cannot be construed as modifying the License.
+<br>
+<br>
+You may add Your own copyright statement to Your modifications and may
+provide additional or different license terms and conditions for use,
+reproduction, or distribution of Your modifications, or for any such
+Derivative Works as a whole, provided Your use, reproduction, and
+distribution of the Work otherwise complies with the conditions stated in
+this License.
+</li>
+
+</ol>
+
+<p><strong><a name="contributions">5. Submission of Contributions</a></strong>. Unless You
+explicitly state otherwise, any Contribution intentionally submitted for
+inclusion in the Work by You to the Licensor shall be under the terms and
+conditions of this License, without any additional terms or conditions.
+Notwithstanding the above, nothing herein shall supersede or modify the
+terms of any separate license agreement you may have executed with Licensor
+regarding such Contributions.</p>
+
+<p><strong><a name="trademarks">6. Trademarks</a></strong>. This License does not grant
+permission to use the trade names, trademarks, service marks, or product
+names of the Licensor, except as required for reasonable and customary use
+in describing the origin of the Work and reproducing the content of the
+NOTICE file.</p>
+
+<p><strong><a name="no-warranty">7. Disclaimer of Warranty</a></strong>. Unless required by
+applicable law or agreed to in writing, Licensor provides the Work (and
+each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including,
+without limitation, any warranties or conditions of TITLE,
+NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You
+are solely responsible for determining the appropriateness of using or
+redistributing the Work and assume any risks associated with Your exercise
+of permissions under this License.</p>
+
+<p><strong><a name="no-liability">8. Limitation of Liability</a></strong>. In no event and
+under no legal theory, whether in tort (including negligence), contract, or
+otherwise, unless required by applicable law (such as deliberate and
+grossly negligent acts) or agreed to in writing, shall any Contributor be
+liable to You for damages, including any direct, indirect, special,
+incidental, or consequential damages of any character arising as a result
+of this License or out of the use or inability to use the Work (including
+but not limited to damages for loss of goodwill, work stoppage, computer
+failure or malfunction, or any and all other commercial damages or losses),
+even if such Contributor has been advised of the possibility of such
+damages.</p>
+
+<p><strong><a name="additional">9. Accepting Warranty or Additional Liability</a></strong>.
+While redistributing the Work or Derivative Works thereof, You may choose
+to offer, and charge a fee for, acceptance of support, warranty, indemnity,
+or other liability obligations and/or rights consistent with this License.
+However, in accepting such obligations, You may act only on Your own behalf
+and on Your sole responsibility, not on behalf of any other Contributor,
+and only if You agree to indemnify, defend, and hold each Contributor
+harmless for any liability incurred by, or claims asserted against, such
+Contributor by reason of your accepting any such warranty or additional
+liability.</p>
+
+<p>END OF TERMS AND CONDITIONS</p>
+
+</div>]]>
+    </string>
+</resources>

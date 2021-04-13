@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout tools:context=".MemberGalleryActivity"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.coconutplace.wekit.ui.member_gallery.MemberGalleryViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/gallery_back_button_frame_layout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="3dp">
+
+                <ImageButton
+                    android:id="@+id/gallery_back_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@color/white"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/cd_ic_back"
+                    android:foreground="@drawable/icn_back" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/gallery_user_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:text="@{viewModel.nickName}"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/notosanskr_regular"/>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gallery_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:scrollbars="vertical"/>
+    </LinearLayout>
+</layout>
