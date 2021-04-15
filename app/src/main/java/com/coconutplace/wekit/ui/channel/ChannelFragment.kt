@@ -1,6 +1,5 @@
 package com.coconutplace.wekit.ui.channel
 
-import android.app.Activity
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -433,6 +432,4 @@ class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
         }
         return true
     }
-
-
 }
