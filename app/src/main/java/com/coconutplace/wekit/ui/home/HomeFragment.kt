@@ -1,5 +1,6 @@
 package com.coconutplace.wekit.ui.home
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
@@ -33,8 +34,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -72,23 +75,9 @@ class HomeFragment : BaseFragment(), HomeListener {
 
     override fun onResume() {
         super.onResume()
-
-//        TedPermission.with(context)
-//            .setPermissionListener(permissionlistener)
-//            .setDeniedMessage("권한을 거부하시면 서비스이용이 불가합니다. [설정] > [앱 권한]에서 권한을 허용해주세요.")
-//            .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION)
-//            .check();
-    }
-
-
-    var permissionlistener: PermissionListener = object : PermissionListener {
-        override fun onPermissionGranted() {
-
-            
-        }
-
-        override fun onPermissionDenied(deniedPermissions: List<String>) {
-            android.os.Process.killProcess(android.os.Process.myPid());
+        if(!TedPermission.isGranted(context, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)){
+            val permissionDialog = PermissionDialog()
+            permissionDialog.show(parentFragmentManager, permissionDialog.tag)
         }
     }
 

@@ -73,6 +73,7 @@
     <color name="home_target_weight_sub_title">#7e7e7e</color>
 
     <!--permission-->
+    <color name="permission_bg">#fff</color>
     <color name="permission_title">#000</color>
     <color name="permission_title_span">#7d6ce9</color>
     <color name="permission_info_label">#000</color>
