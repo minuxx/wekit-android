@@ -72,6 +72,14 @@
     <color name="home_target_weight_title">#2f2f2f </color>
     <color name="home_target_weight_sub_title">#7e7e7e</color>
 
+    <!--permission-->
+    <color name="permission_title">#000</color>
+    <color name="permission_title_span">#7d6ce9</color>
+    <color name="permission_info_label">#000</color>
+    <color name="permission_info_content">#7e7e7e</color>
+    <color name="permission_info_button">#7d6ce9</color>
+    <color name="permission_info_button_text">#fff</color>
+
     <!--create_channel-->
     <color name="create_channel_bg">#d17d6ce9</color>
     <color name="create_channel_separator_view">#b9b9b9</color>

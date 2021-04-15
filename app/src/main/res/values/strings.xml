@@ -133,6 +133,19 @@
     <string name="home_cd_bg_character">character background image</string>
     <string name="home_cd_text_logo">home text logo icon</string>
 
+    <!--permission-->
+    <string name="permission_title">슬기로운 WEKIT 이용에 꼭 필요한 권한들을 소개할게요.</string>
+    <string name="permission_camera_label">카메라</string>
+    <string name="permission_camera_content">프로필,인증 사진 등을 위해 사진을\n촬영합니다.</string>
+    <string name="permission_gallery_label">사진 앨범</string>
+    <string name="permission_gallery_content">프로필,인증 사진 등을 위해 파일을\n촬영합니다.</string>
+    <string name="permission_alarm_label">알림</string>
+    <string name="permission_alarm_content">멤버들의 채팅을 실시간으로 확인\n할 수 있습니다.</string>
+    <string name="permission_keep">계속하기</string>
+    <string name="permission_cd_ic_camera">camera icon</string>
+    <string name="permission_cd_ic_gallery">gallery icon</string>
+    <string name="permission_cd_ic_alarm">alarm icon</string>
+
     <!--diary-->
     <string name="diary_title">식단일기</string>
     <string name="diary_sunday">Sun</string>
