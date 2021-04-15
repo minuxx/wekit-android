@@ -211,7 +211,7 @@ class ChoicePhotoActivity : BaseActivity() {
         val gson = Gson()
 
         val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
-        var itemsJson : String = gson.toJson(items, arrayPhotoType)
+        var itemsJson : String = gson.toJson(viewModel.photos, arrayPhotoType)
 
         val data = Intent()
         data.putExtra("photo-items", itemsJson)
