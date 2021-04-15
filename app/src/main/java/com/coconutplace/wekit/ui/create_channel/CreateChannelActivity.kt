@@ -23,7 +23,6 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
     private lateinit var mBinding: ActivityCreateChannelBinding
     private val mCreateChannelViewModel: CreateChannelViewModel by viewModel()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,7 +30,6 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
 
         setupView()
         setupViewModel()
-
     }
 
     private fun setupView(){
@@ -51,7 +49,6 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
             finish()
         }
 
-
         mBinding.createChannelTwoWeekBtn.setOnClickListener{
             mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
             mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
@@ -60,16 +57,12 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
             mCreateChannelViewModel.durationLong = false
         }
         mBinding.createChannelFourWeekBtn.setOnClickListener{
-
-//            makeSnackBar("추후 업데이트 예정입니다")
-
             mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
             mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
             mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
             mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
             mCreateChannelViewModel.durationLong = true
         }
-
 
         //방 만들기 완료 버튼
         mBinding.createChannelCompleteBtn.setOnClickListener{
@@ -127,7 +120,6 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
 
             mBinding.createChannelTagContainerLayout.setTags(mCreateChannelViewModel.tagStringList,colors)
             mBinding.createChannelTagEt.setText("")
-
         }
 
         //태그 누르면 삭제
@@ -193,6 +185,4 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
     override fun makeSnackBar(str: String) {
         mBinding.root.snackbar(str)
     }
-
-
 }

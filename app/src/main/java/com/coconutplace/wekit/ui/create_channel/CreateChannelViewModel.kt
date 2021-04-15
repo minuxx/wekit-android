@@ -60,7 +60,6 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
                 }
                 Log.e(CHECK_TAG, "create success")
 
-
                 //서버 api 통신
                 val roomName = name.value //방이름
                 val chatExplain = explain.value //방설명
@@ -84,7 +83,6 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
                     tag+=tagStringList[tagSize-1].substring(1)
 
 
-
                 Log.e(CHECK_TAG," 중간점검-> \n roomName : $roomName, chatExplain : $chatExplain, chatRoomImg : $chatRoomImg, chatUrl : $chatUrl,\n"
                         + "maxLimit : $maxLimit, roomType : $roomType, roomTerm : $roomTerm, count : $count, 최종 TAG : $tag")
 
@@ -105,7 +103,6 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
                             else{
                                 createChannelListener?.onCreateChannelSuccess()
                             }
-
                         }
                         else{
                             Log.e(ERROR_TAG, "서버 api channel create failed, code : "+response.code+", message : "+response.message)
