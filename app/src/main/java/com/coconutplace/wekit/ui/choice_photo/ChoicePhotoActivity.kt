@@ -44,7 +44,6 @@ class ChoicePhotoActivity : BaseActivity() {
     private lateinit var mAdapter: ChoicePhotoAdapter
     private val items = ArrayList<Photo>()
     private var mFlag: Int = 0
-    private var mIsFirstPageLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,15 +71,6 @@ class ChoicePhotoActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        if(mIsFirstPageLoad) {
-            val addPhotoItem = Photo(null, null, null)
-            addPhotoItem.type = ITEM_TYPE_ADD_PHOTO
-            items.add(addPhotoItem)
-
-            mAdapter.addItems(items)
-            mIsFirstPageLoad = false
-        }
     }
 
     override fun onClick(v: View?) {
@@ -108,15 +98,25 @@ class ChoicePhotoActivity : BaseActivity() {
                     }
                 }
             } else {
-                Log.d("ChoicePhotoDebug://", "pos : " + it)
+//                Log.d("ChoicePhotoDebug://", "pos : " + it)
                 mAdapter.removeItem(it)
-                items.removeAt(it)
             }
         })
 
         binding.choicePhotoRecyclerview.layoutManager = gridLayoutManager
         binding.choicePhotoRecyclerview.addItemDecoration(GridSpacingItemDecoration(3, 1, false))
         binding.choicePhotoRecyclerview.adapter = mAdapter
+
+        if(viewModel.mIsFirstPageLoad) {
+            val addPhotoItem = Photo(null, null, null)
+            addPhotoItem.type = ITEM_TYPE_ADD_PHOTO
+
+            viewModel.photos.add(addPhotoItem)
+
+            mAdapter.addItems(viewModel.photos)
+
+            viewModel.mIsFirstPageLoad = false
+        }
     }
 
     private fun pickImageFromGallery() {
@@ -164,11 +164,9 @@ class ChoicePhotoActivity : BaseActivity() {
                 }
                 UCrop.REQUEST_CROP -> {
                     UCrop.getOutput(data!!)?.let{
-        //                    items.add(Photo(null, null, null, it))
-                        Log.d("ChoicePhotoDebug://", it.toString())
+//                        Log.d("ChoicePhotoDebug://", it.toString())
                         val item = Photo(null, null, it.toString())
                         mAdapter.addItem(item)
-                        items.add(item)
                         return
                     }
 

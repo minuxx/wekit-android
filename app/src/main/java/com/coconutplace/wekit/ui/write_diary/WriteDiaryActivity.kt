@@ -79,10 +79,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         setMode()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
 
     private fun setMode() {
         when (mFlag) {

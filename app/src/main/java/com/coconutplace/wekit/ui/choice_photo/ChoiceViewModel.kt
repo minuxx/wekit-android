@@ -2,6 +2,7 @@ package com.coconutplace.wekit.ui.choice_photo
 
 import android.graphics.Bitmap
 import androidx.databinding.ObservableArrayList
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.Diary
@@ -19,18 +20,12 @@ import kotlin.collections.ArrayList
 
 class ChoiceViewModel(private val repository: DiaryRepository) : ViewModel() {
     val photos = ObservableArrayList<Photo>()
+    var mIsFirstPageLoad = true
+//    private val photos = mutableListOf<Photo>()
+//    private val _list = MutableLiveData<List<Photo>>()
+//    val list : LiveData<List<Photo>> = _list
+
     private val imgUrlList: ArrayList<String> = ArrayList()
     private val imgBitmapList: ArrayList<Bitmap> = ArrayList()
 
-    fun addImgBitmap(bitmap: Bitmap) {
-        imgBitmapList.add(bitmap)
-    }
-
-    fun getImgList(): ArrayList<String> {
-        return imgUrlList
-    }
-
-    fun getBitmapCount(): Int{
-        return imgBitmapList.size
-    }
 }
