@@ -40,7 +40,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
     private var chatListener:ChatListener? = null
 
-    private lateinit var mContext:Context
     private var _channel: GroupChannel? = null
     private var _channelUrl: String? = null
     private var _roomIdx:Int = 0
@@ -191,10 +190,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         }
     }
 
-    fun init(context: Context, url: String, roomIdx:Int) {
-
-        mContext = context
-
+    fun init(url: String, roomIdx:Int) {
         Log.e(CHECK_TAG,"현재 방의 sendbird url : $url, roomIdx : $roomIdx")
         _channelUrl = url
         _roomIdx = roomIdx
@@ -357,15 +353,15 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         )
     }
 
-    fun sendFile(uri:Uri){
+    fun sendFile(uri:Uri, context:Context){
 
         if(_channel==null){
             return
         }
 
-        val info: Hashtable<String, Any?>? = getFileInfo(mContext, uri)
+        val info: Hashtable<String, Any?>? = getFileInfo(context, uri)
         if (info == null || info.isEmpty) {
-            Toast.makeText(mContext, "Extracting file information failed.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Extracting file information failed.", Toast.LENGTH_LONG).show()
             return
         }
         val name: String? = if (info.containsKey("name")) {
@@ -378,7 +374,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         //val mime = info["mime"] as String?
         val size = info["size"] as Int
         if (path == "") {
-            Toast.makeText(mContext, "저장소에서 파일을 찾지 못했습니다.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "저장소에서 파일을 찾지 못했습니다.", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -623,67 +619,13 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         }
     }
 
-    fun sendFileWithThumbnail(uri: Uri) {
-        if (_channel == null) {
-            return
-        }
-        val info: Hashtable<String, Any?>? = getFileInfo(mContext, uri)
-        if (info == null || info.isEmpty) {
-            Toast.makeText(mContext, "Extracting file information failed.", Toast.LENGTH_LONG).show()
-            return
-        }
-        val name: String?
-        name = if (info.containsKey("name")) {
-            info["name"] as String?
-        } else {
-            "Sendbird File"
-        }
-        val path = info["path"] as String?
-        val file = File(path!!)
-        val mime = info["mime"] as String?
-        val size = info["size"] as Int
-        if (path == null || path == "") {
-            Toast.makeText(mContext, "저장소에서 파일을 찾지 못했습니다.", Toast.LENGTH_LONG).show()
-        } else {
-
-            //val thumbnailSizes: MutableList<FileMessage.ThumbnailSize> = ArrayList()
-            //thumbnailSizes.add(FileMessage.ThumbnailSize(240, 240))
-
-            //썸네일 만드는건 sendbird premium feature 써야함;; 이것도 모르고 삽질했네
-            val params = FileMessageParams()
-                .setFile(file)
-                .setFileName(name)
-                .setFileSize(size)
-                .setMimeType(mime)
-            //.setThumbnailSizes(thumbnailSizes)
-
-            _channel!!.sendFileMessage(params, BaseChannel.SendFileMessageHandler{ fileMessage, e->
-                if (e != null) {
-                    Log.e(ERROR_TAG,"send file error ${e.code} : ${e.message}")
-                    if(e.code==900020){
-                        chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
-                    }
-                    else if(e.code==900100){
-                        chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
-                    }
-                    return@SendFileMessageHandler
-                }
-                else{
-                    addRecentMsg((fileMessage))
-                    //Log.e(CHECK_TAG,"thumbnail url ${fileMessage.thumbnails.size} : "+fileMessage.thumbnails[0].url)
-                }
-            })
-
-        }
-    }
-
     private fun getFileInfo(context: Context, uri: Uri?): Hashtable<String, Any?>? {
         val cursor = context.contentResolver.query(uri!!, null, null, null, null)
         try {
             val mime = context.contentResolver.getType(uri)
             val file = File(
                 //Environment.getExternalStorageDirectory().absolutePath
-                mContext.applicationContext.filesDir,
+                context.applicationContext.filesDir,
                 "sendbird"
             )
             val inputPFD =

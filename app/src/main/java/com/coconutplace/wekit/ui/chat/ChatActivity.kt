@@ -69,7 +69,7 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
         val roomIdx = intent.getIntExtra("roomIdx",0)
 
         chatViewModel.setChatListener(this)
-        chatViewModel.init(this,channelUrl,roomIdx)
+        chatViewModel.init(channelUrl,roomIdx)
 
         setupView()
         setupChatListAdapter()
@@ -261,14 +261,14 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
         chatViewModel.refresh()
         chatViewModel.addSendBirdHandler()
 
-        chatViewModel.isInitialized.observe(this,Observer<Boolean>{
+        chatViewModel.isInitialized.observe(this,{
             if(it==true) { //초기 n개 메시지만 받았을때만 스크롤 맨아래로 이동
                 binding.chatRecyclerview.scrollToPosition(0)
                 Log.e(CHECK_TAG, "recyclerview position :${(messageAdapter.itemCount - 1)}")
             }
         })
 
-        chatViewModel.liveMemberListInfo.observe(this,Observer<ArrayList<UserInfo>>{
+        chatViewModel.liveMemberListInfo.observe(this,{
 
             memberListAdapter.clear()
             binding.chatNavListView.adapter = memberListAdapter
@@ -320,7 +320,7 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
                 SendBird.setAutoBackgroundDetection(true)
                 val uri:Uri = data!!.data!!
                 Log.e(CHECK_TAG,uri.toString())
-                chatViewModel.sendFile(uri)
+                chatViewModel.sendFile(uri,this)
             }
         }
         else if(requestCode == REQ_CODE_AUTH_IMAGE){
@@ -378,14 +378,14 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     }
 
     override fun showStartChallengeButton(isHost: Boolean) {
-        runOnUiThread(Runnable {
+        runOnUiThread{
             if(isHost){
                 binding.chatNavStartChallengeBtn.visibility = View.VISIBLE
             }
             else{
                 binding.chatNavStartChallengeBtn.visibility = View.INVISIBLE
             }
-        })
+        }
     }
 
     override fun makeSnackBar(str: String) {
