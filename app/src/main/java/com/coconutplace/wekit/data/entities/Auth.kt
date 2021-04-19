@@ -11,6 +11,5 @@ data class Auth(
     @SerializedName(value = "androidVersion") val androidVersion: String = "",
     @SerializedName(value = "iosVersion") val iosVersion: String = "",
     @SerializedName(value = "isAvail") val isAvail: Boolean = true,
-    @SerializedName(value = "authenticNum") val authenticNum: Int = 0,
-    @SerializedName(value = "isIos") val isIos: String = "N"
+    @SerializedName(value = "authenticNum") val authenticNum: Int = 0
 )
