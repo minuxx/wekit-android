@@ -57,11 +57,10 @@ import java.util.*
 
 class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
 
-    private lateinit var mBinding: ActivityChatBinding//layout이름을 그대로 가져와야함( _ 없애고 대문자로 고쳐서 + Binding)
-    private val mChatViewModel: ChatViewModel by viewModel()
+    private lateinit var binding: ActivityChatBinding//layout이름을 그대로 가져와야함( _ 없애고 대문자로 고쳐서 + Binding)
+    private val chatViewModel: ChatViewModel by viewModel()
     private lateinit var messageAdapter: ChatMessageAdapter
     private lateinit var memberListAdapter: ChatMemberListAdapter
-    private lateinit var linearLayoutManager:LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -69,8 +68,8 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
         val channelUrl = intent.getStringExtra("channelUrl")!!
         val roomIdx = intent.getIntExtra("roomIdx",0)
 
-        mChatViewModel.setChatListener(this)
-        mChatViewModel.init(this,channelUrl,roomIdx)
+        chatViewModel.setChatListener(this)
+        chatViewModel.init(this,channelUrl,roomIdx)
 
         setupView()
         setupChatListAdapter()
@@ -85,88 +84,86 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     override fun onResume() {
         super.onResume()
 
-        if (mBinding.chatDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+        if (binding.chatDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             displayMenu()
-            mBinding.chatDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            binding.chatDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
         else{
-            mBinding.chatDrawerLayout.setDrawerLockMode((DrawerLayout.LOCK_MODE_LOCKED_CLOSED))
+            binding.chatDrawerLayout.setDrawerLockMode((DrawerLayout.LOCK_MODE_LOCKED_CLOSED))
         }
 
     }
 
     private fun displayMenu(){
         memberListAdapter.clear()
-        mBinding.chatNavListView.adapter = memberListAdapter
+        binding.chatNavListView.adapter = memberListAdapter
 
-        mChatViewModel.getRoomInfo()
+        chatViewModel.getRoomInfo()
     }
 
     private fun setupView(){
 
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_chat)
-        mBinding.lifecycleOwner = this
-        mBinding.mChatViewModel = mChatViewModel
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_chat)
+        binding.lifecycleOwner = this
+        binding.mChatViewModel = chatViewModel
 
-        linearLayoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.reverseLayout = true //역순으로 출력
 
-        mBinding.chatRecyclerview.layoutManager = linearLayoutManager
+        binding.chatRecyclerview.layoutManager = linearLayoutManager
 
         messageAdapter = ChatMessageAdapter(this)
 
-        mBinding.chatRecyclerview.adapter = messageAdapter
-        mBinding.chatRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.chatRecyclerview.adapter = messageAdapter
+        binding.chatRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (linearLayoutManager.findLastVisibleItemPosition() == messageAdapter.itemCount-1) {
-                    //Log.e(CHECK_TAG,"가장 오래된 메세지를 보았습니다.")
-                    mChatViewModel.loadPreviousMessages(DUMMY_MESSAGE_COUNT, null)
+                    chatViewModel.loadPreviousMessages(DUMMY_MESSAGE_COUNT, null)
                 }
-                //Log.e(CHECK_TAG,"scroll position : ${linearLayoutManager.findLastVisibleItemPosition()} ,${messageAdapter.itemCount-1}")
             }
         })
 
-        mBinding.chatSendButtonFrameLayout.setOnClickListener{
-            val msg : String = mBinding.chatMsgEt.text.toString()
+        binding.chatSendButtonFrameLayout.setOnClickListener{
+            val msg : String = binding.chatMsgEt.text.toString()
             if(msg==""){
                 return@setOnClickListener
             }
-            mChatViewModel.sendMsg(msg)
-            mBinding.chatMsgEt.setText("")
+            chatViewModel.sendMsg(msg)
+            binding.chatMsgEt.setText("")
         }
-        mBinding.chatSendButton.setOnClickListener{
-            val msg : String = mBinding.chatMsgEt.text.toString()
+        binding.chatSendButton.setOnClickListener{
+            val msg : String = binding.chatMsgEt.text.toString()
             if(msg==""){
                 return@setOnClickListener
             }
-            mChatViewModel.sendMsg(msg)
-            mBinding.chatMsgEt.setText("")
+            chatViewModel.sendMsg(msg)
+            binding.chatMsgEt.setText("")
         }
 
-        mBinding.chatMenuButtonFrameLayout.setOnClickListener{
-            mBinding.root.hideKeyboard()
-            mBinding.chatDrawerLayout.openDrawer(GravityCompat.END)
+        binding.chatMenuButtonFrameLayout.setOnClickListener{
+            binding.root.hideKeyboard()
+            binding.chatDrawerLayout.openDrawer(GravityCompat.END)
             displayMenu()
         }
-        mBinding.chatMenuButton.setOnClickListener{
-            mBinding.root.hideKeyboard()
-            mBinding.chatDrawerLayout.openDrawer(GravityCompat.END)
+        binding.chatMenuButton.setOnClickListener{
+            binding.root.hideKeyboard()
+            binding.chatDrawerLayout.openDrawer(GravityCompat.END)
             displayMenu()
         }
 
-        mBinding.chatBackButtonFrameLayout.setOnClickListener{
+        binding.chatBackButtonFrameLayout.setOnClickListener{
             finish()
         }
-        mBinding.chatBackButton.setOnClickListener{
+        binding.chatBackButton.setOnClickListener{
             finish()
         }
 
-        mBinding.chatSendPictureButtonFrameLayout.setOnClickListener{
+        binding.chatSendPictureButtonFrameLayout.setOnClickListener{
             //requestMedia()
             val imgTypeDialog = ChatImgTypeDialog(this)
             imgTypeDialog.callFunction(this)
         }
-        mBinding.chatSendPictureButton.setOnClickListener{
+        binding.chatSendPictureButton.setOnClickListener{
             //requestMedia()
             val imgTypeDialog = ChatImgTypeDialog(this)
             imgTypeDialog.callFunction(this)
@@ -174,41 +171,41 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     }
 
     private fun setupDrawer(){
-        mBinding.chatDrawerLayout.addDrawerListener(object:DrawerListener{
+        binding.chatDrawerLayout.addDrawerListener(object:DrawerListener{
             override fun onDrawerOpened(drawerView: View) {
-                mBinding.chatDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                binding.chatDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
             override fun onDrawerClosed(drawerView: View) {
-                mBinding.chatDrawerLayout.setDrawerLockMode((DrawerLayout.LOCK_MODE_LOCKED_CLOSED))
+                binding.chatDrawerLayout.setDrawerLockMode((DrawerLayout.LOCK_MODE_LOCKED_CLOSED))
             }
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
             override fun onDrawerStateChanged(newState: Int) {}
         })
 
-        mBinding.chatNavMenuBtn.setOnClickListener{
+        binding.chatNavMenuBtn.setOnClickListener{
             val actionTypeDialog = ChatActionTypeDialog(this)
             actionTypeDialog.callFunction(this)
         }
-        mBinding.chatNavExitBtn.setOnClickListener{
-            //Log.e(CHECK_TAG,"나가기 버튼 누름")
+        binding.chatNavExitBtn.setOnClickListener{
             val exitDialog = ChatExitDialog(this)
             exitDialog.callFunction(this)
         }
 
-        if(mChatViewModel.getPushFlag()){
-            mBinding.chatNavBellBtn.setImageResource(R.drawable.icn_bell_on)
+        if(chatViewModel.getPushFlag()){
+            binding.chatNavBellBtn.setImageResource(R.drawable.icn_bell_on)
+            R.drawable.icn_bell_off
         }
 
-        mBinding.chatNavBellBtn.setOnClickListener {
-            if(mChatViewModel.getPushFlag()){
+        binding.chatNavBellBtn.setOnClickListener {
+            if(chatViewModel.getPushFlag()){
                 PushUtil.setPushNotification(false,
                     SetPushTriggerOptionHandler { e ->
                         if(e!=null){
                             Log.e(ERROR_TAG,"push notification OFF setting error $e")
                             return@SetPushTriggerOptionHandler
                         }
-                        mChatViewModel.setPushFlag(false)
-                        mBinding.chatNavBellBtn.setImageResource(R.drawable.icn_bell_off)
+                        chatViewModel.setPushFlag(false)
+                        binding.chatNavBellBtn.setImageResource(R.drawable.icn_bell_off)
                     })
             }
             else{
@@ -218,8 +215,8 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
                             Log.e(ERROR_TAG,"push notification ON setting error $e")
                             return@SetPushTriggerOptionHandler
                         }
-                        mChatViewModel.setPushFlag(true)
-                        mBinding.chatNavBellBtn.setImageResource(R.drawable.icn_bell_on)
+                        chatViewModel.setPushFlag(true)
+                        binding.chatNavBellBtn.setImageResource(R.drawable.icn_bell_on)
                     })
             }
         }
@@ -239,7 +236,7 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
             }
             override fun onBackgroundClick() {
                 Log.e(CHECK_TAG,"background item 클릭함")
-                mBinding.root.hideKeyboard()
+                binding.root.hideKeyboard()
             }
         })
     }
@@ -253,7 +250,7 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
 
                 val intent = Intent(this@ChatActivity,MemberGalleryActivity::class.java)
                 intent.putExtra("userIdx",memberInfo.userIdx)
-                intent.putExtra("roomIdx",mChatViewModel.getRoomIdx())
+                intent.putExtra("roomIdx",chatViewModel.getRoomIdx())
                 intent.putExtra("nickName",memberInfo.nickName)
                 startActivity(intent)
             }
@@ -261,20 +258,20 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     }
 
     private fun setupViewModel(){
-        mChatViewModel.refresh()
-        mChatViewModel.addSendBirdHandler()
+        chatViewModel.refresh()
+        chatViewModel.addSendBirdHandler()
 
-        mChatViewModel.isInitialized.observe(this,Observer<Boolean>{
+        chatViewModel.isInitialized.observe(this,Observer<Boolean>{
             if(it==true) { //초기 n개 메시지만 받았을때만 스크롤 맨아래로 이동
-                mBinding.chatRecyclerview.scrollToPosition(0)
+                binding.chatRecyclerview.scrollToPosition(0)
                 Log.e(CHECK_TAG, "recyclerview position :${(messageAdapter.itemCount - 1)}")
             }
         })
 
-        mChatViewModel.liveMemberListInfo.observe(this,Observer<ArrayList<UserInfo>>{
+        chatViewModel.liveMemberListInfo.observe(this,Observer<ArrayList<UserInfo>>{
 
             memberListAdapter.clear()
-            mBinding.chatNavListView.adapter = memberListAdapter
+            binding.chatNavListView.adapter = memberListAdapter
 
             for(member in it){
                 memberListAdapter.addItem(member.countNum,member.nickname,member.type, member.todayCount, member.userIdx)
@@ -285,12 +282,12 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
             Log.e(CHECK_TAG,"ListView addItem count : "+memberListAdapter.count)
         })
 
-        mChatViewModel.isLoading.observe(this,{
+        chatViewModel.isLoading.observe(this,{
             if(it){
-                mBinding.chatProgressbar.visibility = View.VISIBLE
+                binding.chatProgressbar.visibility = View.VISIBLE
             }
             else{
-                mBinding.chatProgressbar.visibility = View.GONE
+                binding.chatProgressbar.visibility = View.GONE
             }
         })
     }
@@ -303,30 +300,10 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     }
 
     private fun requestMedia() {
-
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//            != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            // If storage permissions are not granted, request permissions at run-time,
-//            // as per < API 23 guidelines.
-//            requestStoragePermissions()
-//        } else {
-//            val intent = Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//            intent.type = "image/*"
-//            startActivityForResult(intent,REQ_CODE_SELECT_IMAGE)
-//        }
-
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         intent.type = "image/*"
         startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
         SendBird.setAutoBackgroundDetection(false)
-
-    }
-
-    private fun displayBadgeDialog(){
-        val badgeDialog = ChatBadgeDialog(this)
-        val url = "https://firebasestorage.googleapis.com/v0/b/wekit-a56e6.appspot.com/o/certification-diary%2F9298346c-6550-4e5a-bd25-440f46c7f016.jpg?alt=media&token=bfd29b70-36b7-400d-a88a-e4c24fafabc1"
-        badgeDialog.callFunction("나의 선물",url,"헬리콥터, 비행기, 공항, 드론, 철새, 기러기 등등 도착하였습니다","#ff0000")
     }
 
     override fun onBadgeResponse(badgeTitle:String,badgeUrl:String,badgeExplain:String, backgroundColor:String){
@@ -343,7 +320,7 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
                 SendBird.setAutoBackgroundDetection(true)
                 val uri:Uri = data!!.data!!
                 Log.e(CHECK_TAG,uri.toString())
-                mChatViewModel.sendFile(uri)
+                chatViewModel.sendFile(uri)
             }
         }
         else if(requestCode == REQ_CODE_AUTH_IMAGE){
@@ -385,8 +362,8 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     }
 
     override fun onBackPressed() {
-        if (mBinding.chatDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-            mBinding.chatDrawerLayout.closeDrawer(GravityCompat.END)
+        if (binding.chatDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.chatDrawerLayout.closeDrawer(GravityCompat.END)
         } else {
             super.onBackPressed()
         }
@@ -397,23 +374,23 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     }
 
     override fun onSendMessageSuccess() {
-        mBinding.chatRecyclerview.scrollToPosition(0)
+        binding.chatRecyclerview.scrollToPosition(0)
     }
 
     override fun showStartChallengeButton(isHost: Boolean) {
         runOnUiThread(Runnable {
             if(isHost){
-                mBinding.chatNavStartChallengeBtn.visibility = View.VISIBLE
+                binding.chatNavStartChallengeBtn.visibility = View.VISIBLE
             }
             else{
-                mBinding.chatNavStartChallengeBtn.visibility = View.INVISIBLE
+                binding.chatNavStartChallengeBtn.visibility = View.INVISIBLE
             }
         })
     }
 
     override fun makeSnackBar(str: String) {
         runOnUiThread {
-            mBinding.root.snackbar(str)
+            binding.root.snackbar(str)
         }
     }
 
@@ -425,13 +402,13 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     override fun addRecentMessage(msg: BaseMessage) {
         messageAdapter.addLast(msg)
         messageAdapter.notifyDataSetChanged()
-        mBinding.chatRecyclerview.scrollToPosition(0)
+        binding.chatRecyclerview.scrollToPosition(0)
     }
 
     override fun getBackImgTypeDialog(type: Int) {
         if(type==1){ //인증 사진 보내기
             Log.e(CHECK_TAG,"인증사진 보내기 시작")
-            mChatViewModel.checkChallenge()
+            chatViewModel.checkChallenge()
         }
         else if(type==2){ //일반 사진 보내기
             Log.e(CHECK_TAG,"일반사진 보내기 시작")
@@ -445,22 +422,22 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
             reportDialog.callFunction(this)
         }
         else if(type==2){ //추방하기
-            val expelDialog = ChatExpelDialog(this,mChatViewModel.getNickName())
-            expelDialog.callFunction(this, mChatViewModel.getMemberInfoList())
+            val expelDialog = ChatExpelDialog(this,chatViewModel.getNickName())
+            expelDialog.callFunction(this, chatViewModel.getMemberInfoList())
         }
     }
 
     override fun getBackExpelDialog(member:String, reason:String) {
-        mChatViewModel.expelMember(member,reason)
+        chatViewModel.expelMember(member,reason)
     }
 
     override fun getBackReportDialog(reason:String) {
-        mChatViewModel.reportChannel(reason)
+        chatViewModel.reportChannel(reason)
     }
 
     override fun getBackExitDialog(exitFlag: Boolean) {
         if(exitFlag){
-            mChatViewModel.exitChannel()
+            chatViewModel.exitChannel()
         }
     }
 
@@ -476,12 +453,12 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
 
         intent.putExtra("date", "${date.year}-${month}-${day}")
         intent.putExtra("flag", FLAG_CERTIFY_DIARY)
-        intent.putExtra("roomIdx",mChatViewModel.getRoomIdx())
+        intent.putExtra("roomIdx",chatViewModel.getRoomIdx())
         startActivityForResult(intent,REQ_CODE_AUTH_IMAGE)
     }
 
     private fun sendFileWithUrl(ImgUrl:String){
-        mChatViewModel.isLoading.postValue(true)
+        chatViewModel.isLoading.postValue(true)
         var imgBitmap: Bitmap? = null
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -501,7 +478,7 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
 
                 Log.e(CHECK_TAG, "파일이름:$fileName")
 
-                mChatViewModel.sendAuthFile(file!!, fileName)
+                chatViewModel.sendAuthFile(file!!, fileName)
 
             } catch (e: Exception) {
                 Log.e(ERROR_TAG, "파일 만들기 에러$e")

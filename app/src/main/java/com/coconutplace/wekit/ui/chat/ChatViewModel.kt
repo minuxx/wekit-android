@@ -1,5 +1,6 @@
 package com.coconutplace.wekit.ui.chat
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -7,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.coconutplace.wekit.data.entities.ChatExtentions
 import com.coconutplace.wekit.data.entities.RoomInfo
 import com.coconutplace.wekit.data.entities.UserInfo
@@ -24,7 +26,6 @@ import com.sendbird.android.GroupChannel.GroupChannelRefreshHandler
 import com.sendbird.android.SendBird.ChannelHandler
 import com.sendbird.android.SendBird.UserInfoUpdateHandler
 import com.sendbird.android.handlers.AddOperatorsHandler
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -40,21 +41,15 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     private var chatListener:ChatListener? = null
 
     private lateinit var mContext:Context
-    private var mChannel: GroupChannel? = null
-    private var mChannelUrl: String? = null
-    private var mRoomIdx:Int = 0
-    private var mMessageList: ArrayList<BaseMessage> = ArrayList()
-    private var isMessageLoading = false
-    private val memberInfoList:ArrayList<UserInfo> = ArrayList()
-    private var operatorUserIndex:Int = 0
-    private var mNickname:String? = null
-    private var pushNotificationOn: Boolean? = null
-
-//    val liveMessageList: MutableLiveData<ArrayList<BaseMessage>> by lazy {
-//        MutableLiveData<ArrayList<BaseMessage>>().apply {
-//            postValue(ArrayList())
-//        }
-//    }
+    private var _channel: GroupChannel? = null
+    private var _channelUrl: String? = null
+    private var _roomIdx:Int = 0
+    private var _messageList: ArrayList<BaseMessage> = ArrayList()
+    private var _isMessageLoading = false
+    private val _memberInfoList:ArrayList<UserInfo> = ArrayList()
+    private var _operatorUserIndex:Int = 0
+    private var _nickname:String? = null
+    private var _pushNotificationOn: Boolean? = null
 
     val isInitialized: MutableLiveData<Boolean> by lazy{
         MutableLiveData<Boolean>().apply {
@@ -83,7 +78,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun getRoomIdx():Int{
-        return mRoomIdx
+        return _roomIdx
     }
 
     fun setChatListener(chatListener: ChatListener){
@@ -91,7 +86,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun getMemberInfoList():ArrayList<UserInfo>{
-        return memberInfoList
+        return _memberInfoList
     }
 
     fun getNickName():String{
@@ -99,7 +94,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun getPushNotificationOn(): Boolean{
-        return pushNotificationOn!!
+        return _pushNotificationOn!!
     }
 
     private fun setNickname(nickname:String){
@@ -125,16 +120,16 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun getRoomInfo() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val roomInfoResponse = repository.getRoomInfo(mRoomIdx)
+                val roomInfoResponse = repository.getRoomInfo(_roomIdx)
                 if(roomInfoResponse.isSuccess){
                     Log.e(CHECK_TAG, "api roomInfo success")
                     val roomInfo: RoomInfo = roomInfoResponse.result!!
                     liveCurrentDay.postValue("우리 인증한지 ${roomInfo.day}일")
                     liveTotalAuthCount.postValue("총 인증횟수 : ${roomInfo.totalAuthenticCount}회 (하루 ${roomInfo.certificationCount} * ${roomInfo.totalDay}일)")
                     Log.e(CHECK_TAG,"totalMEmber : ${roomInfo.totalMember} =?= ${roomInfo.userInfo!!.size}")
-                    pushNotificationOn = roomInfo.isNotice=="Y"
+                    _pushNotificationOn = roomInfo.isNotice=="Y"
 
                     val startDate = roomInfo.startDate
                     if(startDate==null||startDate==""||startDate=="null"){
@@ -145,24 +140,24 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     }
 
                     val operatorArray:ArrayList<String> = ArrayList()
-                    memberInfoList.clear()
+                    _memberInfoList.clear()
                     var isHostFlag = false
                     roomInfo.userInfo.let {
                         for(member in it!!){
                             operatorArray.add(member.id!!)
-                            memberInfoList.add(member)
+                            _memberInfoList.add(member)
                             if(member.type=="host"){
                                 liveOperator.postValue("방장 : ${member.nickname}")
-                                operatorUserIndex = member.userIdx
-                                if(member.nickname == mNickname){//자신이 방장이면
+                                _operatorUserIndex = member.userIdx
+                                if(member.nickname == _nickname){//자신이 방장이면
                                     isHostFlag = true
                                 }
                             }
                             Log.e(CHECK_TAG,"member id : ${member.id}")
                         }
-                        liveMemberListInfo.postValue(memberInfoList)
+                        liveMemberListInfo.postValue(_memberInfoList)
                     }
-                    Log.e(CHECK_TAG,"$mNickname =?= ${liveOperator.value}")
+                    Log.e(CHECK_TAG,"$_nickname =?= ${liveOperator.value}")
 
                     if(roomInfo.isStart=="Y"){
                         isHostFlag = false
@@ -171,8 +166,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     chatListener?.showStartChallengeButton(isHostFlag)//방장이고 2주방일때 챌린지 시작 버튼 보이게함
 
 
-                    if (mChannel!!.myRole == Member.Role.OPERATOR) {
-                        mChannel!!.addOperators(operatorArray, AddOperatorsHandler { e ->
+                    if (_channel!!.myRole == Member.Role.OPERATOR) {
+                        _channel!!.addOperators(operatorArray, AddOperatorsHandler { e ->
                             if (e != null) { //방장이 나갔을때 새로운 방장이 추방 권한을 가질 수 있게 모두가 operator가 되어야함.
                                 //operator 지정은 방장밖에 못함
                                 Log.e(ERROR_TAG, "맴버들을 operator로 지정하는데 실패하였습니다.$e")
@@ -201,37 +196,37 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         mContext = context
 
         Log.e(CHECK_TAG,"현재 방의 sendbird url : $url, roomIdx : $roomIdx")
-        mChannelUrl = url
-        mRoomIdx = roomIdx
+        _channelUrl = url
+        _roomIdx = roomIdx
 
-        GroupChannel.getChannel(mChannelUrl, GroupChannelGetHandler { groupChannel, e ->
+        GroupChannel.getChannel(_channelUrl, GroupChannelGetHandler { groupChannel, e ->
             if (e != null) {
                 // Error!
                 e.printStackTrace()
                 Log.e(ERROR_TAG,"접근할 수 없는 SendBird Channel Url입니다")
                 return@GroupChannelGetHandler
             }
-            mChannel = groupChannel
+            _channel = groupChannel
         })
         isInitialized.postValue(true)
-        mNickname = sharedPreferencesManager.getNickname()
+        _nickname = sharedPreferencesManager.getNickname()
         //setNickname(mNickname!!)
     }
 
     private fun addRecentMsg(msg: BaseMessage){
-        mMessageList.add(0,msg)
+        _messageList.add(0,msg)
         chatListener?.addRecentMessage(msg)
     }
 
     private fun addOldMsg(msgList: List<BaseMessage>){
-        mMessageList.addAll(msgList)
+        _messageList.addAll(msgList)
         chatListener?.addOldMsg(msgList)
     }
 
     fun addSendBirdHandler() {
         SendBird.addChannelHandler(CHANNEL_HANDLER_ID, object : ChannelHandler() {
             override fun onMessageReceived(baseChannel: BaseChannel, baseMessage: BaseMessage) {
-                if (baseChannel.url == mChannelUrl) {
+                if (baseChannel.url == _channelUrl) {
                     addRecentMsg(baseMessage)
                 }
             }
@@ -251,19 +246,21 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun sendMsg(msg: String?) {
-        mChannel!!.sendUserMessage(msg, SendUserMessageHandler { userMessage, e ->
+        _channel!!.sendUserMessage(msg, SendUserMessageHandler { userMessage, e ->
             if (e != null) {
                 // Error!
                 Log.e(ERROR_TAG,"message send fail : $e")
 
-                if(e.code==900020){
-                    chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
-                }
-                else if(e.code==900100){
-                    chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
-                }
-                else if(e.code==900041){
-                    chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
+                when (e.code) {
+                    900020 -> {
+                        chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
+                    }
+                    900100 -> {
+                        chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
+                    }
+                    900041 -> {
+                        chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
+                    }
                 }
                 //Toast.makeText(this, "message send fail", Toast.LENGTH_SHORT).show();
                 return@SendUserMessageHandler
@@ -275,25 +272,25 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun refresh() {
-        if (mMessageList.size!=0) {
+        if (_messageList.size!=0) {
             //liveMessageList.postValue(mMessageList)
-            chatListener?.addOldMsg(mMessageList)
+            chatListener?.addOldMsg(_messageList)
         }
-        else if (mChannel == null) {
-            GroupChannel.getChannel(mChannelUrl, GroupChannelGetHandler { groupChannel, e ->
+        else if (_channel == null) {
+            GroupChannel.getChannel(_channelUrl, GroupChannelGetHandler { groupChannel, e ->
                 if (e != null) {
                     // Error!
                     e.printStackTrace()
                     return@GroupChannelGetHandler
                 }
-                mChannel = groupChannel
+                _channel = groupChannel
                 loadLatestMessages(DUMMY_MESSAGE_COUNT, GetMessagesHandler { list, e ->
                         //mChatAdapter.markAllMessagesAsRead();
                     chatListener?.onSendMessageSuccess()
                 })
             })
         } else {
-            mChannel!!.refresh(GroupChannelRefreshHandler { e ->
+            _channel!!.refresh(GroupChannelRefreshHandler { e ->
                 if (e != null) {
                     // Error!
                     e.printStackTrace()
@@ -309,10 +306,10 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
     private fun loadLatestMessages(limit: Int, handler: GetMessagesHandler?) {
         Log.e(CHECK_TAG,"loadLatestMessages")
-        if (mChannel == null) {
+        if (_channel == null) {
             return
         }
-        mChannel!!.getPreviousMessagesByTimestamp(Long.MAX_VALUE, true, limit, true,
+        _channel!!.getPreviousMessagesByTimestamp(Long.MAX_VALUE, true, limit, true,
             BaseChannel.MessageTypeFilter.ALL, null, GetMessagesHandler { list, e ->
                 handler?.onResult(list, e)
                 if (e != null) {
@@ -322,6 +319,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 if (list.size <= 0) {
                     return@GetMessagesHandler
                 }
+
                 //list에는 메세지가 0번인덱스~n-1번 인덱스까지 최신순부터있음
                 addOldMsg(list)
                 if (!isInitialized.value!!) {
@@ -334,23 +332,21 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     fun loadPreviousMessages(limit: Int, handler: GetMessagesHandler?) {
         Log.e(CHECK_TAG,"loadPreviousMessages")
 
-        if (mChannel == null) {
+        if (_channel == null ||_isMessageLoading) {
             return
         }
-        if (isMessageLoading) {
-            return
-        }
+
         var oldestMessageCreatedAt = Long.MAX_VALUE
-        Log.e(CHECK_TAG,"mMessageList.size : ${mMessageList.size}")
-        if (mMessageList.size > 0) {
-            oldestMessageCreatedAt = mMessageList[mMessageList.size - 1].createdAt
+        Log.e(CHECK_TAG,"mMessageList.size : ${_messageList.size}")
+        if (_messageList.size > 0) {
+            oldestMessageCreatedAt = _messageList[_messageList.size - 1].createdAt
             Log.e(CHECK_TAG,"mMessageList.size>0 true")
         }
-        isMessageLoading = true
-        mChannel!!.getPreviousMessagesByTimestamp(oldestMessageCreatedAt, false, limit, true,
+        _isMessageLoading = true
+        _channel!!.getPreviousMessagesByTimestamp(oldestMessageCreatedAt, false, limit, true,
             BaseChannel.MessageTypeFilter.ALL, null, GetMessagesHandler { list, e ->
                 handler?.onResult(list, e)
-                isMessageLoading = false
+                _isMessageLoading = false
                 if (e != null) {
                     e.printStackTrace()
                     return@GetMessagesHandler
@@ -363,7 +359,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
     fun sendFile(uri:Uri){
 
-        if(mChannel==null){
+        if(_channel==null){
             return
         }
 
@@ -396,7 +392,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         //.setFile(mFile)
         //.setThumbnailSizes(thumbnailSizes)
 
-        mChannel!!.sendFileMessage(params, BaseChannel.SendFileMessageHandler{ fileMessage, e->
+        _channel!!.sendFileMessage(params, BaseChannel.SendFileMessageHandler{ fileMessage, e->
             if (e != null) {
                 isLoading.postValue(false)
                 Log.e(ERROR_TAG,"send file error ${e.code} : ${e.message}")
@@ -428,7 +424,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
             .setFileSize(size)
             //.setMimeType(mime)
 
-        mChannel!!.sendFileMessage(params, BaseChannel.SendFileMessageHandler{ fileMessage, e->
+        _channel!!.sendFileMessage(params, BaseChannel.SendFileMessageHandler{ fileMessage, e->
             if (e != null) {
                 isLoading.postValue(false)
                 Log.e(ERROR_TAG,"send Auth file error ${e.code} : ${e.message}")
@@ -450,10 +446,10 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun exitChannel() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                Log.e(CHECK_TAG,"RoomIdx : $mRoomIdx")
-                val param = ChatExtentions(mRoomIdx,null,null)
+                Log.e(CHECK_TAG,"RoomIdx : $_roomIdx")
+                val param = ChatExtentions(_roomIdx,null,null)
                 val leaveChannelResponse = repository.leaveChannel(param)
                 if (leaveChannelResponse.isSuccess) {
                     Log.e(CHECK_TAG, "api leaveChannel success")
@@ -463,13 +459,13 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         //방장 넘겨줘야함
                     }
                     //SENDBIRD 체널도 나가야함
-                    mChannel?.leave(GroupChannel.GroupChannelLeaveHandler{ e ->
+                    _channel?.leave(GroupChannel.GroupChannelLeaveHandler{ e ->
                         if(e!=null){
                             //ERROR
-                            Log.e(ERROR_TAG,"SendBird leaveChannel error ${mChannel?.name}...")
+                            Log.e(ERROR_TAG,"SendBird leaveChannel error ${_channel?.name}...")
                         }
                         else{
-                            Log.e(CHECK_TAG,"SendBird leaveChannel success -> ${mChannel?.name} ")
+                            Log.e(CHECK_TAG,"SendBird leaveChannel success -> ${_channel?.name} ")
                             chatListener?.onExitSuccess()
                         }
                     })
@@ -486,10 +482,10 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun reportChannel(reason:String){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 Log.e(CHECK_TAG,"report reason : $reason")
-                val param = ChatExtentions(mRoomIdx,reason,null)
+                val param = ChatExtentions(_roomIdx,reason,null)
                 val reportChannelResponse = repository.reportChannel(param)
                 if(reportChannelResponse.isSuccess){
                     Log.e(CHECK_TAG, "api reportChannel success")
@@ -511,7 +507,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
         var banUserIdx = 0
         var banUserId:String? = ""
-        for(member in memberInfoList){
+        for(member in _memberInfoList){
             if(member.nickname==banMember){
                 banUserIdx = member.userIdx
                 banUserId = member.id
@@ -525,10 +521,10 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
             return
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 Log.e(CHECK_TAG, "expel member : $banMember, reason : $reason")
-                val param = ChatExtentions(mRoomIdx,reason,banUserIdx)
+                val param = ChatExtentions(_roomIdx,reason,banUserIdx)
                 val expelMemberResponse = repository.expelMember(param)
                 if(expelMemberResponse.isSuccess){
                     Log.e(CHECK_TAG, "api expelMember success")
@@ -538,16 +534,16 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     operatorArray.add(id)
 
 
-                    mChannel!!.addOperators(operatorArray, AddOperatorsHandler {e1->
+                    _channel!!.addOperators(operatorArray, AddOperatorsHandler { e1->
                         if (e1 != null) {
                             Log.e(ERROR_TAG,"$id 가 SendBird channel operator가 되는데에 실패하였습니다:$e1")
                         } else {
                             Log.e(CHECK_TAG,"$id 가 SendBird channel operator가 되었습니다.")
 
-                            Log.e(CHECK_TAG,"MyRole : "+mChannel!!.myRole.toString()+"=?="+Member.Role.OPERATOR)
+                            Log.e(CHECK_TAG,"MyRole : "+_channel!!.myRole.toString()+"=?="+Member.Role.OPERATOR)
 
-                            if (mChannel!!.myRole == Member.Role.OPERATOR) {
-                                mChannel!!.banUserWithUserId(banUserId, "-", Int.MAX_VALUE) { e2 ->
+                            if (_channel!!.myRole == Member.Role.OPERATOR) {
+                                _channel!!.banUserWithUserId(banUserId, "-", Int.MAX_VALUE) { e2 ->
                                     if (e2 != null) {
                                         Log.e(ERROR_TAG,"ban User Fail : $e2")
                                         // Handle error.
@@ -578,9 +574,9 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun checkChallenge(){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val param = ChatExtentions(mRoomIdx,null,null)
+                val param = ChatExtentions(_roomIdx,null,null)
                 val response = repository.checkChallenge(param)
                 if(response.isSuccess){
                     chatListener?.startDiary()
@@ -598,9 +594,9 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun startChallenge(){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val param = ChatExtentions(mRoomIdx,null,null)
+                val param = ChatExtentions(_roomIdx,null,null)
                 val startChallengeResponse = repository.startChallenge(param)
                 if(startChallengeResponse.isSuccess){
                     Log.e(CHECK_TAG, "api startChallenge success")
@@ -628,7 +624,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun sendFileWithThumbnail(uri: Uri) {
-        if (mChannel == null) {
+        if (_channel == null) {
             return
         }
         val info: Hashtable<String, Any?>? = getFileInfo(mContext, uri)
@@ -661,7 +657,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 .setMimeType(mime)
             //.setThumbnailSizes(thumbnailSizes)
 
-            mChannel!!.sendFileMessage(params, BaseChannel.SendFileMessageHandler{ fileMessage, e->
+            _channel!!.sendFileMessage(params, BaseChannel.SendFileMessageHandler{ fileMessage, e->
                 if (e != null) {
                     Log.e(ERROR_TAG,"send file error ${e.code} : ${e.message}")
                     if(e.code==900020){
