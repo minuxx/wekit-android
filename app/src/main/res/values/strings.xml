@@ -17,6 +17,7 @@
     <string name="password_check">비밀번호가 일치하지 않습니다.</string>
     <string name="dialog_wekit_check">확인</string>
     <string name="dialog_wekit_cancel">취소</string>
+    <string name="denied_permission">권한을 거부하시면 서비스이용이 어렵습니다. [설정] > [앱 권한]에서 권한을 허용해주세요.</string>
 
     <!--splash-->
     <string name="splash_cd_logo">logo image</string>

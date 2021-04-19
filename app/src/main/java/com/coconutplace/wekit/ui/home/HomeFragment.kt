@@ -1,10 +1,8 @@
 package com.coconutplace.wekit.ui.home
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -13,10 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat.getColor
-import com.coconutplace.wekit.BuildConfig
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.BodyGraph
 import com.coconutplace.wekit.data.entities.Home
@@ -25,21 +20,15 @@ import com.coconutplace.wekit.databinding.FragmentHomeBinding
 import com.coconutplace.wekit.ui.BaseFragment
 import com.coconutplace.wekit.ui.body_graph.BodyGraphActivity
 import com.coconutplace.wekit.ui.set.SetActivity
-import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_NETWORK_ERROR
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_SERVER_CHECK
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_VERSION_UPDATE
 import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.show
-import com.coconutplace.wekit.utils.snackbar
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.messaging.FirebaseMessaging
-import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
