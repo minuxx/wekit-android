@@ -44,7 +44,9 @@
 
         <activity android:name="com.coconutplace.wekit.ui.poll.PollActivity"/>
 
-        <activity android:name="com.coconutplace.wekit.ui.tutorial.TutorialActivity" android:theme="@style/ThemeSplash"/>
+        <activity android:name="com.coconutplace.wekit.ui.tutorial.TutorialActivity" android:theme="@style/ThemeSplash">
+
+        </activity>
 
         <activity android:name="com.coconutplace.wekit.ui.chat.ChatActivity" />
 
