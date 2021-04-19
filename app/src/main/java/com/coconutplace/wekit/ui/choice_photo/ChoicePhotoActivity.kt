@@ -69,10 +69,6 @@ class ChoicePhotoActivity : BaseActivity() {
         initRecyclerView()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onClick(v: View?) {
         super.onClick(v)
 
@@ -98,7 +94,6 @@ class ChoicePhotoActivity : BaseActivity() {
                     }
                 }
             } else {
-//                Log.d("ChoicePhotoDebug://", "pos : " + it)
                 mAdapter.removeItem(it)
             }
         })

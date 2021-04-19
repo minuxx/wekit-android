@@ -125,6 +125,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     override fun onRestart() {
         super.onRestart()
         binding.writeDiaryPickPhotoBtn.isClickable = true
+        binding.writeDiaryDefaultIv.isClickable = true
     }
 
     override fun onClick(v: View?) {
@@ -132,7 +133,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         when (v) {
             binding.writeDiaryBackBtn -> finish()
-            binding.writeDiaryPickPhotoBtn -> startChoicePhotoActivity()
+            binding.writeDiaryPickPhotoBtn, binding.writeDiaryDefaultIv -> startChoicePhotoActivity()
             binding.writeDiaryRootLayout -> binding.writeDiaryRootLayout.hideKeyboard()
 
             binding.writeDiarySatisfactionHappyIv -> viewModel.satisfaction.postValue(
@@ -167,6 +168,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryBackBtn.setOnClickListener(this)
         binding.writeDiaryPickPhotoBtn.setOnClickListener(this)
         binding.writeDiaryEditTv.setOnClickListener(this)
+        binding.writeDiaryDefaultIv.setOnClickListener(this)
 
         binding.writeDiarySatisfactionHappyIv.setOnClickListener(this)
         binding.writeDiarySatisfactionSpeechlessIv.setOnClickListener(this)
@@ -189,6 +191,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryBackBtn.isClickable = isClickable
         binding.writeDiaryPickPhotoBtn.isClickable = isClickable
         binding.writeDiaryEditTv.isClickable = isClickable
+        binding.writeDiaryDefaultIv.isClickable = isClickable
 
         binding.writeDiarySatisfactionHappyIv.isClickable = isClickable
         binding.writeDiarySatisfactionSpeechlessIv.isClickable = isClickable
@@ -205,6 +208,9 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     }
 
     private fun startChoicePhotoActivity() {
+        binding.writeDiaryPickPhotoBtn.isClickable = false
+        binding.writeDiaryDefaultIv.isClickable = false
+
         val intent = Intent(this, ChoicePhotoActivity::class.java)
         intent.putExtra("flag", mFlag)
 
