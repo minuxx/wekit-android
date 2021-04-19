@@ -23,7 +23,6 @@ class OthersMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
     private val imageView: ImageView = itemView.findViewById(R.id.chat_profile_img)
 
     fun onBind(
-        mContext: Context,
         message: BaseMessage,
         clickListener: ChatMessageAdapter.OnItemClickListener?,
         isNewDay: Boolean
@@ -47,7 +46,7 @@ class OthersMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         }
         else{
             //ChatMessageUtil.displayProfileWithPicasso(profileUrl,imageView)
-            ChatMessageUtil.displayProfile(mContext,profileUrl,imageView)
+            ChatMessageUtil.displayProfile(dateLayout.context,profileUrl,imageView)
         }
         if (clickListener != null) {
             //itemView.setOnClickListener { clickListener.onUserMessageItemClick(message as UserMessage?) }

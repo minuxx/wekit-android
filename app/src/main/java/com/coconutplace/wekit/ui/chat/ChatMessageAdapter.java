@@ -99,16 +99,16 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         int viewType = holder.getItemViewType();
         switch (viewType){
             case VIEW_TYPE_USER_MESSAGE_OTHER:
-                ((OthersMessageViewHolder)holder).onBind(mContext,message,mItemClickListener,isNewDay);
+                ((OthersMessageViewHolder)holder).onBind(message,mItemClickListener,isNewDay);
                 break;
             case VIEW_TYPE_USER_MESSAGE_ME:
                 ((MyMessageViewHolder)holder).onBind(message,mItemClickListener,isNewDay);
                 break;
             case VIEW_TYPE_FILE_MESSAGE_IMAGE_ME:
-                ((MyImgMessageViewHolder)holder).onBind(mContext,(FileMessage)message,mItemClickListener,isNewDay);
+                ((MyImgMessageViewHolder)holder).onBind((FileMessage)message,mItemClickListener,isNewDay);
                 break;
             case VIEW_TYPE_FILE_MESSAGE_IMAGE_OTHER:
-                ((OthersImgMessageViewHolder)holder).onBind(mContext,(FileMessage)message,mItemClickListener,isNewDay);
+                ((OthersImgMessageViewHolder)holder).onBind((FileMessage)message,mItemClickListener,isNewDay);
                 break;
             case VIEW_TYPE_ADMIN_MESSAGE:
                 ((AdminMessageHolder)holder).onBind((AdminMessage)message,mItemClickListener,isNewDay);

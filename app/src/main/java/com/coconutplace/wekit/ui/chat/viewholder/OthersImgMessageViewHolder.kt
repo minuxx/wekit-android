@@ -24,7 +24,6 @@ internal class OthersImgMessageViewHolder(itemView: View) : RecyclerView.ViewHol
     private val profileImg = itemView.findViewById<ImageView>(R.id.chat_profile_img)
 
     fun onBind(
-        mContext:Context,
         message: FileMessage,
         clickListener: ChatMessageAdapter.OnItemClickListener?,
         isNewDay: Boolean
@@ -47,7 +46,7 @@ internal class OthersImgMessageViewHolder(itemView: View) : RecyclerView.ViewHol
         }
         else{
             //ChatMessageUtil.displayProfileWithPicasso(profileUrl,profileImg)
-            ChatMessageUtil.displayProfile(mContext,profileUrl,profileImg)
+            ChatMessageUtil.displayProfile(dateLayout.context,profileUrl,profileImg)
         }
 
         val thumbnails =
@@ -56,25 +55,25 @@ internal class OthersImgMessageViewHolder(itemView: View) : RecyclerView.ViewHol
             //Log.e(CHECK_TAG,"otherImg thumbnail exist");
             if (message.type.toLowerCase().contains("gif")) {
                 ChatMessageUtil.displayGifImageFromUrl(
-                    mContext,
+                    dateLayout.context,
                     message.url,
                     fileThumbnailImage,
                     thumbnails[0].url
                 )
             } else {
-                ChatMessageUtil.displayImageFromUrl(mContext, thumbnails[0].url, fileThumbnailImage, null)
+                ChatMessageUtil.displayImageFromUrl(dateLayout.context, thumbnails[0].url, fileThumbnailImage, null)
             }
         } else {
             //Log.e(CHECK_TAG,"otherImg NO thumbnail");
             if (message.type.toLowerCase().contains("gif")) {
                 ChatMessageUtil.displayGifImageFromUrl(
-                    mContext,
+                    dateLayout.context,
                     message.url,
                     fileThumbnailImage,
                     null as String?
                 )
             } else {
-                ChatMessageUtil.displayImageFromUrl(mContext, message.url, fileThumbnailImage, null)
+                ChatMessageUtil.displayImageFromUrl(dateLayout.context, message.url, fileThumbnailImage, null)
             }
         }
         if (clickListener != null) {

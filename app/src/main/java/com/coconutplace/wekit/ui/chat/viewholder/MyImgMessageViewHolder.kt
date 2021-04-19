@@ -22,7 +22,6 @@ internal class MyImgMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(
     private val sendTime: TextView = itemView.findViewById(R.id.chat_time_text)
 
     fun onBind(
-        mContext:Context,
         message: FileMessage,
         clickListener: ChatMessageAdapter.OnItemClickListener?,
         isNewDay: Boolean
@@ -41,17 +40,16 @@ internal class MyImgMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(
         if (thumbnails.size > 0) {
             //Log.e(SharedPreferencesManager.CHECK_TAG, "myImg thumbnail exist")
             if (message.type.toLowerCase().contains("gif")) {
-                ChatMessageUtil.displayGifImageFromUrl(mContext, message.url, fileThumbnailImage, thumbnails[0].url)
+                ChatMessageUtil.displayGifImageFromUrl(dateLayout.context, message.url, fileThumbnailImage, thumbnails[0].url)
             } else {
-                ChatMessageUtil.displayImageFromUrl(mContext, thumbnails[0].url, fileThumbnailImage, null)
+                ChatMessageUtil.displayImageFromUrl(dateLayout.context, thumbnails[0].url, fileThumbnailImage, null)
             }
         } else {
             //Log.e(SharedPreferencesManager.CHECK_TAG, "myImg NO thumbnail")
             if (message.type.toLowerCase().contains("gif")) {
-                ChatMessageUtil.displayGifImageFromUrl(mContext, message.url, fileThumbnailImage, null)
+                ChatMessageUtil.displayGifImageFromUrl(dateLayout.context, message.url, fileThumbnailImage, null)
             } else {
-                ChatMessageUtil.displayImageFromUrl(mContext, message.url, fileThumbnailImage, null)
-                //ChatMessageUtil.displayImgWithPicasso(message.url, fileThumbnailImage)
+                ChatMessageUtil.displayImageFromUrl(dateLayout.context, message.url, fileThumbnailImage, null)
             }
         }
         if (clickListener != null) {
