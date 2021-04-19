@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.coconutplace.wekit.R
 
-class ChatMemberListAdapter(context: Context) : BaseAdapter() {
+class ChatMemberListAdapter : BaseAdapter() {
 
     data class MemberInfo(
         val authCount:Int,
@@ -20,7 +20,6 @@ class ChatMemberListAdapter(context: Context) : BaseAdapter() {
         val userIdx:Int
     )
 
-    private val mContext: Context = context
     private val memberList:MutableList<MemberInfo> = ArrayList()
     private var mItemClickListener:OnItemClickListener? = null
 
@@ -49,7 +48,7 @@ class ChatMemberListAdapter(context: Context) : BaseAdapter() {
     }
 
     override fun getView(position: Int, convertView1: View?, parent: ViewGroup?): View {
-        val view: View = LayoutInflater.from(mContext).inflate(R.layout.item_chat_member,null)
+        val view: View = LayoutInflater.from(parent?.context).inflate(R.layout.item_chat_member,null)
 
         val authCount = view.findViewById<View>(R.id.chat_member_auth_count) as Button
         val nickName = view.findViewById<View>(R.id.chat_member_nickname) as TextView

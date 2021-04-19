@@ -242,7 +242,7 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     }
 
     private fun setupMemberListAdapter(){
-        memberListAdapter = ChatMemberListAdapter(this)
+        memberListAdapter = ChatMemberListAdapter()
 
         memberListAdapter.setItemClickListener(object: ChatMemberListAdapter.OnItemClickListener{
             override fun onItemClick(memberInfo: ChatMemberListAdapter.MemberInfo) {
