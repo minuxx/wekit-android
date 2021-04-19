@@ -2,19 +2,19 @@ package com.coconutplace.wekit.ui.choice_photo
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Bitmap.CompressFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.core.net.toUri
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.coconutplace.wekit.BuildConfig
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Photo
 import com.coconutplace.wekit.databinding.ActivityChoicePhotoBinding
@@ -32,8 +32,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.yalantis.ucrop.UCrop
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -44,6 +43,7 @@ class ChoicePhotoActivity : BaseActivity() {
     private lateinit var mAdapter: ChoicePhotoAdapter
     private val items = ArrayList<Photo>()
     private var mFlag: Int = 0
+    var mImageFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,11 +128,34 @@ class ChoicePhotoActivity : BaseActivity() {
     }
 
     private fun launchCameraActivity() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        imageUri = getImageUri();
+//
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//        startActivityForResult(intent, REQUEST_TAKE_PICTURE);
 
-        if(intent.resolveActivity(packageManager) != null){
-            startActivityForResult(intent, REQUEST_TAKE_PICTURE)
+//        if(intent.resolveActivity(packageManager) != null){
+//            startActivityForResult(intent, REQUEST_TAKE_PICTURE)
+//        }
+
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if(takePictureIntent.resolveActivity(packageManager) != null) {
+            createImageFile().let {
+                val photoURI = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", it)
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PICTURE)
+                mImageFile = it
+            }
         }
+    }
+
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "diary_${timeStamp}.jpg"
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+        return File(storageDir, imageFileName)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -145,20 +168,25 @@ class ChoicePhotoActivity : BaseActivity() {
                     startCropActivity(data!!.data!!)
                 }
                 REQUEST_TAKE_PICTURE -> {
-                    val extras = data!!.extras
+//                    Log.d(DEBUG_TAG, "imageFile: "+ m_imageFile.toString())
 
-                    val imageBitmap = extras!!["data"] as Bitmap?
-
-                    bitmapToUri(imageBitmap!!)?.let {
-        //                    Log.d("ChoicePhotoDebug://", bitmapToUri(imageBitmap!!).toString())
-                        startCropActivity(it)
-                        return
+                    mImageFile?.let {
+                        startCropActivity(Uri.fromFile(it))
                     }
-
-                    binding.choicePhotoRootLayout.snackbar("사진을 불러오는데 실패했습니다.")
+//                    val extras = data!!.extras
+//
+//                    val imageBitmap = extras!!["data"] as Bitmap?
+//
+//                    bitmapToUri(imageBitmap!!)?.let {
+//                        //                    Log.d("ChoicePhotoDebug://", bitmapToUri(imageBitmap!!).toString())
+//                        startCropActivity(it)
+//                        return
+//                    }
+//
+//                    binding.choicePhotoRootLayout.snackbar("사진을 불러오는데 실패했습니다.")
                 }
                 UCrop.REQUEST_CROP -> {
-                    UCrop.getOutput(data!!)?.let{
+                    UCrop.getOutput(data!!)?.let {
 //                        Log.d("ChoicePhotoDebug://", it.toString())
                         val item = Photo(null, null, it.toString())
                         mAdapter.addItem(item)
@@ -170,22 +198,6 @@ class ChoicePhotoActivity : BaseActivity() {
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = UCrop.getError(data!!)
-        }
-    }
-
-    private fun bitmapToUri(bitmap: Bitmap): Uri? {
-        val imageFile = File(cacheDir, "${UUID.randomUUID()}.jpg")
-        val os: OutputStream
-        return try {
-            os = FileOutputStream(imageFile)
-            bitmap.compress(CompressFormat.JPEG, 100, os)
-            os.flush()
-            os.close()
-            imageFile.toUri()
-        } catch (e: Exception) {
-            binding.choicePhotoRootLayout.snackbar("사진을 불러오는데 실패하였습니다.")
-            null
-            //Log.e(javaClass.simpleName, "Error writing bitmap", e)
         }
     }
 
@@ -213,7 +225,10 @@ class ChoicePhotoActivity : BaseActivity() {
         setResult(Activity.RESULT_OK, data)
         finish()
     }
+}
 
+
+//Legacy
 //    private fun isMatchedDate(takenDate: String): Boolean {
 ////        return selectedDate == takenDate
 //    }
@@ -222,36 +237,49 @@ class ChoicePhotoActivity : BaseActivity() {
 ////        return pagerAdapter.count < 5
 //    }
 
+//private fun convertDate(date: String): String {
+//    val month = if (date.substring(5, 7).toInt() < 10) {
+//        date.substring(6, 7)
+//    } else {
+//        date.substring(5, 7)
+//    }
+//
+//    val day = if (date.substring(8, 10).toInt() < 10) {
+//        date.substring(9, 10)
+//    } else {
+//        date.substring(8, 10)
+//    }
+//
+//    val hour = if (date.substring(11, 13).toInt() < 12) {
+//        "AM ${date.substring(12, 13)}"
+//    } else {
+//        "PM ${date.substring(11, 13).toInt() - 12}"
+//    }
+//
+//    val minute = if (date.substring(14, 16).toInt() < 10) {
+//        date.substring(15, 16)
+//    } else {
+//        date.substring(14, 16)
+//    }
+//
+//    return "${hour}시 ${minute}분 ${month}월 ${day}일"
+//}
 
-    //2021-01-23T21:32:44.333
-    private fun convertDate(date: String): String {
-        val month = if (date.substring(5, 7).toInt() < 10) {
-            date.substring(6, 7)
-        } else {
-            date.substring(5, 7)
-        }
-
-        val day = if (date.substring(8, 10).toInt() < 10) {
-            date.substring(9, 10)
-        } else {
-            date.substring(8, 10)
-        }
-
-        val hour = if (date.substring(11, 13).toInt() < 12) {
-            "AM ${date.substring(12, 13)}"
-        } else {
-            "PM ${date.substring(11, 13).toInt() - 12}"
-        }
-
-        val minute = if (date.substring(14, 16).toInt() < 10) {
-            date.substring(15, 16)
-        } else {
-            date.substring(14, 16)
-        }
-
-        return "${hour}시 ${minute}분 ${month}월 ${day}일"
-    }
-}
+//private fun bitmapToUri(bitmap: Bitmap): Uri? {
+//    val imageFile = File(cacheDir, "${UUID.randomUUID()}.jpg")
+//    val os: OutputStream
+//    return try {
+//        os = FileOutputStream(imageFile)
+//        bitmap.compress(CompressFormat.JPEG, 100, os)
+//        os.flush()
+//        os.close()
+//        imageFile.toUri()
+//    } catch (e: Exception) {
+//        binding.choicePhotoRootLayout.snackbar("사진을 불러오는데 실패하였습니다.")
+//        null
+//        //Log.e(javaClass.simpleName, "Error writing bitmap", e)
+//    }
+//}
 
 //private fun exifOrientationToDegree(exifOrientation: Int): Int {
 //        return when (exifOrientation) {
