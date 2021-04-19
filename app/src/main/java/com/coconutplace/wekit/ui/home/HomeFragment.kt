@@ -1,6 +1,7 @@
 package com.coconutplace.wekit.ui.home
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
@@ -12,6 +13,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat.getColor
 import com.coconutplace.wekit.BuildConfig
 import com.coconutplace.wekit.R
