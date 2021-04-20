@@ -16,10 +16,12 @@ import com.google.firebase.storage.ktx.storage
 
 class WriteDiaryViewModel(private val repository: DiaryRepository) : ViewModel() {
     var writeDiaryListener: WriteDiaryListener? = null
-    val photosFromChoicePhoto = ObservableArrayList<Photo>()
-    private val imgUrlListFromFirebase: ArrayList<String> = ArrayList()
-    private lateinit var date: String
+    val photos = ObservableArrayList<Photo>()
+
     private val storage = Firebase.storage(FIREBASE_STORAGE_URL)
+    private val imgUrlsFromFirebase: ArrayList<String> = ArrayList()
+
+    private lateinit var date: String
     private var triedUpload = 0
     private var roomIdx:Int = 0
 
@@ -49,25 +51,29 @@ class WriteDiaryViewModel(private val repository: DiaryRepository) : ViewModel()
         this.date = date
     }
 
-//    fun addImgUri(uri: Uri) {
-//        imgUrlListFromChoicePhoto.add(uri)
-//    }
-
     fun addPhotos(photos: ArrayList<Photo>){
-        this.photosFromChoicePhoto.clear()
-        this.photosFromChoicePhoto.addAll(photos)
+        this.photos.clear()
+        this.photos.addAll(photos)
+    }
+
+    fun getPhotos(): ArrayList<Photo>{
+        return this.photos
+    }
+
+    fun getPhotoUri(index: Int) : Uri{
+        return Uri.parse(this.photos[index].imgUrl)
     }
 
     fun getPhotoCount(): Int{
-        return this.photosFromChoicePhoto.size
+        return this.photos.size
     }
 
     fun getUriCount(): Int{
-        return photosFromChoicePhoto.size
+        return photos.size - 1
     }
 
-    fun getImgList(): ArrayList<String> {
-        return imgUrlListFromFirebase
+    fun getImgUrlsFromFirebase(): ArrayList<String> {
+        return imgUrlsFromFirebase
     }
 
     fun getTriedUploadCount(): Int{
@@ -89,22 +95,22 @@ class WriteDiaryViewModel(private val repository: DiaryRepository) : ViewModel()
             return
         }
 
-        if(photosFromChoicePhoto.size == 0){
+        if(photos.size <= 1){
             writeDiaryListener!!.onPostDiaryFailure(306, "사진을 선택해주세요.")
             return
         }
 
-        for(photo in photosFromChoicePhoto){
+        for(i in 1 until photos.size){
             val storageRef = storage.reference.child("certification-diary/")
 
-            val uploadTask = storageRef.putFile(Uri.parse(photo.imgUrl))
+            val uploadTask = storageRef.putFile(Uri.parse(photos[i].imgUrl))
 
             uploadTask.addOnProgressListener {
                 writeDiaryListener!!.onUploadToFirebaseStarted()
             }
                 .addOnSuccessListener {
                     it.storage.downloadUrl.addOnSuccessListener { url ->
-                        imgUrlListFromFirebase.add(url.toString())
+                        imgUrlsFromFirebase.add(url.toString())
                         triedUpload++
                         writeDiaryListener!!.onUploadToFirebaseSuccess()
                     }
@@ -114,43 +120,12 @@ class WriteDiaryViewModel(private val repository: DiaryRepository) : ViewModel()
                     writeDiaryListener!!.onUploadToFirebaseFailure()
                 }
         }
-
-//        if(imgBitmapList.size == 0){
-//            writeDiaryListener!!.onPostDiaryFailure(306, "사진을 선택해주세요.")
-//            return
-//        }
-//
-//        for(bitmap in imgBitmapList){
-//            val storageRef = storage.reference.child("certification-diary/")
-//                .child("${UUID.randomUUID()}.jpg")
-//
-//            val baos = ByteArrayOutputStream()
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//            val data = baos.toByteArray()
-//            val uploadTask = storageRef.putBytes(data)
-//
-//            uploadTask.addOnProgressListener {
-//                writeDiaryListener!!.onUploadToFirebaseStarted()
-//            }
-//                .addOnSuccessListener {
-//                    it.storage.downloadUrl.addOnSuccessListener { url ->
-//                        imgUrlList.add(url.toString())
-//                        triedUpload++
-//                        writeDiaryListener!!.onUploadToFirebaseSuccess()
-//
-//                    }
-//                }
-//                .addOnFailureListener{
-//                    triedUpload++
-//                    writeDiaryListener!!.onUploadToFirebaseFailure()
-//                }
-//        }
     }
 
     fun postDiary() {
         writeDiaryListener?.onPostDiaryStarted()
 
-        if(imgUrlListFromFirebase.size == 0){
+        if(imgUrlsFromFirebase.size == 0){
             writeDiaryListener!!.onPostDiaryFailure(404, "네트워크 연결이 원활하지 않습니다.")
             return
         }
@@ -162,7 +137,7 @@ class WriteDiaryViewModel(private val repository: DiaryRepository) : ViewModel()
             timezone = timezone.value!!.toInt(),
             time = null,
             satisfaction = satisfaction.value!!.toInt(),
-            imageList = imgUrlListFromFirebase,
+            imageList = imgUrlsFromFirebase,
             thumbnailUrl = null,
             memo = memo.value.toString()
         )

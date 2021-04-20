@@ -113,12 +113,6 @@ class ChoicePhotoActivity : BaseActivity() {
 
             viewModel.addPhoto(addPhotoItem)
         }
-
-        if(viewModel.mIsFirstPageLoad) {
-
-
-            viewModel.mIsFirstPageLoad = false
-        }
     }
 
     private fun pickImageFromGallery() {

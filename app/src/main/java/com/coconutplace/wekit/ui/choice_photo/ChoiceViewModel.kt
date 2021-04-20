@@ -3,11 +3,9 @@ package com.coconutplace.wekit.ui.choice_photo
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.Photo
-import com.coconutplace.wekit.data.repository.diary.DiaryRepository
 
-class ChoiceViewModel(private val repository: DiaryRepository) : ViewModel() {
+class ChoiceViewModel() : ViewModel() {
     val photos = ObservableArrayList<Photo>()
-    var mIsFirstPageLoad = true
 
     fun addPhotos(photos: ArrayList<Photo>){
         this.photos.clear()

@@ -34,7 +34,7 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get(), get()) }
     viewModel { DiaryViewModel(get()) }
     viewModel { WriteDiaryViewModel(get()) }
-    viewModel { ChoiceViewModel(get()) }
+    viewModel { ChoiceViewModel() }
     viewModel { CreateChannelViewModel(get()) }
     viewModel { ChannelViewModel(get(), get()) }
     viewModel { EnterChannelViewModel(get()) }
