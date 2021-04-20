@@ -214,6 +214,15 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         val intent = Intent(this, ChoicePhotoActivity::class.java)
         intent.putExtra("flag", mFlag)
 
+        if(viewModel.photosFromChoicePhoto.size > 1){
+            val gson = Gson()
+
+            val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
+            val itemsJson : String = gson.toJson(viewModel.photosFromChoicePhoto, arrayPhotoType)
+
+            intent.putExtra("photo-items", itemsJson)
+        }
+
         startActivityForResult(intent, REQUEST_PHOTOS)
     }
 
@@ -268,13 +277,20 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
     private fun addView(newPage: View) {
         val pageIndex = pagerAdapter.addView(newPage)
-//        binding.writeDiaryPager.currentItem = pageIndex
     }
 
-    fun removeView(defunctPage: View?) {
+    private fun removeView(defunctPage: View?) {
         var pageIndex = pagerAdapter.removeView(binding.writeDiaryPager, defunctPage)
         if (pageIndex == pagerAdapter.count) pageIndex--
         binding.writeDiaryPager.currentItem = pageIndex
+    }
+
+    private fun removeViewAll() {
+        if(pagerAdapter.count != 0) {
+            for (i in (pagerAdapter.count - 1) downTo 0) {
+                removeView(pagerAdapter.getView(i))
+            }
+        }
     }
 
     fun getCurrentPage(): View? {
@@ -291,20 +307,24 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             if (requestCode == REQUEST_PHOTOS) {
                 val gson = Gson()
                 val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
-                val photos: ArrayList<Photo> =
-                    gson.fromJson(data!!.getStringExtra("photo-items"), arrayPhotoType)
+                val photos: ArrayList<Photo> = gson.fromJson(data!!.getStringExtra("photo-items"), arrayPhotoType)
 
-                for (i in 1 until photos.size) {
+//                viewModel.addPhotos(photos)
+                viewModel.addPhotos(photos)
+
+                removeViewAll()
+
+                for (i in 1 until viewModel.photosFromChoicePhoto.size) {
                     val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
                     val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
                     imageView.adjustViewBounds = true
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
                     Glide.with(this)
-                        .load(Uri.parse(photos[i].imgUrl))
+                        .load(Uri.parse(viewModel.photosFromChoicePhoto[i].imgUrl))
                         .into(imageView)
                     addView(view)
-                    viewModel.addImgUri(Uri.parse(photos[i].imgUrl))
+//                    viewModel.addImgUri(Uri.parse(viewModel.photosFromChoicePhoto[i].imgUrl))
                 }
 
                 binding.writeDiaryDefaultIv.visibility = GONE
