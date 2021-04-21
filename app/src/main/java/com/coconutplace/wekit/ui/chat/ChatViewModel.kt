@@ -126,7 +126,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     Log.e(CHECK_TAG, "api roomInfo success")
                     val roomInfo: RoomInfo = roomInfoResponse.result!!
                     liveCurrentDay.postValue("우리 인증한지 ${roomInfo.day}일")
-                    liveTotalAuthCount.postValue("총 인증횟수 : ${roomInfo.totalAuthenticCount}회 (하루 ${roomInfo.certificationCount} * ${roomInfo.totalDay}일)")
+                    liveTotalAuthCount.postValue("총 인증횟수 : ${roomInfo.totalAuthenticCount}회 (하루 ${roomInfo.certificationCount}회 * ${roomInfo.totalDay}일)")
                     Log.e(CHECK_TAG,"totalMEmber : ${roomInfo.totalMember} =?= ${roomInfo.userInfo!!.size}")
                     _pushNotificationOn = roomInfo.isNotice=="Y"
 
@@ -619,7 +619,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 }
                 else{
                     Log.e(ERROR_TAG, "api expelMember failed message:${startChallengeResponse.message}")
-                    chatListener?.makeSnackBar(startChallengeResponse.message)
+                    //chatListener?.makeSnackBar(startChallengeResponse.message)
+                    chatListener?.makePopup(startChallengeResponse.message)
                 }
             }
             catch (e:Exception){

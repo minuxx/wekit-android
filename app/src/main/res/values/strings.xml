@@ -102,7 +102,7 @@
     <string name="channel_reset">reset</string>
     <string name="channel_my_chat_room">MY 채팅방</string>
     <string name="channel_my_chat_room_img">my chat room icon</string>
-    <string name="channel_lookup_chat_room">채팅방 살펴보기</string>
+    <string name="channel_lookup_chat_room">새로 올라온 채팅방</string>
     <string name="channel_myroom_no_room_img">channel no room icon</string>
     <string name="channel_no_room_main">아직 참여중인 채팅방이 없으시네요!</string>
     <string name="channel_no_room_sub">마음에 드는 채팅방에 입장하여\n같은 목표를 가진 멤버들과 함께 달려보세요.</string>
