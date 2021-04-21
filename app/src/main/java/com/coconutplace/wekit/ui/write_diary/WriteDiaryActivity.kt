@@ -1,18 +1,12 @@
 package com.coconutplace.wekit.ui.write_diary
 
 import android.content.Intent
-import android.graphics.*
-import android.media.ExifInterface
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -44,7 +38,6 @@ import com.coconutplace.wekit.utils.snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.FileNotFoundException
 
 
 class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
@@ -125,6 +118,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     override fun onRestart() {
         super.onRestart()
         binding.writeDiaryPickPhotoBtn.isClickable = true
+        binding.writeDiaryDefaultIv.isClickable = true
     }
 
     override fun onClick(v: View?) {
@@ -132,7 +126,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         when (v) {
             binding.writeDiaryBackBtn -> finish()
-            binding.writeDiaryPickPhotoBtn -> startChoicePhotoActivity()
+            binding.writeDiaryPickPhotoBtn, binding.writeDiaryDefaultIv -> startChoicePhotoActivity()
             binding.writeDiaryRootLayout -> binding.writeDiaryRootLayout.hideKeyboard()
 
             binding.writeDiarySatisfactionHappyIv -> viewModel.satisfaction.postValue(
@@ -167,6 +161,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryBackBtn.setOnClickListener(this)
         binding.writeDiaryPickPhotoBtn.setOnClickListener(this)
         binding.writeDiaryEditTv.setOnClickListener(this)
+        binding.writeDiaryDefaultIv.setOnClickListener(this)
 
         binding.writeDiarySatisfactionHappyIv.setOnClickListener(this)
         binding.writeDiarySatisfactionSpeechlessIv.setOnClickListener(this)
@@ -189,6 +184,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryBackBtn.isClickable = isClickable
         binding.writeDiaryPickPhotoBtn.isClickable = isClickable
         binding.writeDiaryEditTv.isClickable = isClickable
+        binding.writeDiaryDefaultIv.isClickable = isClickable
 
         binding.writeDiarySatisfactionHappyIv.isClickable = isClickable
         binding.writeDiarySatisfactionSpeechlessIv.isClickable = isClickable
@@ -204,12 +200,83 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryEventBtn.isClickable = isClickable
     }
 
+    private fun initPhotoViewPager() {
+        pagerAdapter = PhotoPagerAdapter()
+        binding.writeDiaryPager.adapter = pagerAdapter
+    }
+
+    private fun addView(newPage: View) {
+        val pageIndex = pagerAdapter.addView(newPage)
+    }
+
+    private fun removeView(defunctPage: View?) {
+        var pageIndex = pagerAdapter.removeView(binding.writeDiaryPager, defunctPage)
+        if (pageIndex == pagerAdapter.count) pageIndex--
+        binding.writeDiaryPager.currentItem = pageIndex
+    }
+
+    private fun removeViewAll() {
+        if(pagerAdapter.count != 0) {
+            for (i in (pagerAdapter.count - 1) downTo 0) {
+                removeView(pagerAdapter.getView(i))
+            }
+        }
+    }
+
     private fun startChoicePhotoActivity() {
+        binding.writeDiaryPickPhotoBtn.isClickable = false
+        binding.writeDiaryDefaultIv.isClickable = false
+
         val intent = Intent(this, ChoicePhotoActivity::class.java)
         intent.putExtra("flag", mFlag)
 
+        if(viewModel.getPhotoCount() > 1){
+            val gson = Gson()
+
+            val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
+            val itemsJson : String = gson.toJson(viewModel.getPhotos(), arrayPhotoType)
+
+            intent.putExtra("photo-items", itemsJson)
+        }
+
         startActivityForResult(intent, REQUEST_PHOTOS)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_PHOTOS) {
+                val gson = Gson()
+                val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
+                val photos: ArrayList<Photo> = gson.fromJson(data!!.getStringExtra("photo-items"), arrayPhotoType)
+
+                viewModel.addPhotos(photos)
+
+                removeViewAll()
+
+                for (i in 1 until viewModel.getPhotoCount()) {
+                    val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
+                    val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
+                    imageView.adjustViewBounds = true
+                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+
+                    Glide.with(this)
+                        .load(viewModel.getPhotoUri(i))
+                        .into(imageView)
+                    addView(view)
+                }
+
+                binding.writeDiaryDefaultIv.visibility = GONE
+
+                if(viewModel.getPhotoCount() == 1){
+                    binding.writeDiaryDefaultIv.visibility = VISIBLE
+                }
+
+                pagerAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
 
     private fun observeSatisfaction() {
         viewModel.satisfaction.observe(this, Observer { satisfaction ->
@@ -255,148 +322,127 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         }
     }
 
-    private fun initPhotoViewPager() {
-        pagerAdapter = PhotoPagerAdapter()
-        binding.writeDiaryPager.adapter = pagerAdapter
+    override fun onUploadToFirebaseStarted() {
+        binding.writeDiaryLoading.show()
     }
 
-    private fun addView(newPage: View) {
-        val pageIndex = pagerAdapter.addView(newPage)
-//        binding.writeDiaryPager.currentItem = pageIndex
-    }
-
-    fun removeView(defunctPage: View?) {
-        var pageIndex = pagerAdapter.removeView(binding.writeDiaryPager, defunctPage)
-        if (pageIndex == pagerAdapter.count) pageIndex--
-        binding.writeDiaryPager.currentItem = pageIndex
-    }
-
-    fun getCurrentPage(): View? {
-        return pagerAdapter.getView(binding.writeDiaryPager.currentItem)
-    }
-
-    private fun setCurrentPage(pageToShow: View?) {
-        binding.writeDiaryPager.setCurrentItem(pagerAdapter.getItemPosition(pageToShow!!), true)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_PHOTOS) {
-                val gson = Gson()
-                val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
-                val photos: ArrayList<Photo> =
-                    gson.fromJson(data!!.getStringExtra("photo-items"), arrayPhotoType)
-
-                for (i in 1 until photos.size) {
-                    val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
-                    val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
-                    imageView.adjustViewBounds = true
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-
-                    Glide.with(this)
-                        .load(Uri.parse(photos[i].imgUrl))
-                        .into(imageView)
-                    addView(view)
-                    viewModel.addImgUri(Uri.parse(photos[i].imgUrl))
-                }
-
-                binding.writeDiaryDefaultIv.visibility = GONE
-                pagerAdapter.notifyDataSetChanged()
-
-//                val photo = extractPhoto(data.data!!)
-//
-//                UCrop.of(data.data!!, destinationUri)
-//                    .withAspectRatio(16F, 9.0F)
-//                    .start(this);
-//
-//                if (isMatchedDate(photo.date!!.substring(0, 10))) {
-//                    val bitmap = when (mFlag) {
-//                        FLAG_CERTIFY_DIARY -> drawTextToBitmap(photo)!!
-//                        else -> photo.bitmap!!
-//                    }
-//
-//
-//
-//                    Glide.with(this)
-//                        .load(bitmap)
-//                        .centerCrop()
-//                        .into(imageView)
-//
-//                    binding.writeDiaryDefaultIv.visibility = GONE
-//                    addView(view)
-//                    pagerAdapter.notifyDataSetChanged()
-//                } else {
-//                    binding.writeDiaryRootLayout.snackbar(getString(R.string.write_diary_not_match_date))
-//                }
-
-            }
+    override fun onUploadToFirebaseSuccess() {
+        binding.writeDiaryLoading.hide()
+        if (viewModel.getUriCount() == viewModel.getTriedUploadCount()) {
+            viewModel.postDiary()
         }
     }
 
-//    //startActivityForResult deprecated
-//    private fun pickImageFromGallery() {
-//        binding.writeDiaryPickPhotoBtn.isClickable = false
-//        if (!isWritable()) {
-//            binding.writeDiaryRootLayout.snackbar(getString(R.string.write_diary_max_photo_count))
-//            binding.writeDiaryPickPhotoBtn.isClickable = true
-//            return
-//        }
-//
-//        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-//        gallery.type = "image/*"
-////        startActivityForResult(gallery, IMAGE_PICK_CODE)
-//
-//        startActivityForResult(Intent.createChooser(gallery, "이미지선택"), UCrop.REQUEST_CROP);
-//    }
+    override fun onUploadToFirebaseFailure() {
+        binding.writeDiaryLoading.hide()
+        binding.writeDiaryEventBtn.isClickable = true
+        if (viewModel.getUriCount() == viewModel.getTriedUploadCount()) {
+            viewModel.postDiary()
+        }
+    }
 
-//    private lateinit var destinationUri : Uri;
-    //2021-01-23T21:32:44.333
-//    @RequiresApi(Build.VERSION_CODES.Q)
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if(resultCode == RESULT_OK) {
-//            if (requestCode == IMAGE_PICK_CODE) {
-//                if (data != null && data.data != null) {
-//                    val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
-//                    val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
-//                    imageView.adjustViewBounds = true
-//
-//                    val photo = extractPhoto(data.data!!)
-//
-//                    UCrop.of(data.data!!, destinationUri)
-//                        .withAspectRatio(16F, 9.0F)
-//                        .start(this);
-//
-//                    if (isMatchedDate(photo.date!!.substring(0, 10))) {
-//                        val bitmap = when (mFlag) {
-//                            FLAG_CERTIFY_DIARY -> drawTextToBitmap(photo)!!
-//                            else -> photo.bitmap!!
-//                        }
-//
-//                        viewModel.addImgBitmap(bitmap)
-//
-//                        Glide.with(this)
-//                            .load(bitmap)
-//                            .centerCrop()
-//                            .into(imageView)
-//
-//                        binding.writeDiaryDefaultIv.visibility = GONE
-//                        addView(view)
-//                        pagerAdapter.notifyDataSetChanged()
-//                    } else {
-//                        binding.writeDiaryRootLayout.snackbar(getString(R.string.write_diary_not_match_date))
-//                    }
-//                }
-//            }else if(requestCode == UCrop.REQUEST_CROP) {
-//                startCropActivity(data!!.data!!)
-//            } else if(resultCode == UCrop.RESULT_ERROR){
-//                 val cropError = UCrop.getError(data!!);
-//            }
-//        }
-//    }
+    override fun onPostDiaryStarted() {
+        binding.writeDiaryLoading.show()
 
-    private lateinit var mDestinationUri: Uri
+        setIsClickable(false)
+    }
+
+    override fun onPostDiarySuccess(message: String) {
+        binding.writeDiaryLoading.hide()
+
+        when (mFlag) {
+            FLAG_CERTIFY_DIARY -> {
+                val intent = Intent()
+                intent.putExtra("imgList", viewModel.getImgUrlsFromFirebase())
+                setResult(RES_CODE_AUTH_SUCCESS, intent)
+            }
+        }
+
+        finish()
+    }
+
+    override fun onPostDiarySuccess(
+        message: String,
+        badgeTitle: String,
+        badgeUrl: String,
+        badgeExplain: String,
+        backgroundColor:String
+    ) {
+        binding.writeDiaryLoading.hide()
+
+        when(mFlag){
+            FLAG_CERTIFY_DIARY -> {
+                val intent = Intent()
+                intent.putExtra("imgList", viewModel.getImgUrlsFromFirebase())
+                intent.putExtra("badgeTitle",badgeTitle)
+                intent.putExtra("badgeUrl",badgeUrl)
+                intent.putExtra("badgeExplain",badgeExplain)
+                intent.putExtra("backgroundColor",backgroundColor)
+                setResult(RES_CODE_AUTH_SUCCESS, intent)
+            }
+        }
+
+        finish()
+    }
+
+    override fun onPostDiaryFailure(code: Int, message: String) {
+        binding.writeDiaryLoading.hide()
+        binding.writeDiaryEventBtn.isClickable = true
+        when(code){
+            305, 306, 307,
+            308, 310, 314 -> showDialog(message)
+            else -> showDialog(getString(R.string.dialog_title_server_check))
+        }
+
+        setIsClickable(true)
+        viewModel.clearTiredUpload()
+    }
+
+
+    override fun onGetDiaryStarted() {
+        binding.writeDiaryLoading.show()
+    }
+
+    override fun onGetDiarySuccess(diary: Diary) {
+        binding.writeDiaryLoading.hide()
+
+        for (url in diary.imageList) {
+            val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
+            val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
+            imageView.adjustViewBounds = true
+
+            Glide.with(this)
+                .load(url)
+                .centerCrop()
+                .into(imageView)
+
+            addView(view)
+            pagerAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.satisfaction.postValue(diary.satisfaction)
+        viewModel.timezone.postValue(diary.timezone)
+        viewModel.memo.postValue(diary.memo)
+    }
+
+    override fun onGetDiaryFailure(code: Int, message: String) {
+        binding.writeDiaryLoading.hide()
+        when(code){
+            303, 304, 305 -> finish()
+            else -> showDialog(getString(R.string.dialog_title_server_check))
+        }
+    }
+}
+
+//fun getCurrentPage(): View? {
+//    return pagerAdapter.getView(binding.writeDiaryPager.currentItem)
+//}
+//
+//private fun setCurrentPage(pageToShow: View?) {
+//    binding.writeDiaryPager.setCurrentItem(pagerAdapter.getItemPosition(pageToShow!!), true)
+//}
+
+//    private lateinit var mDestinationUri: Uri
 
 //    private fun startCropActivity(uri: Uri){
 //        var uCrop = UCrop.of(uri, mDestinationUri)
@@ -409,31 +455,31 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 //        uCrop.start(this@WriteDiaryActivity)
 //    }
 
-    private fun isMatchedDate(takenDate: String): Boolean {
-        return selectedDate == takenDate
-    }
-
-    private fun isWritable(): Boolean {
-        return pagerAdapter.count < 5
-    }
-
-    private fun exifOrientationToDegree(exifOrientation: Int): Int {
-        return when (exifOrientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> 90
-            ExifInterface.ORIENTATION_ROTATE_180 -> 180
-            ExifInterface.ORIENTATION_ROTATE_270 -> 270
-            else -> 0
-        }
-    }
-
-    private fun rotatePhoto(bitmap: Bitmap, degree: Int): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(degree.toFloat())
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-    }
+//    private fun isMatchedDate(takenDate: String): Boolean {
+//        return selectedDate == takenDate
+//    }
+//
+//    private fun isWritable(): Boolean {
+//        return pagerAdapter.count < 5
+//    }
+//
+//    private fun exifOrientationToDegree(exifOrientation: Int): Int {
+//        return when (exifOrientation) {
+//            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+//            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+//            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+//            else -> 0
+//        }
+//    }
+//
+//    private fun rotatePhoto(bitmap: Bitmap, degree: Int): Bitmap {
+//        val matrix = Matrix()
+//        matrix.postRotate(degree.toFloat())
+//        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+//    }
 
     //extract photo bitmap, date
-    @RequiresApi(Build.VERSION_CODES.Q)
+//    @RequiresApi(Build.VERSION_CODES.Q)
 //    private fun extractPhoto(uri: Uri): Photo {
 //        val photo = Photo(null, null)
 //        lateinit var exif: ExifInterface
@@ -485,174 +531,132 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 //    }
 
     //draw text on photo
-    private fun drawTextToBitmap(photo: Photo): Bitmap? {
-        return try {
-            val bitmap: Bitmap = photo.bitmap!!
-            val scale: Float = resources.displayMetrics.density
-            var config: Bitmap.Config? = bitmap.config
-
-            if (config == null) {
-                config = Bitmap.Config.ARGB_8888
-            }
-
-            val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, config)
-            val newCanvas = Canvas(newBitmap)
-
-            newCanvas.drawBitmap(bitmap, 0f, 0f, null)
-
-            val captionString = convertDate(photo.date!!)
-
-            val paintText = Paint(Paint.ANTI_ALIAS_FLAG)
-            paintText.color = ContextCompat.getColor(this, R.color.white)
-            paintText.textSize = 100f
-            paintText.typeface = Typeface.createFromAsset(assets, "notosanskr_bold.otf")
-
-            val rectText = Rect()
-            paintText.getTextBounds(captionString, 0, captionString.length, rectText)
-
-            val y = ((newBitmap.height + rectText.height()) / 3) * scale
-            newCanvas.drawText(
-                captionString,
-                100f, y.toFloat(), paintText
-            )
-            newBitmap
-        } catch (e: FileNotFoundException) {
-            binding.writeDiaryRootLayout.snackbar("Error: " + e.message)
-            null
-        }
-    }
+//    private fun drawTextToBitmap(photo: Photo): Bitmap? {
+//        return try {
+//            val bitmap: Bitmap = photo.bitmap!!
+//            val scale: Float = resources.displayMetrics.density
+//            var config: Bitmap.Config? = bitmap.config
+//
+//            if (config == null) {
+//                config = Bitmap.Config.ARGB_8888
+//            }
+//
+//            val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, config)
+//            val newCanvas = Canvas(newBitmap)
+//
+//            newCanvas.drawBitmap(bitmap, 0f, 0f, null)
+//
+//            val captionString = convertDate(photo.date!!)
+//
+//            val paintText = Paint(Paint.ANTI_ALIAS_FLAG)
+//            paintText.color = ContextCompat.getColor(this, R.color.white)
+//            paintText.textSize = 100f
+//            paintText.typeface = Typeface.createFromAsset(assets, "notosanskr_bold.otf")
+//
+//            val rectText = Rect()
+//            paintText.getTextBounds(captionString, 0, captionString.length, rectText)
+//
+//            val y = ((newBitmap.height + rectText.height()) / 3) * scale
+//            newCanvas.drawText(
+//                captionString,
+//                100f, y.toFloat(), paintText
+//            )
+//            newBitmap
+//        } catch (e: FileNotFoundException) {
+//            binding.writeDiaryRootLayout.snackbar("Error: " + e.message)
+//            null
+//        }
+//    }
 
     //2021-01-23T21:32:44.333
-    private fun convertDate(date: String): String {
-        val month = if (date.substring(5, 7).toInt() < 10) {
-            date.substring(6, 7)
-        } else {
-            date.substring(5, 7)
-        }
-
-        val day = if (date.substring(8, 10).toInt() < 10) {
-            date.substring(9, 10)
-        } else {
-            date.substring(8, 10)
-        }
-
-        val hour = if (date.substring(11, 13).toInt() < 12) {
-            "AM ${date.substring(12, 13)}"
-        } else {
-            "PM ${date.substring(11, 13).toInt() - 12}"
-        }
-
-        val minute = if (date.substring(14, 16).toInt() < 10) {
-            date.substring(15, 16)
-        } else {
-            date.substring(14, 16)
-        }
-
-        return "${hour}시 ${minute}분 ${month}월 ${day}일"
-    }
-
-    override fun onUploadToFirebaseStarted() {
-        binding.writeDiaryLoading.show()
-//        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-    }
-
-    override fun onUploadToFirebaseSuccess() {
-        binding.writeDiaryLoading.hide()
-        if (viewModel.getUriCount() == viewModel.getTriedUploadCount()) {
-            viewModel.postDiary()
-        }
-    }
-
-    override fun onUploadToFirebaseFailure() {
-        binding.writeDiaryLoading.hide()
-        binding.writeDiaryEventBtn.isClickable = true
-        if (viewModel.getUriCount() == viewModel.getTriedUploadCount()) {
-            viewModel.postDiary()
-        }
-    }
-
-    override fun onPostDiaryStarted() {
-        binding.writeDiaryLoading.show()
-
-        setIsClickable(false)
-    }
-
-    override fun onPostDiarySuccess(message: String) {
-        binding.writeDiaryLoading.hide()
-
-        when (mFlag) {
-            FLAG_CERTIFY_DIARY -> {
-                val intent = Intent()
-                intent.putExtra("imgList", viewModel.getImgList())
-                setResult(RES_CODE_AUTH_SUCCESS, intent)
-            }
-        }
-
-        finish()
-    }
-
-    override fun onPostDiarySuccess(
-        message: String,
-        badgeTitle: String,
-        badgeUrl: String,
-        badgeExplain: String,
-        backgroundColor:String
-    ) {
-        binding.writeDiaryLoading.hide()
-
-        when(mFlag){
-            FLAG_CERTIFY_DIARY -> {
-                val intent = Intent()
-                intent.putExtra("imgList", viewModel.getImgList())
-                intent.putExtra("badgeTitle",badgeTitle)
-                intent.putExtra("badgeUrl",badgeUrl)
-                intent.putExtra("badgeExplain",badgeExplain)
-                intent.putExtra("backgroundColor",backgroundColor)
-                setResult(RES_CODE_AUTH_SUCCESS, intent)
-            }
-        }
-
-        finish()
-    }
-
-    override fun onPostDiaryFailure(code: Int, message: String) {
-        binding.writeDiaryLoading.hide()
-        binding.writeDiaryEventBtn.isClickable = true
-        binding.writeDiaryRootLayout.snackbar(message)
-
-        setIsClickable(true)
-        viewModel.clearTiredUpload()
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-    }
+//    private fun convertDate(date: String): String {
+//        val month = if (date.substring(5, 7).toInt() < 10) {
+//            date.substring(6, 7)
+//        } else {
+//            date.substring(5, 7)
+//        }
+//
+//        val day = if (date.substring(8, 10).toInt() < 10) {
+//            date.substring(9, 10)
+//        } else {
+//            date.substring(8, 10)
+//        }
+//
+//        val hour = if (date.substring(11, 13).toInt() < 12) {
+//            "AM ${date.substring(12, 13)}"
+//        } else {
+//            "PM ${date.substring(11, 13).toInt() - 12}"
+//        }
+//
+//        val minute = if (date.substring(14, 16).toInt() < 10) {
+//            date.substring(15, 16)
+//        } else {
+//            date.substring(14, 16)
+//        }
+//
+//        return "${hour}시 ${minute}분 ${month}월 ${day}일"
+//    }
+//
 
 
-    override fun onGetDiaryStarted() {
-        binding.writeDiaryLoading.show()
-    }
+//    //startActivityForResult deprecated
+//    private fun pickImageFromGallery() {
+//        binding.writeDiaryPickPhotoBtn.isClickable = false
+//        if (!isWritable()) {
+//            binding.writeDiaryRootLayout.snackbar(getString(R.string.write_diary_max_photo_count))
+//            binding.writeDiaryPickPhotoBtn.isClickable = true
+//            return
+//        }
+//
+//        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+//        gallery.type = "image/*"
+////        startActivityForResult(gallery, IMAGE_PICK_CODE)
+//
+//        startActivityForResult(Intent.createChooser(gallery, "이미지선택"), UCrop.REQUEST_CROP);
+//    }
 
-    override fun onGetDiarySuccess(diary: Diary) {
-        binding.writeDiaryLoading.hide()
-
-        for (url in diary.imageList) {
-            val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
-            val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
-            imageView.adjustViewBounds = true
-
-            Glide.with(this)
-                .load(url)
-                .centerCrop()
-                .into(imageView)
-
-            addView(view)
-            pagerAdapter.notifyDataSetChanged()
-        }
-
-        viewModel.satisfaction.postValue(diary.satisfaction)
-        viewModel.timezone.postValue(diary.timezone)
-        viewModel.memo.postValue(diary.memo)
-    }
-
-    override fun onGetDiaryFailure(code: Int, message: String) {
-        binding.writeDiaryLoading.hide()
-    }
-}
+//    private lateinit var destinationUri : Uri;
+//2021-01-23T21:32:44.333
+//    @RequiresApi(Build.VERSION_CODES.Q)
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if(resultCode == RESULT_OK) {
+//            if (requestCode == IMAGE_PICK_CODE) {
+//                if (data != null && data.data != null) {
+//                    val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
+//                    val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
+//                    imageView.adjustViewBounds = true
+//
+//                    val photo = extractPhoto(data.data!!)
+//
+//                    UCrop.of(data.data!!, destinationUri)
+//                        .withAspectRatio(16F, 9.0F)
+//                        .start(this);
+//
+//                    if (isMatchedDate(photo.date!!.substring(0, 10))) {
+//                        val bitmap = when (mFlag) {
+//                            FLAG_CERTIFY_DIARY -> drawTextToBitmap(photo)!!
+//                            else -> photo.bitmap!!
+//                        }
+//
+//                        viewModel.addImgBitmap(bitmap)
+//
+//                        Glide.with(this)
+//                            .load(bitmap)
+//                            .centerCrop()
+//                            .into(imageView)
+//
+//                        binding.writeDiaryDefaultIv.visibility = GONE
+//                        addView(view)
+//                        pagerAdapter.notifyDataSetChanged()
+//                    } else {
+//                        binding.writeDiaryRootLayout.snackbar(getString(R.string.write_diary_not_match_date))
+//                    }
+//                }
+//            }else if(requestCode == UCrop.REQUEST_CROP) {
+//                startCropActivity(data!!.data!!)
+//            } else if(resultCode == UCrop.RESULT_ERROR){
+//                 val cropError = UCrop.getError(data!!);
+//            }
+//        }
+//    }
