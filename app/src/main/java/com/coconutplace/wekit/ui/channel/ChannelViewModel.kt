@@ -31,7 +31,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     private lateinit var myChannelResponse:ChannelResponse //내가 속한 채팅방 리스트 정보
     private var isEntering = false
     //var status:Int = 1
-    private var mFilter: ChannelFilter ?= null
+    private var _filter: ChannelFilter ?= null
     private var searchKeyWord: String?=null
 
     fun getMyRoomCount():Int{
@@ -120,7 +120,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     }
 
     fun setFilter(filter:ChannelFilter){
-        mFilter = filter
+        _filter = filter
     }
     fun setSearchKeyWord(str: String){
         searchKeyWord = str
@@ -303,12 +303,12 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
         roomList.clear()
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val roomTerm= if(mFilter!!.isTwoWeek){ 0 }
+                val roomTerm= if(_filter!!.isTwoWeek){ 0 }
                     else{ 1 }
-                val isStart = if(mFilter!!.isOngoing){ 1 }
+                val isStart = if(_filter!!.isOngoing){ 1 }
                     else{ 0 }
                 val response = repository.getFilteredChannelList(
-                    mFilter!!.authCount,roomTerm,mFilter!!.memberCount,isStart,pageForRoomList
+                    _filter!!.authCount,roomTerm,_filter!!.memberCount,isStart,pageForRoomList
                 )
 
                 if(response.isSuccess){
@@ -337,12 +337,12 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     private fun loadNextFilteredRoomList(){
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val roomTerm= if(mFilter!!.isTwoWeek){ 0 }
+                val roomTerm= if(_filter!!.isTwoWeek){ 0 }
                 else{ 1 }
-                val isStart = if(mFilter!!.isOngoing){ 1 }
+                val isStart = if(_filter!!.isOngoing){ 1 }
                 else{ 0 }
                 val response = repository.getFilteredChannelList(
-                    mFilter!!.authCount,roomTerm,mFilter!!.memberCount,isStart,pageForRoomList
+                    _filter!!.authCount,roomTerm,_filter!!.memberCount,isStart,pageForRoomList
                 )
 
                 if(response.isSuccess){

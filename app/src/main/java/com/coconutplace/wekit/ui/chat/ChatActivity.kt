@@ -22,6 +22,8 @@ import com.coconutplace.wekit.data.entities.UserInfo
 import com.coconutplace.wekit.data.remote.chat.listeners.ChatListener
 import com.coconutplace.wekit.data.remote.chat.listeners.DialogListener
 import com.coconutplace.wekit.databinding.ActivityChatBinding
+import com.coconutplace.wekit.ui.BaseActivity
+import com.coconutplace.wekit.ui.WekitDialog
 import com.coconutplace.wekit.ui.chat.dialog.*
 import com.coconutplace.wekit.ui.member_gallery.MemberGalleryActivity
 import com.coconutplace.wekit.ui.photo_viewer.PhotoViewerActivity
@@ -55,7 +57,7 @@ import java.net.URLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
+class ChatActivity : BaseActivity(),ChatListener, DialogListener {
 
     private lateinit var binding: ActivityChatBinding//layout이름을 그대로 가져와야함( _ 없애고 대문자로 고쳐서 + Binding)
     private val chatViewModel: ChatViewModel by viewModel()
@@ -391,6 +393,12 @@ class ChatActivity : AppCompatActivity(),ChatListener, DialogListener {
     override fun makeSnackBar(str: String) {
         runOnUiThread {
             binding.root.snackbar(str)
+        }
+    }
+
+    override fun makePopup(str: String) {
+        runOnUiThread{
+            showDialog(str)
         }
     }
 

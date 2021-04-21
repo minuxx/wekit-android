@@ -164,7 +164,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
                     chatListener?.showStartChallengeButton(isHostFlag)//방장이고 2주방일때 챌린지 시작 버튼 보이게함
 
-
                     if (_channel!!.myRole == Member.Role.OPERATOR) {
                         _channel!!.addOperators(operatorArray, AddOperatorsHandler { e ->
                             if (e != null) { //방장이 나갔을때 새로운 방장이 추방 권한을 가질 수 있게 모두가 operator가 되어야함.
@@ -175,7 +174,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                             }
                         })
                     }
-
                 }
                 else{
                     Log.e(ERROR_TAG,"getRoomInfo fail ${roomInfoResponse.message}")
@@ -184,7 +182,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
             } catch (e: Exception) {
                 Log.e(ERROR_TAG,"getRoomInfo error $e")
-                chatListener?.makeSnackBar("서버와의 통신에 실패하였습니다")
+                //chatListener?.makeSnackBar("서버와의 통신에 실패하였습니다")
+                chatListener?.makePopup("서버와의 통신에 실패하였습니다")
 
             }
         }
@@ -392,11 +391,16 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
             if (e != null) {
                 isLoading.postValue(false)
                 Log.e(ERROR_TAG,"send file error ${e.code} : ${e.message}")
-                if(e.code==900020){
-                    chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
-                }
-                else if(e.code==900100){
-                    chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
+                when (e.code) {
+                    900020 -> {
+                        chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
+                    }
+                    900100 -> {
+                        chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
+                    }
+                    900041 -> {
+                        chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
+                    }
                 }
                 return@SendFileMessageHandler
             }
@@ -544,7 +548,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                                         Log.e(ERROR_TAG,"ban User Fail : $e2")
                                         // Handle error.
                                     } else {
-                                        chatListener?.makeSnackBar("정상적으로 추방되었습니다")
+                                        //chatListener?.makeSnackBar("정상적으로 추방되었습니다")
+                                        chatListener?.makePopup("정상적으로 추방되었습니다")
                                         Log.e(CHECK_TAG, "ban User Success")
                                     }
                                 }
@@ -560,7 +565,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 }
                 else{
                     Log.e(ERROR_TAG, "api expelMember failed message:${expelMemberResponse.message}")
-                    chatListener?.makeSnackBar(expelMemberResponse.message)
+                    //chatListener?.makeSnackBar(expelMemberResponse.message)
+                    chatListener?.makePopup(expelMemberResponse.message)
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"api expelMember Error $e")
@@ -579,7 +585,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 }
                 else{
                     Log.e(CHECK_TAG,"challenge is not available now ${response.message}")
-                    chatListener?.makeSnackBar(response.message)
+                    //chatListener?.makeSnackBar(response.message)
+                    chatListener?.makePopup(response.message)
                 }
 
             }catch (e: Exception){
@@ -596,7 +603,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 val startChallengeResponse = repository.startChallenge(param)
                 if(startChallengeResponse.isSuccess){
                     Log.e(CHECK_TAG, "api startChallenge success")
-                    chatListener?.makeSnackBar("이제 챌린지가 시작됩니다")
+                    //chatListener?.makeSnackBar("이제 챌린지가 시작됩니다")
                     val result = startChallengeResponse.result
                     if(result!=null){
                         val title = result.badgeName!!
@@ -604,6 +611,9 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         val explain = result.badgeDescription!!
                         val backColor = result.backgroundColor!!
                         chatListener?.onBadgeResponse(title,url,explain,backColor)
+                    }
+                    else{
+                        chatListener?.makePopup("이제 챌린지가 시작됩니다")
                     }
 
                 }
