@@ -68,7 +68,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         if (mFlag == 0) {
             finish()
         }
-
+        
         setMode()
     }
 
