@@ -303,7 +303,8 @@
             <EditText
                 android:id="@+id/write_diary_memo_et"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintVertical_weight="1"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
@@ -319,8 +320,10 @@
                 android:textColor="@color/write_diary_basic_text"
                 android:textCursorDrawable="@drawable/cursor_color"
                 android:textSize="14sp"
+                android:gravity="start"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/write_diary_event_btn"
                 app:layout_constraintTop_toBottomOf="@+id/write_diary_memo_title_tv" />
 
             <Button
@@ -333,6 +336,7 @@
                 android:paddingBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/write_diary_memo_et"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@color/primary"/>
 

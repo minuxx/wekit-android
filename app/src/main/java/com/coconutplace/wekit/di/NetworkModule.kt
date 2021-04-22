@@ -20,7 +20,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "http://13.124.127.29:9003/"
+const val PRODUCTION_URL = "https://api.wekitlife.com/"
+const val TEST_URL = " http://13.124.127.29:9003/"
+private val base_url: String = TEST_URL
+
+fun getBaseUrl() = base_url
 
 val networkModule: Module = module {
     fun provideHeaderInterceptor(sharedPreferenceManager: SharedPreferencesManager) =
@@ -46,7 +50,7 @@ val networkModule: Module = module {
         .build()
 
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(getBaseUrl())
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()

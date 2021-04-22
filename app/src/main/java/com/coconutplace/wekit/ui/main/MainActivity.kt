@@ -106,6 +106,7 @@ class MainActivity : BaseActivity(), MainListener{
             }
         }
     }
+
     private fun moveToChatActivity(channelUrl: String){
         val channelFragment = navHostFragment.childFragmentManager.fragments[0] as ChannelFragment
         channelFragment.startChatWithPush(channelUrl)

@@ -33,7 +33,7 @@ val viewModelModule = module {
     viewModel { MainViewModel(get()) }
     viewModel { HomeViewModel(get(), get()) }
     viewModel { DiaryViewModel(get()) }
-    viewModel { WriteDiaryViewModel(get()) }
+    viewModel { WriteDiaryViewModel(get(), get()) }
     viewModel { ChoiceViewModel() }
     viewModel { CreateChannelViewModel(get()) }
     viewModel { ChannelViewModel(get(), get()) }
