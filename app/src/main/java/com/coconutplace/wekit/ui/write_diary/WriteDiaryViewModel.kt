@@ -1,7 +1,6 @@
 package com.coconutplace.wekit.ui.write_diary
 
 import android.net.Uri
-import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,9 +9,9 @@ import com.coconutplace.wekit.data.entities.Photo
 import com.coconutplace.wekit.data.remote.diary.listeners.WriteDiaryListener
 import com.coconutplace.wekit.data.repository.diary.DiaryRepository
 import com.coconutplace.wekit.di.TEST_URL
+import com.coconutplace.wekit.di.getBaseUrl
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FIREBASE_STORAGE_URL
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.google.firebase.ktx.Firebase
@@ -108,9 +107,11 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
 
         val clientID = sharedPreferencesManager.getClientID()
 
+        val where = if(getBaseUrl() == TEST_URL){ "test" } else { "prod" }
+
         for(i in 1 until photos.size){
             val storageRef = storage.reference.child("certification-diary")
-                                              .child("test")
+                                              .child("$where")
                                               .child("$clientID")
                                               .child("${UUID.randomUUID()}.jpg")
 
