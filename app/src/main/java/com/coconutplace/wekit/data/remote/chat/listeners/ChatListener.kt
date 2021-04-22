@@ -4,8 +4,6 @@ import com.sendbird.android.BaseMessage
 
 interface ChatListener {
     fun onExitSuccess()
-    fun makeSnackBar(str:String)
-    fun makePopup(str: String)
     fun onSendMessageSuccess()
     fun showStartChallengeButton(isHost:Boolean)
     fun addOldMsg(msgList:List<BaseMessage>)
