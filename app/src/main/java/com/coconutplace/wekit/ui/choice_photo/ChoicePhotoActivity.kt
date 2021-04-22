@@ -83,7 +83,7 @@ class ChoicePhotoActivity : BaseActivity() {
         mAdapter = ChoicePhotoAdapter(applicationContext, itemClick = {
             if (it == 0) {
                 if (mAdapter.itemCount > 5) {
-                    binding.choicePhotoRootLayout.snackbar("사진은 최대 5개까지 등록할 수 있습니다.")
+                    showDialog(getString(R.string.choice_photo_count_limit))
                 } else {
                     if (mFlag == FLAG_CERTIFY_DIARY) {
                         launchCameraActivity() // 인증 다이어리(사진)을 보낼 때는 카메라로 찍은 사지만 가능

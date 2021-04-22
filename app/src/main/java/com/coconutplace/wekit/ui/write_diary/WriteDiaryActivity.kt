@@ -391,7 +391,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         when(code){
             305, 306, 307,
             308, 310, 314 -> showDialog(message)
-            else -> showDialog(getString(R.string.dialog_title_server_check))
+            else -> showDialog(getString(R.string.network_error))
         }
 
         setIsClickable(true)
@@ -406,19 +406,20 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     override fun onGetDiarySuccess(diary: Diary) {
         binding.writeDiaryLoading.hide()
 
+        binding.writeDiaryDefaultIv.visibility = GONE
+
         for (url in diary.imageList) {
             val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
             val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
-            imageView.adjustViewBounds = true
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
             Glide.with(this)
                 .load(url)
-                .centerCrop()
                 .into(imageView)
-
             addView(view)
-            pagerAdapter.notifyDataSetChanged()
         }
+
+        pagerAdapter.notifyDataSetChanged()
 
         viewModel.satisfaction.postValue(diary.satisfaction)
         viewModel.timezone.postValue(diary.timezone)

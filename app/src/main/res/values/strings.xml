@@ -307,6 +307,7 @@
     <string name="choice_photo">사진 선택</string>
     <string name="choice_photo_save">저장하기</string>
     <string name="choice_photo_label_select_image">이미지 선택</string>
+    <string name="choice_photo_count_limit">사진은 최대 5개까지 등록할 수 있습니다</string>
 
     <!--certify email-->
     <string name="certify_email_certification_number_validation">인증번호는 숫자 4자리입니다.</string>
