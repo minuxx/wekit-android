@@ -184,7 +184,14 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 else{
                     Log.e(ERROR_TAG,"getRoomInfo fail ${roomInfoResponse.message}")
                     //chatListener?.makeSnackBar(roomInfoResponse.message)
-                    _showDialog.postValue(Event(roomInfoResponse.message))
+                    when(roomInfoResponse.code.toInt()){
+                        301,302 -> _showDialog.postValue(Event("계정에 문제가 발생하였습니다"))
+                        303,304 -> _showDialog.postValue(Event("채팅방을 불러올 수 없습니다"))
+                        305 -> _showDialog.postValue(Event("방에 소속되지 않은 사용자입니다"))
+                        500 -> _showDialog.postValue(Event("서버에 문제가 발생하였습니다"))
+                        else -> _showDialog.postValue(Event("알 수 없는 에러입니다"))
+                    }
+                    //_showDialog.postValue(Event(roomInfoResponse.message))
                 }
 
             } catch (e: Exception) {
@@ -559,8 +566,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     val operatorArray:ArrayList<String> = ArrayList()
                     val id = sharedPreferencesManager.getClientID()!!
                     operatorArray.add(id)
-
-
+                    
                     _channel!!.addOperators(operatorArray, AddOperatorsHandler { e1->
                         if (e1 != null) {
                             Log.e(ERROR_TAG,"$id 가 SendBird channel operator가 되는데에 실패하였습니다:$e1")
