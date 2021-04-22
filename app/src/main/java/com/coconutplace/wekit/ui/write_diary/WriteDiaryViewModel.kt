@@ -8,13 +8,18 @@ import com.coconutplace.wekit.data.entities.Diary
 import com.coconutplace.wekit.data.entities.Photo
 import com.coconutplace.wekit.data.remote.diary.listeners.WriteDiaryListener
 import com.coconutplace.wekit.data.repository.diary.DiaryRepository
+import com.coconutplace.wekit.di.TEST_URL
+import com.coconutplace.wekit.di.getBaseUrl
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FIREBASE_STORAGE_URL
+import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.util.*
+import kotlin.collections.ArrayList
 
-class WriteDiaryViewModel(private val repository: DiaryRepository) : ViewModel() {
+class WriteDiaryViewModel(private val repository: DiaryRepository, private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel() {
     var writeDiaryListener: WriteDiaryListener? = null
     val photos = ObservableArrayList<Photo>()
 
@@ -100,8 +105,15 @@ class WriteDiaryViewModel(private val repository: DiaryRepository) : ViewModel()
             return
         }
 
+        val clientID = sharedPreferencesManager.getClientID()
+
+        val where = if(getBaseUrl() == TEST_URL){ "test" } else { "prod" }
+
         for(i in 1 until photos.size){
-            val storageRef = storage.reference.child("certification-diary/")
+            val storageRef = storage.reference.child("certification-diary")
+                                              .child("$where")
+                                              .child("$clientID")
+                                              .child("${UUID.randomUUID()}.jpg")
 
             val uploadTask = storageRef.putFile(Uri.parse(photos[i].imgUrl))
 
