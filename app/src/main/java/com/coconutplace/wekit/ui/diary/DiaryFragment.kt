@@ -10,8 +10,6 @@ import com.coconutplace.wekit.data.entities.Diary
 import com.coconutplace.wekit.data.remote.diary.listeners.DiaryListener
 import com.coconutplace.wekit.databinding.FragmentDiaryBinding
 import com.coconutplace.wekit.ui.BaseFragment
-import com.coconutplace.wekit.ui.diary.decorators.ToadyDecorator
-import com.coconutplace.wekit.ui.diary.decorators.WrittenDayDecorator
 import com.coconutplace.wekit.ui.write_diary.WriteDiaryActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_READ_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
@@ -25,6 +23,9 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
+import androidx.lifecycle.Observer
+import com.coconutplace.wekit.databinding.FragmentHomeBinding
+import com.coconutplace.wekit.ui.diary.decorators.*
 
 class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     OnMonthChangedListener {
@@ -41,6 +42,7 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
         viewModel.diaryListener = this
 
         initRecyclerView()
@@ -69,7 +71,7 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
 
     private fun startWriteDiaryActivity(){
         if(isFutureDay()){
-            binding.diaryRootLayout.snackbar(getString(R.string.diary_warning_future_day))
+            showDialog(getString(R.string.diary_warning_future_day), requireActivity())
             return
         }
 
@@ -126,10 +128,20 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         date: CalendarDay,
         selected: Boolean
     ) {
+        if(viewModel.writtenDates.indexOf(viewModel.previousDay) != -1){
+            binding.diaryCalendarView.addDecorator(WrittenDayDecorator(context, viewModel.previousDay))
+        }else{
+            binding.diaryCalendarView.addDecorator(NormalDayDecorator(context, viewModel.previousDay))
+        }
+
+        widget.selectedDate = date
+        widget.addDecorator(SelectedDayDecorator(context, date))
+
         if(!isFutureDay()) {
-            widget.selectedDate = date
             viewModel.getDiaries(getCurrentDate(date))
         }
+
+        viewModel.previousDay = date
     }
 
     override fun onMonthChanged(widget: MaterialCalendarView, date: CalendarDay) {
@@ -141,7 +153,6 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
 
 
     private fun isFutureDay(): Boolean{
-
         val today = CalendarDay.today()
         val selectedDate = binding.diaryCalendarView.selectedDate!!
 
@@ -191,16 +202,10 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         binding.diaryLoading.show()
     }
 
-    override fun onGetWrittenDatesSuccess(writtenDates: ArrayList<String>) {
+    override fun onGetWrittenDatesSuccess() {
         binding.diaryLoading.hide()
 
-        val calendarDayList: ArrayList<CalendarDay> = ArrayList()
-
-        for(date in writtenDates){
-            calendarDayList.add((CalendarDay.from(date.substring(0, 4).toInt(), date.substring(5, 7).toInt(), date.substring(8, 10).toInt())))
-        }
-
-        binding.diaryCalendarView.addDecorators(WrittenDayDecorator(context, calendarDayList))
+        binding.diaryCalendarView.addDecorators(WrittenDatesDecorator(context, viewModel.writtenDates))
     }
 
     override fun onGetWrittenDatesFailure(code: Int, message: String) {

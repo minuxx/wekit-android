@@ -1,16 +1,20 @@
 package com.coconutplace.wekit.ui.diary
 
 import androidx.databinding.ObservableArrayList
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.Diary
 import com.coconutplace.wekit.data.remote.diary.listeners.DiaryListener
 import com.coconutplace.wekit.data.repository.diary.DiaryRepository
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
+import com.prolificinteractive.materialcalendarview.CalendarDay
 
 class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
     var diaryListener: DiaryListener? = null
     val diaries = ObservableArrayList<Diary>()
+    val writtenDates = ArrayList<CalendarDay>()
+    var previousDay: CalendarDay = CalendarDay.today()
 
     fun getDiaries(date: String){
         diaryListener?.onDiaryStarted()
@@ -44,7 +48,8 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
 
                 if(diaryResponse.isSuccess){
                     diaryResponse.result?.let {
-                        diaryListener?.onGetWrittenDatesSuccess(it.dateList!!)
+                        setCalendarDayList(it.dateList!!)
+                        diaryListener?.onGetWrittenDatesSuccess()
                         return@main
                     }
                 }else{
@@ -55,6 +60,14 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
             } catch (e: Exception){
                 diaryListener?.onGetWrittenDatesFailure(404, e.message!!)
             }
+        }
+    }
+
+    private fun setCalendarDayList(writtenDates: ArrayList<String>){
+        this.writtenDates.clear()
+
+        for(date in writtenDates){
+            this.writtenDates.add((CalendarDay.from(date.substring(0, 4).toInt(), date.substring(5, 7).toInt(), date.substring(8, 10).toInt())))
         }
     }
 }
