@@ -292,6 +292,12 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
                 binding.chatProgressbar.visibility = View.GONE
             }
         })
+
+        chatViewModel.showDialog.observe(this,Observer{ event ->
+            event.getContextIfNotHandled()?.let {
+                makePopup(it)
+            }
+        })
     }
 
     private fun onImageMessageClicked(message : FileMessage){
@@ -306,6 +312,12 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
         intent.type = "image/*"
         startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
         SendBird.setAutoBackgroundDetection(false)
+    }
+
+    private fun makePopup(str: String) {
+        runOnUiThread{
+            showDialog(str)
+        }
     }
 
     override fun onBadgeResponse(badgeTitle:String,badgeUrl:String,badgeExplain:String, backgroundColor:String){
@@ -357,8 +369,9 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
             }
             else if(resultCode== RES_CODE_AUTH_FAILURE){
                 Log.e(ERROR_TAG,"writeDiary 에서 imgUrl을 가져오지 못했습니다.")
-                val message:String = data?.getStringExtra("message")!!
-                makeSnackBar(message)
+                //val message:String = data?.getStringExtra("message")!!
+                //makeSnackBar(message)
+                makePopup("다이어리에서 사진을 불러오지 못했습니다")
             }
         }
     }
@@ -387,18 +400,6 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
             else{
                 binding.chatNavStartChallengeBtn.visibility = View.INVISIBLE
             }
-        }
-    }
-
-    override fun makeSnackBar(str: String) {
-        runOnUiThread {
-            binding.root.snackbar(str)
-        }
-    }
-
-    override fun makePopup(str: String) {
-        runOnUiThread{
-            showDialog(str)
         }
     }
 
