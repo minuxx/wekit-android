@@ -423,7 +423,11 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         viewModel.satisfaction.postValue(diary.satisfaction)
         viewModel.timezone.postValue(diary.timezone)
+
         viewModel.memo.postValue(diary.memo)
+        if(diary.memo == "" && mFlag == FLAG_READ_DIARY){
+            binding.writeDiaryMemoEt.hint = ""
+        }
     }
 
     override fun onGetDiaryFailure(code: Int, message: String) {
