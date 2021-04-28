@@ -1,6 +1,5 @@
 package com.coconutplace.wekit.ui.chat
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -26,8 +25,6 @@ import com.sendbird.android.BaseChannel.SendUserMessageHandler
 import com.sendbird.android.GroupChannel.GroupChannelGetHandler
 import com.sendbird.android.GroupChannel.GroupChannelRefreshHandler
 import com.sendbird.android.SendBird.ChannelHandler
-import com.sendbird.android.SendBird.UserInfoUpdateHandler
-import com.sendbird.android.handlers.AddOperatorsHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -38,7 +35,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatViewModel(private val repository: ChatRepository, private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel() {
-    private val CHANNEL_HANDLER_ID = "CHANNEL_HANDLER_GROUP_CHANNEL_CHAT"
+    private val channelHandlerId = "CHANNEL_HANDLER_GROUP_CHANNEL_CHAT"
 
     private var chatListener:ChatListener? = null
 
@@ -71,7 +68,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         MutableLiveData<String>()
     }
 
-    val liveOperator: MutableLiveData<String> by lazy{
+    private val liveOperator: MutableLiveData<String> by lazy{
         MutableLiveData<String>()
     }
     val liveMemberListInfo: MutableLiveData<ArrayList<UserInfo>> by lazy{
@@ -100,23 +97,23 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         return sharedPreferencesManager.getNickname()
     }
 
-    fun getPushNotificationOn(): Boolean{
-        return _pushNotificationOn!!
-    }
+//    fun getPushNotificationOn(): Boolean{
+//        return _pushNotificationOn!!
+//    }
 
-    private fun setNickname(nickname:String){
-        SendBird.updateCurrentUserInfo(nickname,null,
-            UserInfoUpdateHandler { e ->
-                if (e != null) {
-                    // Error!
-                    Log.e(ERROR_TAG,"닉네임 세팅실패")
-                    return@UserInfoUpdateHandler
-                }
-                else{
-                    Log.e(CHECK_TAG,"닉네임 세팅완료")
-                }
-            })
-    }
+//    private fun setNickname(nickname:String){
+//        SendBird.updateCurrentUserInfo(nickname,null,
+//            UserInfoUpdateHandler { e ->
+//                if (e != null) {
+//                    // Error!
+//                    Log.e(ERROR_TAG,"닉네임 세팅실패")
+//                    return@UserInfoUpdateHandler
+//                }
+//                else{
+//                    Log.e(CHECK_TAG,"닉네임 세팅완료")
+//                }
+//            })
+//    }
 
     fun setPushFlag(on:Boolean){
         sharedPreferencesManager.savePushNotificationFlag(on)
@@ -174,14 +171,14 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     chatListener?.showStartChallengeButton(isHostFlag)//방장이고 2주방일때 챌린지 시작 버튼 보이게함
 
                     if (_channel!!.myRole == Member.Role.OPERATOR) {
-                        _channel!!.addOperators(operatorArray, AddOperatorsHandler { e ->
+                        _channel!!.addOperators(operatorArray) { e ->
                             if (e != null) { //방장이 나갔을때 새로운 방장이 추방 권한을 가질 수 있게 모두가 operator가 되어야함.
                                 //operator 지정은 방장밖에 못함
                                 Log.e(ERROR_TAG, "맴버들을 operator로 지정하는데 실패하였습니다.$e")
                             } else {
                                 Log.e(CHECK_TAG, "맴버들을 operator로 지정하였습니다")
                             }
-                        })
+                        }
                     }
                 }
                 else{
@@ -237,7 +234,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun addSendBirdHandler() {
-        SendBird.addChannelHandler(CHANNEL_HANDLER_ID, object : ChannelHandler() {
+        SendBird.addChannelHandler(channelHandlerId, object : ChannelHandler() {
             override fun onMessageReceived(baseChannel: BaseChannel, baseMessage: BaseMessage) {
                 if (baseChannel.url == _channelUrl) {
                     addRecentMsg(baseMessage)
@@ -288,35 +285,38 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     }
 
     fun refresh() {
-        if (_messageList.size!=0) {
-            //liveMessageList.postValue(mMessageList)
-            chatListener?.addOldMsg(_messageList)
-        }
-        else if (_channel == null) {
-            GroupChannel.getChannel(_channelUrl, GroupChannelGetHandler { groupChannel, e ->
-                if (e != null) {
-                    // Error!
-                    e.printStackTrace()
-                    return@GroupChannelGetHandler
-                }
-                _channel = groupChannel
-                loadLatestMessages(DUMMY_MESSAGE_COUNT, GetMessagesHandler { list, e ->
+        when {
+            _messageList.size!=0 -> {
+                //liveMessageList.postValue(mMessageList)
+                chatListener?.addOldMsg(_messageList)
+            }
+            _channel == null -> {
+                GroupChannel.getChannel(_channelUrl, GroupChannelGetHandler { groupChannel, e ->
+                    if (e != null) {
+                        // Error!
+                        e.printStackTrace()
+                        return@GroupChannelGetHandler
+                    }
+                    _channel = groupChannel
+                    loadLatestMessages(DUMMY_MESSAGE_COUNT) { _, _ ->
                         //mChatAdapter.markAllMessagesAsRead();
-                    chatListener?.onSendMessageSuccess()
+                        chatListener?.onSendMessageSuccess()
+                    }
                 })
-            })
-        } else {
-            _channel!!.refresh(GroupChannelRefreshHandler { e ->
-                if (e != null) {
-                    // Error!
-                    e.printStackTrace()
-                    return@GroupChannelRefreshHandler
-                }
-                loadLatestMessages(DUMMY_MESSAGE_COUNT, GetMessagesHandler { list, e ->
+            }
+            else -> {
+                _channel!!.refresh(GroupChannelRefreshHandler { e ->
+                    if (e != null) {
+                        // Error!
+                        e.printStackTrace()
+                        return@GroupChannelRefreshHandler
+                    }
+                    loadLatestMessages(DUMMY_MESSAGE_COUNT) { _, _ ->
                         //mChatAdapter.markAllMessagesAsRead();
-                    chatListener?.onSendMessageSuccess()
+                        chatListener?.onSendMessageSuccess()
+                    }
                 })
-            })
+            }
         }
     }
 
@@ -491,16 +491,15 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         //방장 넘겨줘야함
                     }
                     //SENDBIRD 체널도 나가야함
-                    _channel?.leave(GroupChannel.GroupChannelLeaveHandler{ e ->
-                        if(e!=null){
+                    _channel?.leave { e ->
+                        if (e != null) {
                             //ERROR
-                            Log.e(ERROR_TAG,"SendBird leaveChannel error ${_channel?.name}...")
-                        }
-                        else{
-                            Log.e(CHECK_TAG,"SendBird leaveChannel success -> ${_channel?.name} ")
+                            Log.e(ERROR_TAG, "SendBird leaveChannel error ${_channel?.name}...")
+                        } else {
+                            Log.e(CHECK_TAG, "SendBird leaveChannel success -> ${_channel?.name} ")
                             chatListener?.onExitSuccess()
                         }
-                    })
+                    }
                     //chatListener?.onExitSuccess()
                 } else {
                     Log.e(ERROR_TAG, "api leaveChannel failed message:${leaveChannelResponse.message}")
@@ -570,7 +569,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     val id = sharedPreferencesManager.getClientID()!!
                     operatorArray.add(id)
                     
-                    _channel!!.addOperators(operatorArray, AddOperatorsHandler { e1->
+                    _channel!!.addOperators(operatorArray) { e1->
                         if (e1 != null) {
                             Log.e(ERROR_TAG,"$id 가 SendBird channel operator가 되는데에 실패하였습니다:$e1")
                         } else {
@@ -597,7 +596,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
                         }
 
-                    })
+                    }
                     getRoomInfo()
                 }
                 else{
