@@ -8,12 +8,13 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import kotlin.collections.HashSet
 
-class WrittenDayDecorator(context: Context?,  currentDay: CalendarDay): DayViewDecorator {
+class WrittenDatesDecorator(context: Context?, private val writtenDates: Collection<CalendarDay>): DayViewDecorator {
     private val color = context!!.getColor(R.color.diary_written_day)
-    private val mDay = currentDay
+    private val today = CalendarDay.today()
+    private val writtenDateHash: HashSet<CalendarDay> = HashSet(writtenDates)
 
     override fun shouldDecorate(day: CalendarDay): Boolean {
-        return day == mDay
+        return writtenDateHash.contains(day)
     }
 
     override fun decorate(view: DayViewFacade?) {

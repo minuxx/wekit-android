@@ -8,6 +8,6 @@ interface DiaryListener {
     fun onDiaryFailure(code: Int, message: String)
 
     fun onGetWrittenDatesStarted()
-    fun onGetWrittenDatesSuccess(writtenDates: ArrayList<String>)
+    fun onGetWrittenDatesSuccess()
     fun onGetWrittenDatesFailure(code: Int, message: String)
 }
