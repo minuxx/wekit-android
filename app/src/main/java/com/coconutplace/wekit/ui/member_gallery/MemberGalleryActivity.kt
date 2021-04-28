@@ -88,9 +88,9 @@ class MemberGalleryActivity :AppCompatActivity(),GalleryListener {
     }
 
     override fun addPhotoPack(photoPack: PhotoPack) {
-        runOnUiThread(Runnable {
+        runOnUiThread{
             galleryListAdapter.addLast(photoPack)
-        })
+        }
     }
 
     override fun makeSnackBar(str: String) {

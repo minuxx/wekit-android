@@ -1,7 +1,5 @@
 package com.coconutplace.wekit.ui.chat.viewholder
 
-import android.content.Context
-import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -39,14 +37,14 @@ internal class MyImgMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(
         val thumbnails = message.thumbnails as ArrayList<Thumbnail>
         if (thumbnails.size > 0) {
             //Log.e(SharedPreferencesManager.CHECK_TAG, "myImg thumbnail exist")
-            if (message.type.toLowerCase().contains("gif")) {
+            if (message.type.toLowerCase(Locale.ROOT).contains("gif")) {
                 ChatMessageUtil.displayGifImageFromUrl(dateLayout.context, message.url, fileThumbnailImage, thumbnails[0].url)
             } else {
                 ChatMessageUtil.displayImageFromUrl(dateLayout.context, thumbnails[0].url, fileThumbnailImage, null)
             }
         } else {
             //Log.e(SharedPreferencesManager.CHECK_TAG, "myImg NO thumbnail")
-            if (message.type.toLowerCase().contains("gif")) {
+            if (message.type.toLowerCase(Locale.ROOT).contains("gif")) {
                 ChatMessageUtil.displayGifImageFromUrl(dateLayout.context, message.url, fileThumbnailImage, null)
             } else {
                 ChatMessageUtil.displayImageFromUrl(dateLayout.context, message.url, fileThumbnailImage, null)

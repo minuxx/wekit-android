@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import co.lujun.androidtagview.TagView.OnTagClickListener
@@ -17,7 +16,6 @@ import com.coconutplace.wekit.databinding.ActivityCreateChannelBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.hideKeyboard
-import com.coconutplace.wekit.utils.snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

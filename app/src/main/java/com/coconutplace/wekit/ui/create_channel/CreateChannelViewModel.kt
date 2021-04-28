@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.CreateChannelInfo
 import com.coconutplace.wekit.data.remote.channel.listeners.CreateChannelListener
 import com.coconutplace.wekit.data.repository.channel.ChannelRepository
-import com.coconutplace.wekit.ui.chat.dialog.ChatBadgeDialog
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
 import com.sendbird.android.GroupChannel
@@ -73,7 +72,7 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
                     "2주방"
                 }
                 //count //arg1 인증횟수
-                var tag:String="" //태그
+                var tag = "" //태그
 
                 val tagSize = tagStringList.size
                 for(i in 0 until tagSize-1){

@@ -60,9 +60,9 @@ class PhotoPackListAdapter(context: Context) : RecyclerView.Adapter<PhotoPackLis
         notifyDataSetChanged()
     }
 
-    private fun deleteLast(){
-        photoPackList.removeLast()
-    }
+//    private fun deleteLast(){
+//        photoPackList.removeLast()
+//    }
 
     inner class GalleryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 

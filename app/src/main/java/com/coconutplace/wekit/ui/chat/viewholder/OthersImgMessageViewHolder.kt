@@ -1,6 +1,5 @@
 package com.coconutplace.wekit.ui.chat.viewholder
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -53,7 +52,7 @@ internal class OthersImgMessageViewHolder(itemView: View) : RecyclerView.ViewHol
             message.thumbnails as ArrayList<Thumbnail>
         if (thumbnails.size > 0) {
             //Log.e(CHECK_TAG,"otherImg thumbnail exist");
-            if (message.type.toLowerCase().contains("gif")) {
+            if (message.type.toLowerCase(Locale.ROOT).contains("gif")) {
                 ChatMessageUtil.displayGifImageFromUrl(
                     dateLayout.context,
                     message.url,
@@ -65,7 +64,7 @@ internal class OthersImgMessageViewHolder(itemView: View) : RecyclerView.ViewHol
             }
         } else {
             //Log.e(CHECK_TAG,"otherImg NO thumbnail");
-            if (message.type.toLowerCase().contains("gif")) {
+            if (message.type.toLowerCase(Locale.ROOT).contains("gif")) {
                 ChatMessageUtil.displayGifImageFromUrl(
                     dateLayout.context,
                     message.url,

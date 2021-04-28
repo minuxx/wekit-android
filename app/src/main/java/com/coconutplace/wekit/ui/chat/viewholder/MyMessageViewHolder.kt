@@ -8,7 +8,6 @@ import com.coconutplace.wekit.R
 import com.coconutplace.wekit.ui.chat.ChatMessageAdapter
 import com.coconutplace.wekit.utils.ChatMessageUtil
 import com.sendbird.android.BaseMessage
-import com.sendbird.android.UserMessage
 
 class MyMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val dateLayout: LinearLayout = itemView.findViewById(R.id.chat_date_layout)
