@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,12 +14,14 @@ import co.lujun.androidtagview.TagView.OnTagClickListener
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.remote.channel.listeners.CreateChannelListener
 import com.coconutplace.wekit.databinding.ActivityCreateChannelBinding
+import com.coconutplace.wekit.ui.BaseActivity
+import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.hideKeyboard
 import com.coconutplace.wekit.utils.snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
+class CreateChannelActivity: BaseActivity(), CreateChannelListener {
 
     private lateinit var mBinding: ActivityCreateChannelBinding
     private val mCreateChannelViewModel: CreateChannelViewModel by viewModel()
@@ -57,11 +60,12 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
             mCreateChannelViewModel.durationLong = false
         }
         mBinding.createChannelFourWeekBtn.setOnClickListener{
-            mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
-            mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
-            mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
-            mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
-            mCreateChannelViewModel.durationLong = true
+//            mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
+//            mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
+//            mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
+//            mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
+//            mCreateChannelViewModel.durationLong = true
+            makePopup("추후 업데이트 예정입니다.")
         }
 
         //방 만들기 완료 버튼
@@ -154,6 +158,13 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
         mCreateChannelViewModel.createChannelListener = this
     }
 
+    private fun makePopup(str: String) {
+        runOnUiThread{
+            Log.e(CHECK_TAG,"make popup")
+            showDialog(str)
+        }
+    }
+
     override fun onCreateChannelSuccess() {
         mBinding.createChannelCompleteBtn.isClickable = true
         val intent = Intent()
@@ -183,6 +194,7 @@ class CreateChannelActivity: AppCompatActivity(), CreateChannelListener {
     }
 
     override fun makeSnackBar(str: String) {
-        mBinding.root.snackbar(str)
+        //mBinding.root.snackbar(str)
+        showDialog(str)
     }
 }
