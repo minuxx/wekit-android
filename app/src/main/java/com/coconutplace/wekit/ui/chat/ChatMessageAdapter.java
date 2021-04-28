@@ -190,7 +190,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public boolean hasSameDate(long millisFirst, long millisSecond) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         return dateFormat.format(millisFirst).equals(dateFormat.format(millisSecond));
     }
 

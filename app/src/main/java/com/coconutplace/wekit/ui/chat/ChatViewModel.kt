@@ -52,6 +52,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
     private var _nickname:String? = null
     private var _pushNotificationOn: Boolean? = null
 
+    var hostFlag = false
+
     private var _showDialog = MutableLiveData<Event<String>>()
     val showDialog: LiveData<Event<String>>
         get() = _showDialog
@@ -161,6 +163,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                             Log.e(CHECK_TAG,"member id : ${member.id}")
                         }
                         liveMemberListInfo.postValue(_memberInfoList)
+                        hostFlag = isHostFlag
                     }
                     Log.e(CHECK_TAG,"$_nickname =?= ${liveOperator.value}")
 

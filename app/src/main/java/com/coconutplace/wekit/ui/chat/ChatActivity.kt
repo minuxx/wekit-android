@@ -9,21 +9,17 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.coconutplace.wekit.R
-import com.coconutplace.wekit.data.entities.UserInfo
 import com.coconutplace.wekit.data.remote.chat.listeners.ChatListener
 import com.coconutplace.wekit.data.remote.chat.listeners.DialogListener
 import com.coconutplace.wekit.databinding.ActivityChatBinding
 import com.coconutplace.wekit.ui.BaseActivity
-import com.coconutplace.wekit.ui.WekitDialog
 import com.coconutplace.wekit.ui.chat.dialog.*
 import com.coconutplace.wekit.ui.member_gallery.MemberGalleryActivity
 import com.coconutplace.wekit.ui.photo_viewer.PhotoViewerActivity
@@ -38,7 +34,6 @@ import com.coconutplace.wekit.utils.PushUtil
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
 import com.coconutplace.wekit.utils.hideKeyboard
-import com.coconutplace.wekit.utils.snackbar
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.sendbird.android.BaseMessage
 import com.sendbird.android.FileMessage
@@ -293,7 +288,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
             }
         })
 
-        chatViewModel.showDialog.observe(this,Observer{ event ->
+        chatViewModel.showDialog.observe(this,{ event ->
             event.getContextIfNotHandled()?.let {
                 makePopup(it)
             }
@@ -431,8 +426,13 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
             reportDialog.callFunction(this)
         }
         else if(type==2){ //추방하기
-            val expelDialog = ChatExpelDialog(this,chatViewModel.getNickName())
-            expelDialog.callFunction(this, chatViewModel.getMemberInfoList())
+            if(chatViewModel.hostFlag){
+                val expelDialog = ChatExpelDialog(this,chatViewModel.getNickName())
+                expelDialog.callFunction(this, chatViewModel.getMemberInfoList())
+            }
+            else{
+                makePopup("방장만 추방을 할 수 있습니다.")
+            }
         }
     }
 
@@ -468,29 +468,31 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
 
     private fun sendFileWithUrl(ImgUrl:String){
         chatViewModel.isLoading.postValue(true)
-        var imgBitmap: Bitmap? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                Log.e(CHECK_TAG, "progress 1")
-                val url: URL = URL(ImgUrl)
-                val conn: URLConnection = url.openConnection()
-                conn.connect()
-                Log.e(CHECK_TAG, "progress 2")
-                val bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
-                Log.e(CHECK_TAG, "progress 3")
-                imgBitmap = BitmapFactory.decodeStream(bis)
-                Log.e(CHECK_TAG, "progress 4")
-                bis.close()
+        CoroutineScope(Dispatchers.Default).launch {
+            runCatching {
+                try {
+                    Log.e(CHECK_TAG, "progress 1")
+                    val url = URL(ImgUrl)
+                    val conn: URLConnection = url.openConnection()
+                    conn.connect()
+                    Log.e(CHECK_TAG, "progress 2")
+                    val bis = BufferedInputStream(conn.getInputStream())
+                    Log.e(CHECK_TAG, "progress 3")
+                    val imgBitmap = BitmapFactory.decodeStream(bis)
+                    Log.e(CHECK_TAG, "progress 4")
+                    bis.close()
 
-                val fileName = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date()) + ".jpg"
-                val file = getFileFromBitmap(imgBitmap!!, fileName)
+                    val fileName =
+                        SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date()) + ".jpg"
+                    val file = getFileFromBitmap(imgBitmap!!, fileName)
 
-                Log.e(CHECK_TAG, "파일이름:$fileName")
+                    Log.e(CHECK_TAG, "파일이름:$fileName")
 
-                chatViewModel.sendAuthFile(file!!, fileName)
+                    chatViewModel.sendAuthFile(file!!, fileName)
 
-            } catch (e: Exception) {
-                Log.e(ERROR_TAG, "파일 만들기 에러$e")
+                } catch (e: Exception) {
+                    Log.e(ERROR_TAG, "파일 만들기 에러$e")
+                }
             }
         }
 
@@ -511,7 +513,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
         }
 
         val file = File(cacheDir.toString())
-        val files = file.listFiles()
+        val files = file.listFiles()!!
         for(imgFile:File in files){
             if(imgFile.name==fileName){
                 Log.e(CHECK_TAG,"파일 찾았습니다.")

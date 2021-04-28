@@ -15,17 +15,17 @@ import java.util.*
 class ChatMessageUtil {
     companion object {
         fun formatTime(timeInMillis: Long): String? {
-            val dateFormat = SimpleDateFormat("a hh:mm", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("a hh:mm", Locale.KOREA)
             return dateFormat.format(timeInMillis)
         }
 
         fun formatDate(timeInMillis: Long): String {
-            val dateFormat = SimpleDateFormat("YYYY년 M월 d일 E요일", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("YYYY년 M월 d일 E요일", Locale.KOREA)
             return dateFormat.format(timeInMillis)
         }
 
         fun formatDateTime(timeInMillis: Long): String{
-            val dateFormat = SimpleDateFormat("YYYYMMdd_HHmmss", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("YYYYMMdd_HHmmss", Locale.KOREA)
             return dateFormat.format(timeInMillis)
         }
 

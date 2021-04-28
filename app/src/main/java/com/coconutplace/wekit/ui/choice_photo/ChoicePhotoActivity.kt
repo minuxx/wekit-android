@@ -142,7 +142,7 @@ class ChoicePhotoActivity : BaseActivity() {
     }
 
     private fun createImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss",Locale.KOREA).format(Date())
         val imageFileName = "diary_${timeStamp}.jpg"
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
