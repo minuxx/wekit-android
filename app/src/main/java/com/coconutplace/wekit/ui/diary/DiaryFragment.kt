@@ -115,7 +115,7 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         binding.diaryYearTv.text = today.year.toString()
         binding.diaryMonthTv.text = if ( today.month < 10 ){ "0" + today.month } else { today.month.toString() }
 
-        binding.diaryCalendarView.addDecorators(ToadyDecorator(context))
+        binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, today))
     }
 
     private fun getCurrentDate(date: CalendarDay): String{
