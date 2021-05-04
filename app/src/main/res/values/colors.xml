@@ -24,6 +24,7 @@
     <color name="dialog_wekit_title">#000</color>
     <color name="dialog_wekit_button_text">#7D6CE9</color>
     <color name="default_border">#f1f1f1</color>
+    <color name="dialog_wekit_border">#f1f1f1</color>
 
     <!--login-->
     <color name="login_basic_text">#000</color>

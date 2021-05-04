@@ -72,6 +72,7 @@ class ProfileActivity : BaseActivity(), ProfileListener {
         binding.profileEditPasswordTv.isClickable = true
     }
 
+
     override fun onClick(v: View?) {
         super.onClick(v)
 
