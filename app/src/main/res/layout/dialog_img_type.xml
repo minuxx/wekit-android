@@ -31,7 +31,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/icn_photo_confirm"/>
+            android:src="@drawable/icn_photo_confirm"
+            android:contentDescription="@string/chat_send_auth_img" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +60,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/icn_photo_basic"/>
+            android:src="@drawable/icn_photo_basic"
+            android:contentDescription="@string/chat_send_normal_img" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

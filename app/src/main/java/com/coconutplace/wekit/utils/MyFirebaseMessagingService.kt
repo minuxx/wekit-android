@@ -75,7 +75,7 @@ class MyFirebaseMessagingService: SendBirdPushHandler() {
                 "Message Notification Body: " + remoteMessage.notification!!.body
             )
         }
-        var channelUrl: String? = null
+        val channelUrl: String?
         try {
             if (remoteMessage.data.containsKey("sendbird")) {
                 val sendBird = JSONObject(remoteMessage.data["sendbird"])

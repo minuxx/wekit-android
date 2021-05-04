@@ -1,5 +1,6 @@
 package com.coconutplace.wekit.ui.chat
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -47,8 +48,9 @@ class ChatMemberListAdapter : BaseAdapter() {
         return position.toLong()
     }
 
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView1: View?, parent: ViewGroup?): View {
-        val view: View = LayoutInflater.from(parent?.context).inflate(R.layout.item_chat_member,null)
+        val view: View = LayoutInflater.from(parent?.context).inflate(R.layout.item_chat_member,parent,false)
 
         val authCount = view.findViewById<View>(R.id.chat_member_auth_count) as Button
         val nickName = view.findViewById<View>(R.id.chat_member_nickname) as TextView

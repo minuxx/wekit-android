@@ -33,14 +33,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_FILE_MESSAGE_IMAGE_OTHER = 23;
     private static final int VIEW_TYPE_ADMIN_MESSAGE = 30;
 
-    private Context mContext;
 
     OnItemClickListener mItemClickListener;
     private ArrayList<BaseMessage> mMessageList;
 
-    public ChatMessageAdapter(Context context){
-        mMessageList = new ArrayList<BaseMessage>();
-        mContext = context;
+    public ChatMessageAdapter(){
+        mMessageList = new ArrayList<>();
     }
 
     public void setItemClickListener(OnItemClickListener listener){
