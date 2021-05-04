@@ -6,6 +6,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -146,6 +148,23 @@ class CreateChannelActivity: BaseActivity(), CreateChannelListener {
 
             override fun onTagCrossClick(position: Int) { }
         })
+
+        //스피너
+        val authSpinnerAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.create_channel_auth_count_array,
+            R.layout.spinner_create_channel_selected
+        )
+        authSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
+        mBinding.createChannelAuthCountSpinner.adapter = authSpinnerAdapter
+
+        val countSpinnerAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.create_channel_member_count_array,
+            R.layout.spinner_create_channel_selected
+        )
+        countSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
+        mBinding.createChannelMaxMemberSpinner.adapter = countSpinnerAdapter
 
         mBinding.root.setOnClickListener{
             mBinding.root.hideKeyboard()
