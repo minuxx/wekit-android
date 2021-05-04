@@ -2,6 +2,7 @@ package com.coconutplace.wekit.ui.diary
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import kotlin.collections.ArrayList
 import androidx.lifecycle.Observer
 import com.coconutplace.wekit.databinding.FragmentHomeBinding
 import com.coconutplace.wekit.ui.diary.decorators.*
+import com.coconutplace.wekit.utils.GlobalConstant
 
 class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     OnMonthChangedListener {
@@ -195,7 +197,11 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     override fun onDiaryFailure(code: Int, message: String) {
         binding.diaryLoading.hide()
 
-        binding.diaryRootLayout.snackbar(message)
+        when(code){
+            404 -> {
+                showDialog(getString(R.string.network_error), requireActivity())
+            }
+        }
     }
 
     override fun onGetWrittenDatesStarted() {
@@ -211,6 +217,10 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     override fun onGetWrittenDatesFailure(code: Int, message: String) {
         binding.diaryLoading.hide()
 
-        binding.diaryRootLayout.snackbar(message)
+        when(code){
+            404 -> {
+                showDialog(getString(R.string.network_error), requireActivity())
+            }
+        }
     }
 }
