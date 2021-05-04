@@ -61,5 +61,9 @@ class GlobalConstant {
         //rule
         const val FLAG_TNC = 920
         const val FLAG_PERSONAL_INFO = 921
+
+        //dialog
+        const val FLAG_LOGOUT = 210
+        const val FLAG_SIGNOUT = 211
     }
 }

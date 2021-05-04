@@ -13,8 +13,7 @@ import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.remote.auth.listeners.SignUpListener
 import com.coconutplace.wekit.databinding.ActivitySignupBinding
 import com.coconutplace.wekit.ui.BaseActivity
-import com.coconutplace.wekit.ui.WekitDialog
-import com.coconutplace.wekit.ui.home.PermissionDialog
+import com.coconutplace.wekit.ui.WekitV1Dialog
 import com.coconutplace.wekit.ui.poll.PollActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_PERSONAL_INFO
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TNC
@@ -26,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.regex.Pattern
 
 
-class SignUpActivity : BaseActivity(), SignUpListener, WekitDialog.WekitDialogClickListener {
+class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialogClickListener {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel: SignUpViewModel by viewModel()
 

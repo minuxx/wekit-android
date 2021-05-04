@@ -6,7 +6,7 @@ import android.view.Window
 import android.widget.TextView
 import com.coconutplace.wekit.R
 
-class WekitDialog(val context: Context) {
+class WekitV1Dialog(val context: Context) {
     private val dlg = Dialog(context)   //부모 액티비티의 context 가 들어감
     private lateinit var mTvTitle : TextView
     private lateinit var btnOK : TextView
@@ -19,10 +19,10 @@ class WekitDialog(val context: Context) {
         dlg.setContentView(R.layout.dialog_wekit_v1)
         dlg.setCancelable(false)
 
-        mTvTitle = dlg.findViewById<TextView>(R.id.dialog_wekit_title_tv)
+        mTvTitle = dlg.findViewById<TextView>(R.id.dialog_wekit_v1_title_tv)
         mTvTitle.text = title
 
-        btnOK = dlg.findViewById(R.id.dialog_wekit_check_tv)
+        btnOK = dlg.findViewById(R.id.dialog_wekit_v1_check_tv)
         btnOK.setOnClickListener {
 
             listener!!.onOKClicked()

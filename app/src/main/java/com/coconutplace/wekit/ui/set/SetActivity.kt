@@ -8,6 +8,8 @@ import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Auth
 import com.coconutplace.wekit.data.remote.auth.listeners.SetListener
 import com.coconutplace.wekit.ui.BaseActivity
+import com.coconutplace.wekit.ui.WekitV1Dialog
+import com.coconutplace.wekit.ui.WekitV2Dialog
 import com.coconutplace.wekit.ui.badge.BadgeActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.ui.notice.NoticeActivity
@@ -15,6 +17,7 @@ import com.coconutplace.wekit.ui.opensource.OpensourceActivity
 import com.coconutplace.wekit.ui.profile.ProfileActivity
 import com.coconutplace.wekit.ui.rule.RuleActivity
 import com.coconutplace.wekit.ui.tutorial.TutorialActivity
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_LOGOUT
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TUTORIAL_SET
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.PROFILE_URL
 import com.coconutplace.wekit.utils.hide
@@ -26,7 +29,7 @@ import com.kakao.util.exception.KakaoException
 import kotlinx.android.synthetic.main.activity_set.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SetActivity : BaseActivity(), SetListener{
+class SetActivity : BaseActivity(), SetListener, WekitV2Dialog.WekitV2DialogClickListener{
     private val viewModel: SetViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,9 +66,11 @@ class SetActivity : BaseActivity(), SetListener{
             set_inquiry_tv -> openKakao()
             set_opensource_tv -> startOpensourceActivity()
             set_logout_tv -> {
-                viewModel.mFlagLogout = true
-                viewModel.sendFcmToken(null)
+                val logoutDialog = WekitV2Dialog(this, FLAG_LOGOUT)
+                logoutDialog.listener = this
+                logoutDialog.show(getString(R.string.set_logout_title))
             }
+
             set_tutorial_tv -> startTutorialActivity()
             set_badge_tv -> startBadgeActivity()
             set_rule_tv -> startRuleActivity()
@@ -77,7 +82,7 @@ class SetActivity : BaseActivity(), SetListener{
             PlusFriendService.getInstance().chat(this, getString(R.string.kakao_channel_id))
         }catch (e : KakaoException){
             e.printStackTrace()
-            set_root_layout.snackbar(getString(R.string.network_error))
+            showDialog(getString(R.string.network_error))
         }
     }
 
@@ -169,9 +174,11 @@ class SetActivity : BaseActivity(), SetListener{
     override fun onGetProfileFailure(code: Int, message: String) {
         set_loading.hide()
 
-        when(code){
-            404 -> set_root_layout.snackbar(getString(R.string.network_error))
-        }
+//        when(code){
+//            404 -> showDialog(getString(R.string.network_error))
+//        }
+
+        showDialog(getString(R.string.network_error))
     }
 
     override fun onSendFcmTokenStarted() {
@@ -189,6 +196,13 @@ class SetActivity : BaseActivity(), SetListener{
     override fun onSendFcmTokenFailure(code: Int, message: String) {
         set_loading.hide()
 
-        set_root_layout.snackbar(message)
+        showDialog(getString(R.string.network_error))
+    }
+
+    override fun onOKClicked(flag: Int) {
+        if(flag == FLAG_LOGOUT){
+            viewModel.mFlagLogout = true
+            viewModel.sendFcmToken(null)
+        }
     }
 }
