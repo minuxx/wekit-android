@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.User
 import com.coconutplace.wekit.data.remote.auth.listeners.ProfileListener
 import com.coconutplace.wekit.data.repository.auth.AuthRepository
+import com.coconutplace.wekit.di.TEST_URL
+import com.coconutplace.wekit.di.getBaseUrl
 import com.coconutplace.wekit.utils.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -24,7 +26,6 @@ class ProfileViewModel(
 ) : ViewModel() {
     private val storage = Firebase.storage(GlobalConstant.FIREBASE_STORAGE_URL)
     var profileListener: ProfileListener? = null
-    var mFlagEdit = false
     var mFlagDeleteUser = false
     val nickname: MutableLiveData<String> = MutableLiveData<String>()
     val profileUrl: MutableLiveData<Bitmap> = MutableLiveData<Bitmap>()
@@ -121,8 +122,11 @@ class ProfileViewModel(
             return
         }
 
-        val storageRef = storage.reference.child("profile/")
-            .child("${UUID.randomUUID()}.jpg")
+        val where = if(getBaseUrl() == TEST_URL){ "test" } else { "prod" }
+
+        val storageRef = storage.reference.child("profile")
+                                          .child(where)
+                                          .child("${UUID.randomUUID()}.jpg")
 
         val baos = ByteArrayOutputStream()
         profileUrl.value!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)

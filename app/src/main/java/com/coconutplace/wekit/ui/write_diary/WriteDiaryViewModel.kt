@@ -111,7 +111,7 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
 
         for(i in 1 until photos.size){
             val storageRef = storage.reference.child("certification-diary")
-                                              .child("$where")
+                                              .child(where)
                                               .child("$clientID")
                                               .child("${UUID.randomUUID()}.jpg")
 

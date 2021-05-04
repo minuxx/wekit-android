@@ -1,6 +1,5 @@
 package com.coconutplace.wekit.ui.profile
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
@@ -22,9 +22,7 @@ import com.coconutplace.wekit.data.remote.auth.listeners.ProfileListener
 import com.coconutplace.wekit.databinding.ActivityProfileBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.certify_email.CertifyEmailActivity
-import com.coconutplace.wekit.ui.edit_password.EditPasswordActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
-import com.coconutplace.wekit.ui.main.MainActivity
 import com.coconutplace.wekit.utils.*
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.PROFILE_URL
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,17 +44,13 @@ class ProfileActivity : BaseActivity(), ProfileListener {
 
         binding.profileRootLayout.setOnClickListener(this)
         binding.profileBackBtn.setOnClickListener(this)
-        binding.profileEditTv.setOnClickListener(this)
         binding.profileProfileImgIv.setOnClickListener(this)
-        binding.profileProfileImgIv.isClickable = false
         binding.profileEditCompleteBtn.setOnClickListener(this)
-        binding.profileEditCompleteBtn.isClickable = false
-        binding.profileNicknameEt.isFocusableInTouchMode = false
         binding.profileDeleteUserTv.setOnClickListener(this)
         binding.profileDeleteUserCompleteBtn.setOnClickListener(this)
-        binding.profileDeleteUserCompleteBtn.isClickable = false
         binding.profileEditPasswordTv.setOnClickListener(this)
-        binding.profileEditPasswordTv.isClickable = false
+
+//        binding.profileNicknameEt.isFocusableInTouchMode = false
 
         if (intent.hasExtra(PROFILE_URL)) {
             Glide.with(this)
@@ -65,6 +59,8 @@ class ProfileActivity : BaseActivity(), ProfileListener {
                 .placeholder(R.drawable.character_big_basic)
                 .error(R.drawable.character_big_basic)
                 .into(binding.profileProfileImgIv)
+
+            viewModel.profileUrlFromFirebase.postValue(intent.getStringExtra(PROFILE_URL))
         }
 
         observeNickname()
@@ -83,7 +79,6 @@ class ProfileActivity : BaseActivity(), ProfileListener {
             binding.profileBackBtn -> finish()
             binding.profileRootLayout -> hideKeyboard()
 
-            binding.profileEditTv -> convertEditMode()
             binding.profileProfileImgIv -> pickImageFromGallery()
             binding.profileEditPasswordTv -> startCertifyEmailActivity()
             binding.profileEditCompleteBtn -> patchProfile()
@@ -100,12 +95,10 @@ class ProfileActivity : BaseActivity(), ProfileListener {
     }
 
     private fun patchProfile() {
-        if (viewModel.mFlagEdit) {
-            if (viewModel.profileUrl.value == null || viewModel.profileUrlFromFirebase.value!!.isNotEmpty()) {
-                viewModel.patchProfile()
-            } else if(viewModel.profileUrlFromFirebase.value!!.isEmpty()){
-                viewModel.uploadToFirebase()
-            }
+        if (viewModel.profileUrl.value == null || viewModel.profileUrlFromFirebase.value!!.isNotEmpty()) {
+            viewModel.patchProfile()
+        } else if(viewModel.profileUrlFromFirebase.value!!.isEmpty()) {
+            viewModel.uploadToFirebase()
         }
     }
 
@@ -115,62 +108,58 @@ class ProfileActivity : BaseActivity(), ProfileListener {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun convertEditMode() {
-        if (viewModel.mFlagEdit) {
-            viewModel.mFlagEdit = false
-            binding.profileEditTv.text = getString(R.string.profile_edit)
-            binding.profileProfileImgEditIv.visibility = View.INVISIBLE
-            binding.profileEditCompleteBtn.visibility = View.INVISIBLE
-            binding.profileProfileImgIv.isClickable = false
-            binding.profileEditPasswordTv.isClickable = false
-
-            binding.profileEditPasswordTv.background =
-                getDrawable(R.drawable.bg_edit_password_button_inactive)
-            binding.profileEditPasswordTv.setTextColor(getColor(R.color.profile_edit_password_btn_border_inactive))
-            binding.profileNicknameEt.isFocusableInTouchMode = false
-            binding.profileNicknameEt.clearFocus()
-
-            binding.profileDeleteUserTv.isClickable = true
-        } else {
-            viewModel.mFlagEdit = true
-            binding.profileEditTv.text = getString(R.string.profile_cancel)
-            binding.profileProfileImgEditIv.visibility = View.VISIBLE
-            binding.profileEditCompleteBtn.visibility = View.VISIBLE
-            binding.profileProfileImgIv.isClickable = true
-            binding.profileEditCompleteBtn.isClickable = true
-            binding.profileEditPasswordTv.isClickable = true
-
-            binding.profileEditPasswordTv.background =
-                getDrawable(R.drawable.bg_edit_password_button_active)
-            binding.profileEditPasswordTv.setTextColor(getColor(R.color.profile_edit_password_btn_border_active))
-            binding.profileNicknameEt.isFocusableInTouchMode = true
-            binding.profileNicknameEtLayout.error = null
-
-            binding.profileDeleteUserTv.isClickable = false
-        }
-    }
+//    @SuppressLint("UseCompatLoadingForDrawables")
+//    private fun convertEditMode() {
+//        if (viewModel.mFlagEdit) {
+//            viewModel.mFlagEdit = false
+//            binding.profileProfileImgEditIv.visibility = View.INVISIBLE
+//            binding.profileEditCompleteBtn.visibility = View.INVISIBLE
+//            binding.profileProfileImgIv.isClickable = false
+//            binding.profileEditPasswordTv.isClickable = false
+//
+//            binding.profileEditPasswordTv.background =
+//                getDrawable(R.drawable.bg_edit_password_button_inactive)
+//            binding.profileEditPasswordTv.setTextColor(getColor(R.color.profile_edit_password_btn_border_inactive))
+//            binding.profileNicknameEt.isFocusableInTouchMode = false
+//            binding.profileNicknameEt.clearFocus()
+//
+//            binding.profileDeleteUserTv.isClickable = true
+//        } else {
+//            viewModel.mFlagEdit = true
+//            binding.profileProfileImgEditIv.visibility = View.VISIBLE
+//            binding.profileEditCompleteBtn.visibility = View.VISIBLE
+//            binding.profileProfileImgIv.isClickable = true
+//            binding.profileEditCompleteBtn.isClickable = true
+//            binding.profileEditPasswordTv.isClickable = true
+//
+//            binding.profileEditPasswordTv.background =
+//                getDrawable(R.drawable.bg_edit_password_button_active)
+//            binding.profileEditPasswordTv.setTextColor(getColor(R.color.profile_edit_password_btn_border_active))
+//            binding.profileNicknameEt.isFocusableInTouchMode = true
+//            binding.profileNicknameEtLayout.error = null
+//
+//            binding.profileDeleteUserTv.isClickable = false
+//        }
+//    }
 
     private fun convertDeleteUserMode() {
         if (viewModel.mFlagDeleteUser) {
             viewModel.mFlagDeleteUser = false
             binding.profileDeleteUserTv.text = getString(R.string.profile_delete_user)
             binding.profilePwEtLayout.visibility = View.GONE
+            binding.profileEditCompleteBtn.visibility = View.VISIBLE
             binding.profileDeleteUserCompleteBtn.visibility = View.GONE
             binding.profileDeleteUserCompleteBtn.isClickable = false
             viewModel.oldPassword.postValue("")
             binding.profilePwEt.clearFocus()
             binding.profilePwEtLayout.error = null
-
-            binding.profileEditTv.isClickable = true
         } else {
             viewModel.mFlagDeleteUser = true
             binding.profileDeleteUserTv.text = getString(R.string.profile_delete_user_cancel)
             binding.profilePwEtLayout.visibility = View.VISIBLE
+            binding.profileEditCompleteBtn.visibility = View.GONE
             binding.profileDeleteUserCompleteBtn.visibility = View.VISIBLE
             binding.profileDeleteUserCompleteBtn.isClickable = true
-
-            binding.profileEditTv.isClickable = false
         }
     }
 
@@ -193,10 +182,6 @@ class ProfileActivity : BaseActivity(), ProfileListener {
     }
 
     private fun pickImageFromGallery() {
-        if (!viewModel.mFlagEdit) {
-            return
-        }
-
         binding.profileProfileImgIv.isClickable = false
 
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
@@ -271,7 +256,6 @@ class ProfileActivity : BaseActivity(), ProfileListener {
 
         if (resultCode == RESULT_OK && requestCode == GlobalConstant.IMAGE_PICK_CODE) {
             if (data != null && data.data != null) {
-
                 try {
                     val bitmap = extractPhoto(data.data!!)
                     Glide.with(this)
@@ -314,16 +298,16 @@ class ProfileActivity : BaseActivity(), ProfileListener {
         binding.profileLoading.hide()
         binding.profileEditCompleteBtn.isClickable = true
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-        convertEditMode()
+
+        finish()
     }
 
     override fun onPatchProfileFailure(code: Int, message: String) {
         binding.profileLoading.hide()
 
         when (code) {
-            303 -> binding.profileRootLayout.snackbar(message)
-            304 -> binding.profileNicknameEtLayout.error = message
-            else -> binding.profileRootLayout.snackbar(getString(R.string.network_error))
+            303, 304 -> binding.profileNicknameEtLayout.error = message
+            else -> showDialog(getString(R.string.network_error))
         }
 
         binding.profileEditCompleteBtn.isClickable = true
@@ -342,7 +326,7 @@ class ProfileActivity : BaseActivity(), ProfileListener {
     override fun onUploadToFirebaseFailure() {
         binding.profileLoading.hide()
 
-        binding.profileRootLayout.snackbar(getString(R.string.network_error))
+        showDialog(getString(R.string.network_error))
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
@@ -362,7 +346,7 @@ class ProfileActivity : BaseActivity(), ProfileListener {
 
         when (code) {
             303, 304 -> binding.profilePwEtLayout.error = message
-            else -> binding.profileRootLayout.snackbar(message)
+            else -> showDialog(getString(R.string.network_error))
         }
 
         binding.profileDeleteUserCompleteBtn.isClickable = true
