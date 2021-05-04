@@ -228,14 +228,14 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitDialog.WekitDialogCl
         when(code){
             301, 302, 303 -> binding.signupIdEtLayout.error = message
             304, 305, 306 -> binding.signupPwEtLayout.error = message
-            307, 308 -> binding.signupEmailEtLayout.error = message
-            309, 310, 311, 317 -> binding.signupNicknameEtLayout.error = message
+            307, 308, 319 -> binding.signupEmailEtLayout.error = message
+            309, 310, 311, 318 -> binding.signupNicknameEtLayout.error = message
+            314, 317 -> binding.signupIdEtLayout.error = message
             315 -> binding.signupBirthdayEtLayout.error = message
-            319 -> showDialog(message)
             404 -> showDialog(getString(R.string.network_error))
             else -> binding.signupRootLayout.snackbar(message)
         }
-
+        
         binding.signupCompleteBtn.isClickable = true
     }
 }

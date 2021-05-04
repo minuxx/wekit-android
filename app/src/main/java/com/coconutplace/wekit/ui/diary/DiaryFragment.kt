@@ -2,7 +2,6 @@ package com.coconutplace.wekit.ui.diary
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,23 +10,21 @@ import com.coconutplace.wekit.data.entities.Diary
 import com.coconutplace.wekit.data.remote.diary.listeners.DiaryListener
 import com.coconutplace.wekit.databinding.FragmentDiaryBinding
 import com.coconutplace.wekit.ui.BaseFragment
+import com.coconutplace.wekit.ui.diary.decorators.NormalDayDecorator
+import com.coconutplace.wekit.ui.diary.decorators.SelectedDayDecorator
+import com.coconutplace.wekit.ui.diary.decorators.WrittenDatesDecorator
+import com.coconutplace.wekit.ui.diary.decorators.WrittenDayDecorator
 import com.coconutplace.wekit.ui.write_diary.WriteDiaryActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_READ_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
 import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.show
-import com.coconutplace.wekit.utils.snackbar
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
-import kotlin.collections.ArrayList
-import androidx.lifecycle.Observer
-import com.coconutplace.wekit.databinding.FragmentHomeBinding
-import com.coconutplace.wekit.ui.diary.decorators.*
-import com.coconutplace.wekit.utils.GlobalConstant
 
 class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     OnMonthChangedListener {
@@ -212,6 +209,7 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         binding.diaryLoading.hide()
 
         binding.diaryCalendarView.addDecorators(WrittenDatesDecorator(context, viewModel.writtenDates))
+        binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, CalendarDay.today()))
     }
 
     override fun onGetWrittenDatesFailure(code: Int, message: String) {

@@ -16,7 +16,7 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
 //    private lateinit var diaryList: LiveData<PagedList<Diary>>
     var diaryListener: DiaryListener? = null
     val diaries = ObservableArrayList<Diary>()
-    val writtenDates = ArrayList<CalendarDay>()
+    val writtenDates = ObservableArrayList<CalendarDay>()
     var previousDay: CalendarDay = CalendarDay.today()
 
     fun getDiaries(date: String){
