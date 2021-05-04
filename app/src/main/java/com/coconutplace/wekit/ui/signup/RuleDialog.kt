@@ -1,13 +1,14 @@
 package com.coconutplace.wekit.ui.signup
 
 import android.app.Dialog
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_PERSONAL_INFO
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TNC
@@ -28,13 +29,21 @@ class RuleDialog(flag: Int): BottomSheetDialogFragment() {
         (dialog as? BottomSheetDialog)?.behavior?.apply {
             isFitToContents = true
             isCancelable = true
-            state = BottomSheetBehavior.STATE_COLLAPSED
+            state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(requireContext(), R.style.permissionDialog)
+
+//        bottomSheetDialog.setOnShowListener { dialog ->
+//            val bottomSheet = (dialog as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+//            BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+//            BottomSheetBehavior.from(bottomSheet).skipCollapsed = true
+//            BottomSheetBehavior.from(bottomSheet).isHideable = true
+//        }
+
+        return BottomSheetDialog(requireContext(), R.style.bottomSheetDialog)
     }
 
     override fun onCreateView(
@@ -48,12 +57,22 @@ class RuleDialog(flag: Int): BottomSheetDialogFragment() {
         val titleTv: TextView = view.findViewById(R.id.rule_title_tv)
         val contentTv: TextView = view.findViewById(R.id.rule_content_tv)
 
-        if(this.flag == FLAG_PERSONAL_INFO){
+        if(this.flag == FLAG_TNC){
+            titleTv.text = getString(R.string.terms_n_conditions)
+            contentTv.text = getString(R.string.terms_n_conditions_content).htmlToString()
+        }else if(this.flag == FLAG_PERSONAL_INFO){
             titleTv.text = getString(R.string.personal_information)
-            contentTv.text = getString(R.string.personal_information_content)
+            contentTv.text = getString(R.string.personal_information_content).htmlToString()
         }
 
         return view
     }
 
+    fun String.htmlToString() : String {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            return Html.fromHtml(this).toString()
+        }
+    }
 }

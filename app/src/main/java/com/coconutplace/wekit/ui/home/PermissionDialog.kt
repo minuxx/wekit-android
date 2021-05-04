@@ -84,7 +84,7 @@ class PermissionDialog : BottomSheetDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(requireContext(), R.style.permissionDialog)
+        return BottomSheetDialog(requireContext(), R.style.bottomSheetDialog)
     }
 
     var permissionlistener: PermissionListener = object : PermissionListener {

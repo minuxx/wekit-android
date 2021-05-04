@@ -31,13 +31,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="이용약관"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/rule_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:overScrollMode="never"
         app:layout_constraintTop_toBottomOf="@+id/rule_title_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -47,8 +48,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosanskr_regular"
-            android:text="@string/personal_information_content"
+            android:text="@string/terms_n_conditions_content"
             android:textSize="16sp"
-            android:textColor="@color/rule_content"/>
-    </ScrollView>
+            android:textColor="@color/rule_content"
+            android:paddingBottom="40dp"/>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
