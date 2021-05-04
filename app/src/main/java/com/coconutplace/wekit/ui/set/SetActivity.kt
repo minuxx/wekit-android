@@ -13,6 +13,7 @@ import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.ui.notice.NoticeActivity
 import com.coconutplace.wekit.ui.opensource.OpensourceActivity
 import com.coconutplace.wekit.ui.profile.ProfileActivity
+import com.coconutplace.wekit.ui.rule.RuleActivity
 import com.coconutplace.wekit.ui.tutorial.TutorialActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TUTORIAL_SET
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.PROFILE_URL
@@ -38,7 +39,7 @@ class SetActivity : BaseActivity(), SetListener{
         set_notice_tv.setOnClickListener(this)
         set_badge_tv.setOnClickListener(this)
         set_inquiry_tv.setOnClickListener(this)
-        set_tnc_tv.setOnClickListener(this)
+        set_rule_tv.setOnClickListener(this)
         set_opensource_tv.setOnClickListener(this)
         set_tutorial_tv.setOnClickListener(this)
 
@@ -66,10 +67,8 @@ class SetActivity : BaseActivity(), SetListener{
                 viewModel.sendFcmToken(null)
             }
             set_tutorial_tv -> startTutorialActivity()
-
             set_badge_tv -> startBadgeActivity()
-
-            set_tnc_tv -> set_root_layout.snackbar(getString(R.string.guide_update))
+            set_rule_tv -> startRuleActivity()
         }
     }
 
@@ -109,6 +108,12 @@ class SetActivity : BaseActivity(), SetListener{
 
     private fun startNoticeActivity(){
         val intent = Intent(this@SetActivity, NoticeActivity::class.java)
+
+        startActivity(intent)
+    }
+
+    private fun startRuleActivity(){
+        val intent = Intent(this@SetActivity, RuleActivity::class.java)
 
         startActivity(intent)
     }

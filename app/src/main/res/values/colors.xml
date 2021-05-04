@@ -186,4 +186,6 @@
     <color name="rule_toggle">#f3f3f3</color>
     <color name="rule_title">#000</color>
     <color name="rule_content">#000</color>
+    <color name="rule_content_solid">#FFF</color>
+    <color name="rule_content_border">#DADADA</color>
 </resources>

@@ -7,7 +7,6 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_PERSONAL_INFO
@@ -35,14 +34,6 @@ class RuleDialog(flag: Int): BottomSheetDialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
-//        bottomSheetDialog.setOnShowListener { dialog ->
-//            val bottomSheet = (dialog as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
-//            BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
-//            BottomSheetBehavior.from(bottomSheet).skipCollapsed = true
-//            BottomSheetBehavior.from(bottomSheet).isHideable = true
-//        }
-
         return BottomSheetDialog(requireContext(), R.style.bottomSheetDialog)
     }
 
@@ -58,21 +49,21 @@ class RuleDialog(flag: Int): BottomSheetDialogFragment() {
         val contentTv: TextView = view.findViewById(R.id.rule_content_tv)
 
         if(this.flag == FLAG_TNC){
-            titleTv.text = getString(R.string.terms_n_conditions)
-            contentTv.text = getString(R.string.terms_n_conditions_content).htmlToString()
+            titleTv.text = getString(R.string.rule_terms_n_conditions)
+            contentTv.text = getString(R.string.rule_terms_n_conditions_content).htmlToString()
         }else if(this.flag == FLAG_PERSONAL_INFO){
-            titleTv.text = getString(R.string.personal_information)
-            contentTv.text = getString(R.string.personal_information_content).htmlToString()
+            titleTv.text = getString(R.string.rule_personal_information)
+            contentTv.text = getString(R.string.rule_personal_information_content).htmlToString()
         }
 
         return view
     }
 
-    fun String.htmlToString() : String {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY).toString()
+    private fun String.htmlToString() : String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY).toString()
         } else {
-            return Html.fromHtml(this).toString()
+            Html.fromHtml(this).toString()
         }
     }
 }

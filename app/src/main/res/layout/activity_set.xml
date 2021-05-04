@@ -184,7 +184,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/set_alarm_tv" />
 
             <TextView
-                android:id="@+id/set_tnc_tv"
+                android:id="@+id/set_rule_tv"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginStart="20dp"
@@ -192,7 +192,7 @@
                 android:background="@drawable/bg_set_list_item"
                 android:fontFamily="@font/notosanskr_regular"
                 android:gravity="center_vertical"
-                android:text="@string/set_terms_n_conditions"
+                android:text="@string/set_rule"
                 android:textColor="@color/set_list_text"
                 android:textSize="16sp"
                 app:drawableEndCompat="@drawable/icn_more_gray"
@@ -215,7 +215,7 @@
                 app:drawableEndCompat="@drawable/icn_more_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/set_tnc_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/set_rule_tv" />
 
             <TextView
                 android:id="@+id/set_tutorial_tv"

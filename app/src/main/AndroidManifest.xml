@@ -96,6 +96,8 @@
 
         <activity android:name="com.coconutplace.wekit.ui.notice.NoticeActivity"/>
 
+        <activity android:name="com.coconutplace.wekit.ui.rule.RuleActivity"/>
+
         <activity android:name="com.coconutplace.wekit.ui.opensource.OpensourceActivity"/>
 
         <activity android:name="com.coconutplace.wekit.ui.photo_viewer.PhotoViewerActivity" android:theme="@style/WhiteTheme"/>

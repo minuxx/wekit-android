@@ -226,7 +226,7 @@
     <string name="set_badge">배지 보관함</string>
     <string name="set_alarm_set">푸시알람 설정</string>
     <string name="set_inquiry">1:1 문의</string>
-    <string name="set_terms_n_conditions">개인정보 이용약관</string>
+    <string name="set_rule">개인정보처리방침 및 이용약관</string>
     <string name="set_opensource">오픈소스 리스트</string>
     <string name="set_tutorial">튜토리얼</string>
     <string name="set_logout">Log Out</string>
@@ -317,8 +317,9 @@
     <string name="certify_email_certification_number_invalid">인증번호가 일치하지 않습니다.</string>
 
     <!-- rule -->
-    <string name="terms_n_conditions">이용약관</string>
-    <string name="terms_n_conditions_content">
+    <string name="rule">개인정보처리방침 및 이용약관</string>
+    <string name="rule_terms_n_conditions">이용약관</string>
+    <string name="rule_terms_n_conditions_content">
         <![CDATA[<p>
 제1조 (목적)
 <br><br>
@@ -692,8 +693,8 @@
 </p>]]>
     </string>
 
-    <string name="personal_information">개인정보수집방침</string>
-    <string name="personal_information_content">
+    <string name="rule_personal_information">개인정보처리방침</string>
+    <string name="rule_personal_information_content">
         <![CDATA[
 <P>
 WEKIT 개인정보수집방침
