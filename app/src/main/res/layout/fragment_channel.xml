@@ -122,6 +122,12 @@
                 android:contentDescription="@string/channel_cancel_chat_room_img" />
         </RelativeLayout>
 
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/channel_top_snackbar_position_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/channel_example_tag_layout" />
+
         <LinearLayout
             android:id="@+id/channel_example_tag_layout"
             android:layout_width="match_parent"
