@@ -14,7 +14,10 @@ import com.coconutplace.wekit.data.remote.auth.listeners.SignUpListener
 import com.coconutplace.wekit.databinding.ActivitySignupBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.WekitDialog
+import com.coconutplace.wekit.ui.home.PermissionDialog
 import com.coconutplace.wekit.ui.poll.PollActivity
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_PERSONAL_INFO
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TNC
 import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.hideKeyboard
 import com.coconutplace.wekit.utils.show
@@ -45,6 +48,8 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitDialog.WekitDialogCl
 
         binding.signupRootLayout.setOnClickListener(this)
         binding.signupBackBtn.setOnClickListener(this)
+        binding.signupTncTv.setOnClickListener(this)
+        binding.signupPersonalInfoTv.setOnClickListener(this)
 
 
 //        binding.signupBirthdayEt.setOnKeyListener(View.OnKeyListener{ v, keyCode, event ->
@@ -90,6 +95,8 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitDialog.WekitDialogCl
 
         when(v){
             binding.signupRootLayout -> binding.signupRootLayout.hideKeyboard()
+            binding.signupTncTv -> openRuleDialog(FLAG_TNC)
+            binding.signupPersonalInfoTv -> openRuleDialog(FLAG_PERSONAL_INFO)
             binding.signupBackBtn -> finish()
         }
     }
@@ -151,6 +158,11 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitDialog.WekitDialogCl
                 binding.signupNicknameEtLayout.error = null
             }
         })
+    }
+
+    fun openRuleDialog(flag: Int){
+        val ruleDialog = RuleDialog(flag)
+        ruleDialog.show(supportFragmentManager, ruleDialog.tag)
     }
 
     fun onGenderCheckboxClicked(view: View) {

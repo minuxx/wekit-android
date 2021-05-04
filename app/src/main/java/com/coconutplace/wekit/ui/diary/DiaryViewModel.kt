@@ -1,8 +1,10 @@
 package com.coconutplace.wekit.ui.diary
 
 import androidx.databinding.ObservableArrayList
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.coconutplace.wekit.data.entities.Diary
 import com.coconutplace.wekit.data.remote.diary.listeners.DiaryListener
 import com.coconutplace.wekit.data.repository.diary.DiaryRepository
@@ -11,6 +13,7 @@ import com.coconutplace.wekit.utils.Coroutines
 import com.prolificinteractive.materialcalendarview.CalendarDay
 
 class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
+//    private lateinit var diaryList: LiveData<PagedList<Diary>>
     var diaryListener: DiaryListener? = null
     val diaries = ObservableArrayList<Diary>()
     val writtenDates = ArrayList<CalendarDay>()
@@ -25,6 +28,7 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
 
                 if(diaryResponse.isSuccess){
                     diaryResponse.result?.let {
+//                        diaryList = it.diaryList
                         diaryListener?.onDiarySuccess(it.diaryList!!)
                         return@main
                     }

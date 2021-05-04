@@ -41,7 +41,7 @@ class MainActivity : BaseActivity(), MainListener{
 
         val channelUrl = intent.getStringExtra("groupChannelUrl")
 
-        if(channelUrl==null){
+        if(channelUrl == null){
             initNavigation()
         }else{
             initNavigationWithPush()

@@ -136,4 +136,7 @@ dependencies {
 
     //ucrop - 이미지 편집 라이브러리리
    implementation 'com.github.yalantis:ucrop:2.2.6'
+
+    //paging library
+    implementation "androidx.paging:paging-runtime:$paging_version"
 }
