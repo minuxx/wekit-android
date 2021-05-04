@@ -262,6 +262,9 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 Log.e(ERROR_TAG,"message send fail : $e")
 
                 when (e.code) {
+                    800200 -> {
+                        _showDialog.postValue(Event("네트워크가 원활하지 않습니다."))
+                    }
                     900020 -> {
                         //chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
                         _showDialog.postValue(Event("채팅방에 속해있지 않습니다"))
@@ -413,6 +416,9 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 isLoading.postValue(false)
                 Log.e(ERROR_TAG,"send file error ${e.code} : ${e.message}")
                 when (e.code) {
+                    800200 ->{
+                        _showDialog.postValue(Event("네트워크가 원활하지 않습니다"))
+                    }
                     900020 -> {
                         //chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
                         _showDialog.postValue(Event("채팅방에 속해있지 않습니다"))

@@ -1,6 +1,7 @@
 package com.coconutplace.wekit.ui.channel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.ChannelFilter
@@ -9,6 +10,8 @@ import com.coconutplace.wekit.data.entities.ChatRoom
 import com.coconutplace.wekit.data.remote.channel.ChannelResponse
 import com.coconutplace.wekit.data.remote.channel.listeners.ChannelListener
 import com.coconutplace.wekit.data.repository.channel.ChannelRepository
+import com.coconutplace.wekit.utils.ApiException
+import com.coconutplace.wekit.utils.Event
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
@@ -33,6 +36,10 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     //var status:Int = 1
     private var _filter: ChannelFilter ?= null
     private var searchKeyWord: String?=null
+
+    private val _dialogEvent = MutableLiveData<Event<Any>>()
+    val dialogEvent: LiveData<Event<Any>>
+        get() = _dialogEvent
 
     fun getMyRoomCount():Int{
         return myRoomCount
@@ -87,12 +94,12 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                     if(myChannelResponse.isSuccess){
                         myRoomCount = myChannelResponse.result!!.chatList!!.size
                         if(myRoomCount>0){
-                            val myFirstRoom = myChannelResponse.result!!.chatList!![0]
+                            val myFirstRoom = myChannelResponse.result.chatList!![0]
                             myRoomUrl = myFirstRoom.chatUrl
                             enterRoom()
                         }
                         else{//속한 채팅방 없을 때
-
+                            Log.e(ERROR_TAG,"센드버드엔 $channelUrl 속해있지만 WEKIT서버엔 속해있지 않습니다.")
                         }
                     }
                     else{
@@ -178,9 +185,12 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                 }
                 else{
                     Log.e(ERROR_TAG,"myChannel failed : ${myChannelResponse.message}")
+                    _dialogEvent.postValue(Event(404))
                 }
-            }catch (e:Exception){
+            }
+            catch (e:Exception){
                 Log.e(ERROR_TAG,"myChannel Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
 
@@ -207,9 +217,12 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                 }
                 else{
                     Log.e(CHECK_TAG,"getRecentRoomList Fail, message : "+channelListResponse.message)
+                    if(channelListResponse.code == 404)
+                        _dialogEvent.postValue(Event(404))
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"getRecentRoomList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
     }
@@ -237,6 +250,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"getRecentRoomList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
     }
@@ -266,6 +280,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"getAllRoomList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
     }
@@ -294,6 +309,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                     Log.e(CHECK_TAG,"getAllRoomList Fail, message : "+response.message)                }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"getAllRoomList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
     }
@@ -330,6 +346,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"getFilteredRoomList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
     }
@@ -364,6 +381,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"getFilteredRoomList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
     }
@@ -403,6 +421,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
             }
             catch (e: Exception){
                 Log.e(ERROR_TAG,"getSearchChannelList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
 
@@ -431,6 +450,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
             }
             catch (e: Exception){
                 Log.e(ERROR_TAG,"getSearchChannelList Error : $e")
+                _dialogEvent.postValue(Event(404))
             }
         }
     }
@@ -476,11 +496,11 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
             }
             else {
                 Log.e(CHECK_TAG, "is not member")
-                groupChannel.join { e ->
-                    if (e != null) {
+                groupChannel.join { e2 ->
+                    if (e2 != null) {
                         Log.e(ERROR_TAG,"SendBird cannot Join Error : $e")
                         isEntering = false
-                        if(e.code==400750){
+                        if(e2.code==400750){
                             channelListener?.makeSnackBar("추방당한 채팅방입니다")
                         }
                     } else {
@@ -497,24 +517,23 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
         val userIds: MutableList<String> = ArrayList()
         userIds.add(ID)
         listQuery.userIdsExactFilter = userIds
-        listQuery.next(GroupChannelListQuery.GroupChannelListQueryResultHandler { list, e ->
-            if(e!=null){
-                Log.e(ERROR_TAG,"listQueryFail...$e")
+        listQuery.next { list, e ->
+            if (e != null) {
+                Log.e(ERROR_TAG, "listQueryFail...$e")
             }
-            Log.e(CHECK_TAG,"number of SendBird channels : ${list.size}")
+            Log.e(CHECK_TAG, "number of SendBird channels : ${list.size}")
 
-            for(channel in list){
-                channel.leave(GroupChannel.GroupChannelLeaveHandler{ e ->
-                    if(e!=null){
+            for (channel in list) {
+                channel.leave { e2 ->
+                    if (e2 != null) {
                         //ERROR
-                        Log.e(ERROR_TAG,"SendBird leaving channel error ${channel.name}...")
+                        Log.e(ERROR_TAG, "SendBird leaving channel error ${channel.name}...")
+                    } else {
+                        Log.e(CHECK_TAG, "SendBird leaving success -> ${channel.name} ")
                     }
-                    else{
-                        Log.e(CHECK_TAG,"SendBird leaving success -> ${channel.name} ")
-                    }
-                })
+                }
             }
-        })
+        }
 
         //서버 api에서 채팅방 나가기
         if(myChannelResponse.isSuccess){
@@ -542,6 +561,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
                     }catch (e:Exception){
                         Log.e(ERROR_TAG,"leaveChannel Error $e")
+                        _dialogEvent.postValue(Event(404))
                     }
                 }
 

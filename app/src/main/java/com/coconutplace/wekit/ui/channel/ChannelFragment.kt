@@ -12,19 +12,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import co.lujun.androidtagview.TagView
 import com.bumptech.glide.Glide
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.ChannelFilter
-import com.coconutplace.wekit.data.entities.ChatRoom
 import com.coconutplace.wekit.data.remote.channel.listeners.ChannelListener
 import com.coconutplace.wekit.databinding.FragmentChannelBinding
+import com.coconutplace.wekit.ui.BaseFragment
 import com.coconutplace.wekit.ui.channel_filter.ChannelFilterActivity
 import com.coconutplace.wekit.ui.chat.ChatActivity
 import com.coconutplace.wekit.ui.chat.dialog.ChatBadgeDialog
@@ -37,7 +34,7 @@ import com.coconutplace.wekit.utils.snackbar
 import com.github.mmin18.widget.RealtimeBlurView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
+class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 
     private lateinit var mBinding: FragmentChannelBinding
     private val mChannelViewModel: ChannelViewModel by viewModel()
@@ -47,7 +44,7 @@ class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
 
     private var id:String? = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_channel,container,false)
         mBinding.lifecycleOwner = activity
@@ -108,13 +105,13 @@ class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
         })
 
         mSwipeRefresh = mBinding.channelSwipeLayout
-        mSwipeRefresh.setOnRefreshListener(OnRefreshListener {
+        mSwipeRefresh.setOnRefreshListener {
             mSwipeRefresh.isRefreshing = true
             mChannelViewModel.refresh()
             if (mSwipeRefresh.isRefreshing) {
                 mSwipeRefresh.isRefreshing = false
             }
-        })
+        }
 
         mBinding.channelPlusIc.setOnClickListener{
             if(mChannelViewModel.getMyRoomCount()>0){
@@ -283,8 +280,8 @@ class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
     }
 
     private fun setupViewModel(){
-        mChannelViewModel.liveRoomList.observe(mBinding.lifecycleOwner!!, Observer<ArrayList<ChatRoom>>{
-            Log.e(CHECK_TAG,"current channel count : "+it.size);
+        mChannelViewModel.liveRoomList.observe(mBinding.lifecycleOwner!!, {
+            Log.e(CHECK_TAG,"current channel count : "+it.size)
             adapter.setGroupChannelList(it)
 
             if (mSwipeRefresh.isRefreshing) {
@@ -295,7 +292,7 @@ class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
             }
         })
 
-        mChannelViewModel.liveMyChatImgUrl.observe(mBinding.lifecycleOwner!!,Observer<String>{
+        mChannelViewModel.liveMyChatImgUrl.observe(mBinding.lifecycleOwner!!,{
             if(it=="none"){
                 Log.e(CHECK_TAG,"myChatImg가 없습니다")
                 Glide.with(this).load(R.drawable.bg_transparent).into(mBinding.channelMyroomImg)
@@ -305,6 +302,15 @@ class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
                 Log.e(CHECK_TAG,"glide url : $it")
                 Glide.with(this).load(it).override(300).circleCrop().into(mBinding.channelMyroomImg)
                 mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
+            }
+        })
+
+        mChannelViewModel.dialogEvent.observe(mBinding.lifecycleOwner!!,{ event ->
+            event.getContextIfNotHandled()?.let {
+                when(it){
+                    404 -> showDialog(getString(R.string.network_error),requireContext())
+                }
+
             }
         })
     }
@@ -400,11 +406,10 @@ class ChannelFragment : Fragment(), ChannelListener, BackPressListener {
     }
 
     override fun noChannelSearched() {
-        activity?.runOnUiThread(Runnable {
+        activity?.runOnUiThread {
             makeSnackBar("검색 결과가 없습니다.")
             adapter.clear()
-        })
-
+        }
     }
 
     override fun onBackPressed(): Boolean {
