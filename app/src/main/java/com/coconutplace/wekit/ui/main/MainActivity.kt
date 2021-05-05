@@ -91,19 +91,21 @@ class MainActivity : BaseActivity(), MainListener{
 
                 return@connect
             }
-
-            val _nickname = getSharedPreferences(SharedPreferencesManager.TAG, Context.MODE_PRIVATE)
-                .getString(NICKNAME, "").toString()
-
-            SendBird.updateCurrentUserInfo(_nickname, null) {
-                if (it != null) {
-                    //ERROR
-                } else{
-                    if(channelUrl!=null){
-                        moveToChatActivity(channelUrl)
-                    }
-                }
+            if(channelUrl!=null){
+                moveToChatActivity(channelUrl)
             }
+
+//            val nickname = SharedPreferencesManager(this).getNickname()
+//            SendBird.updateCurrentUserInfo(nickname, null) {
+//                if (it != null) {
+//                    Log.e(CHECK_TAG,"sendbird init error: $it")
+//                    //ERROR
+//                } else{
+//                    if(channelUrl!=null){
+//                        moveToChatActivity(channelUrl)
+//                    }
+//                }
+//            }
         }
     }
 
