@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
@@ -21,16 +20,18 @@ import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.remote.auth.listeners.ProfileListener
 import com.coconutplace.wekit.databinding.ActivityProfileBinding
 import com.coconutplace.wekit.ui.BaseActivity
+import com.coconutplace.wekit.ui.WekitV2Dialog
 import com.coconutplace.wekit.ui.certify_email.CertifyEmailActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.utils.*
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_SIGNOUT
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.PROFILE_URL
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
 import java.util.regex.Pattern
 
-class ProfileActivity : BaseActivity(), ProfileListener {
+class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2DialogClickListener {
     private lateinit var binding: ActivityProfileBinding
     private val viewModel: ProfileViewModel by viewModel()
 
@@ -60,7 +61,7 @@ class ProfileActivity : BaseActivity(), ProfileListener {
                 .error(R.drawable.character_big_basic)
                 .into(binding.profileProfileImgIv)
 
-            viewModel.profileUrlFromFirebase.postValue(intent.getStringExtra(PROFILE_URL))
+//            viewModel.profileUrlFromFirebase.postValue(intent.getStringExtra(PROFILE_URL))
         }
 
         observeNickname()
@@ -85,7 +86,7 @@ class ProfileActivity : BaseActivity(), ProfileListener {
             binding.profileEditCompleteBtn -> patchProfile()
 
             binding.profileDeleteUserTv -> convertDeleteUserMode()
-            binding.profileDeleteUserCompleteBtn -> deleteUser()
+            binding.profileDeleteUserCompleteBtn -> signOut()
         }
     }
 
@@ -103,8 +104,16 @@ class ProfileActivity : BaseActivity(), ProfileListener {
         }
     }
 
-    private fun deleteUser(){
+    private fun signOut(){
         if(viewModel.mFlagDeleteUser){
+            val signOutDialog = WekitV2Dialog(this, FLAG_SIGNOUT)
+            signOutDialog.listener = this
+            signOutDialog.show(getString(R.string.set_logout_title))
+        }
+    }
+
+    override fun onOKClicked(flag: Int) {
+        if(flag == FLAG_SIGNOUT){
             viewModel.deleteUser()
         }
     }
@@ -146,6 +155,7 @@ class ProfileActivity : BaseActivity(), ProfileListener {
     private fun convertDeleteUserMode() {
         if (viewModel.mFlagDeleteUser) {
             viewModel.mFlagDeleteUser = false
+
             binding.profileDeleteUserTv.text = getString(R.string.profile_delete_user)
             binding.profilePwEtLayout.visibility = View.GONE
             binding.profileEditCompleteBtn.visibility = View.VISIBLE
@@ -156,6 +166,7 @@ class ProfileActivity : BaseActivity(), ProfileListener {
             binding.profilePwEtLayout.error = null
         } else {
             viewModel.mFlagDeleteUser = true
+
             binding.profileDeleteUserTv.text = getString(R.string.profile_delete_user_cancel)
             binding.profilePwEtLayout.visibility = View.VISIBLE
             binding.profileEditCompleteBtn.visibility = View.GONE
