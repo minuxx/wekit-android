@@ -40,6 +40,6 @@
                     android:textColor="@color/dialog_wekit_button_text"
                     android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/bg_dialog_wekit_btn_border"/>
+                    android:background="@drawable/bg_dialog_wekit_v1_btn_border"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
