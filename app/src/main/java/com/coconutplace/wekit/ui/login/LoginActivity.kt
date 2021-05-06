@@ -103,7 +103,7 @@ class LoginActivity : BaseActivity(), LoginListener {
         when(code){
             301, 302, 303, 307 -> binding.loginIdEtLayout.error = message
             304, 305, 306, 308 -> binding.loginPwEtLayout.error = message
-            else -> binding.loginRootLayout.snackbar(getString(R.string.network_error))
+            else -> showDialog(getString(R.string.network_error))
         }
 
         binding.loginLoginBtn.isClickable = true

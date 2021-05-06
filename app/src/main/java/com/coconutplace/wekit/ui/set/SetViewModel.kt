@@ -1,6 +1,5 @@
 package com.coconutplace.wekit.ui.set
 
-import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +12,6 @@ import com.coconutplace.wekit.utils.PushUtil
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
-import com.sendbird.android.SendBird.DisconnectHandler
 import com.sendbird.android.SendBirdException
 import com.sendbird.android.SendBirdPushHelper.OnPushRequestCompleteListener
 

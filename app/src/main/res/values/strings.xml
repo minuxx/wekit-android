@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">WEKIT</string>
-    <string name="network_error">네트워크 연결이 원활하지 않습니다.</string>
+    <string name="network_error"><strong>네트워크 연결 끊김</strong>\n연결 상태 확인 후 다시 이용해주세요🙏</string>
     <string name="kakao_app_key">4bf95a8bc8e02e07223e286cac7df2b1</string>
     <string name="sendbird_app_key">6B8F5013-5158-41D8-898F-58E9B7D6C6B4</string>
     <string name="kakao_channel_id">_yQBxcK</string>
@@ -21,8 +21,8 @@
 
     <!--splash-->
     <string name="splash_cd_logo">logo image</string>
-    <string name="dialog_title_server_check">긴급점검중입니다. 서비스이용에 불편을 드려 죄송합니다.</string>
-    <string name="dialog_title_version_update">WEKIT이 새롭게 업데이트되었습니다! 업데이트 후 이용이 가능합니다.</string>
+    <string name="dialog_title_server_check">🚨<b> 긴급 점검 중</b>\n빠르게 해결할테니, 조금만 기다려주세요!</string>
+    <string name="dialog_title_version_update"><b>새로운 버전의 위킷</b>\n반드시 필요한 최신 버전 업데이트가 있어요.\n업데이트 후 다시 만나요 🎶</string>
 
     <!--login-->
     <string name="login">로그인</string>
@@ -232,7 +232,7 @@
     <string name="set_opensource">오픈소스 리스트</string>
     <string name="set_tutorial">튜토리얼</string>
     <string name="set_logout">Log Out</string>
-    <string name="set_logout_title">WEKIT에서 로그아웃하시겠습니까?</string>
+    <string name="set_logout_title">정말 로그아웃 하시겠어요?</string>
 
     <!--profile-->
     <string name="profile">프로필</string>
@@ -244,6 +244,7 @@
     <string name="profile_cancel">취소</string>
     <string name="profile_delete_user_cancel"><u>취소</u></string>
     <string name="profile_delete_user_complete">탈퇴</string>
+    <string name="set_signout_title">정말 나가시나요?\n탈퇴 이후 7일간 동일한 정보로 가입이 불가능해요.</string>
 
     <!--profile-->
     <string name="certify_email">이메일 인증</string>

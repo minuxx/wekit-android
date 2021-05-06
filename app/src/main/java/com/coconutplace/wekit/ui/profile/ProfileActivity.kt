@@ -140,7 +140,7 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
         if(viewModel.mFlagDeleteUser){
             val signOutDialog = WekitV2Dialog(this, FLAG_SIGNOUT)
             signOutDialog.listener = this
-            signOutDialog.show(getString(R.string.set_logout_title))
+            signOutDialog.show(getString(R.string.set_signout_title))
         }
     }
 
