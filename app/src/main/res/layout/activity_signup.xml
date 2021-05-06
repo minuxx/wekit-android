@@ -73,34 +73,6 @@
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/cat_food" />
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signup_email_et_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:errorEnabled="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signup_bg_character"
-                style="@style/TextInputLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signup_email_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@={viewModel.email}"
-                    android:textSize="16sp"
-                    android:textColor="@color/signup_info"
-                    android:fontFamily="@font/notosanskr_regular"
-                    android:hint="@string/signup_email"
-                    android:textColorHint="@color/hint"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signup_id_et_layout"
                 android:layout_width="match_parent"
@@ -111,7 +83,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signup_email_et_layout"
+                app:layout_constraintTop_toBottomOf="@+id/signup_bg_character"
                 style="@style/TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -186,16 +158,43 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signup_nickname_et_layout"
+                android:id="@+id/signup_email_et_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signup_pw_check_et_layout"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_email_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.email}"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_info"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:hint="@string/signup_email"
+                    android:textColorHint="@color/hint"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_nickname_et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_email_et_layout"
                 style="@style/TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -323,11 +322,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signup_tnc"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/signup_tnc"
                 android:fontFamily="@font/notosanskr_medium"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_birthday_et_layout"
                 app:layout_constraintStart_toEndOf="@+id/signup_tnc_cb"/>
 
@@ -336,11 +335,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signup_and"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/signup_tnc"
                 android:fontFamily="@font/notosanskr_regular"
-                android:layout_marginTop="13dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="3dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_birthday_et_layout"
                 app:layout_constraintStart_toEndOf="@+id/signup_tnc_tv"
                 app:layout_constraintEnd_toStartOf="@+id/signup_personal_info_tv"/>
@@ -350,11 +349,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signup_personal_info"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/signup_tnc"
                 android:fontFamily="@font/notosanskr_medium"
-                android:layout_marginTop="13dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="3dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_birthday_et_layout"
                 app:layout_constraintStart_toEndOf="@+id/signup_and_tv"/>
 
@@ -363,10 +362,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signup_agree"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/signup_tnc"
                 android:fontFamily="@font/notosanskr_regular"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_birthday_et_layout"
                 app:layout_constraintStart_toEndOf="@+id/signup_personal_info_tv"/>
 
