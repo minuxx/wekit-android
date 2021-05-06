@@ -26,7 +26,7 @@ class SetViewModel(
     val profileUrl: MutableLiveData<String> = MutableLiveData<String>()
 
     init {
-        profileUrl.postValue("")
+        profileUrl.postValue(null)
     }
 
     fun getProfile() {

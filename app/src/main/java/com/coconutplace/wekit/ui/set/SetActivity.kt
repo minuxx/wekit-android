@@ -2,6 +2,7 @@ package com.coconutplace.wekit.ui.set
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.coconutplace.wekit.R
@@ -17,6 +18,7 @@ import com.coconutplace.wekit.ui.opensource.OpensourceActivity
 import com.coconutplace.wekit.ui.profile.ProfileActivity
 import com.coconutplace.wekit.ui.rule.RuleActivity
 import com.coconutplace.wekit.ui.tutorial.TutorialActivity
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_LOGOUT
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TUTORIAL_SET
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.PROFILE_URL
@@ -45,7 +47,6 @@ class SetActivity : BaseActivity(), SetListener, WekitV2Dialog.WekitV2DialogClic
         set_rule_tv.setOnClickListener(this)
         set_opensource_tv.setOnClickListener(this)
         set_tutorial_tv.setOnClickListener(this)
-
         set_logout_tv.setOnClickListener(this)
 
         viewModel.getProfile()
@@ -132,7 +133,9 @@ class SetActivity : BaseActivity(), SetListener, WekitV2Dialog.WekitV2DialogClic
     private fun startProfileActivity(){
         set_profile_iv.isClickable = false
         val intent = Intent(this@SetActivity, ProfileActivity::class.java)
-        intent.putExtra(PROFILE_URL, viewModel.profileUrl.value.toString())
+        viewModel.profileUrl.value?.let{
+            intent.putExtra(PROFILE_URL, viewModel.profileUrl.value.toString())
+        }
 
         startActivity(intent)
     }

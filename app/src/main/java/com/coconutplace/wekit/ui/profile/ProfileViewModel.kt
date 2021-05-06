@@ -37,7 +37,7 @@ class ProfileViewModel(
 
     val profileUrlFromFirebase: MutableLiveData<String> by lazy {
         MutableLiveData<String>().apply {
-            postValue("")
+            postValue(null)
         }
     }
 
@@ -139,7 +139,9 @@ class ProfileViewModel(
         }
         .addOnSuccessListener {
             it.storage.downloadUrl.addOnSuccessListener { url ->
+                profileUrl.postValue(null) // 순서 중요
                 profileUrlFromFirebase.postValue(url.toString())
+                profileListener!!.onUploadToFirebaseSuccess()
             }
         }
 

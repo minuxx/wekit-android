@@ -10,8 +10,11 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -24,7 +27,9 @@ import com.coconutplace.wekit.ui.WekitV2Dialog
 import com.coconutplace.wekit.ui.certify_email.CertifyEmailActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.utils.*
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_SIGNOUT
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.IMAGE_PICK_CODE
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.PROFILE_URL
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -51,9 +56,14 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
         binding.profileDeleteUserCompleteBtn.setOnClickListener(this)
         binding.profileEditPasswordTv.setOnClickListener(this)
 
+        setKeyListenerToEt(binding.profileNicknameEt)
+        setKeyListenerToEt(binding.profilePwEt)
+
 //        binding.profileNicknameEt.isFocusableInTouchMode = false
 
-        if (intent.hasExtra(PROFILE_URL)) {
+     /*   if (intent.hasExtra(PROFILE_URL)) {
+            Log.d(DEBUG_TAG, intent.getStringExtra(PROFILE_URL)!!)
+
             Glide.with(this)
                 .load(intent.getStringExtra(PROFILE_URL))
                 .circleCrop()
@@ -61,18 +71,30 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
                 .error(R.drawable.character_big_basic)
                 .into(binding.profileProfileImgIv)
 
-//            viewModel.profileUrlFromFirebase.postValue(intent.getStringExtra(PROFILE_URL))
+            viewModel.profileUrlFromFirebase.postValue(intent.getStringExtra(PROFILE_URL))
+        }*/
+
+        intent.getStringExtra(PROFILE_URL)?.let{
+            Glide.with(this)
+                .load(intent.getStringExtra(PROFILE_URL))
+                .circleCrop()
+                .placeholder(R.drawable.character_big_basic)
+                .error(R.drawable.character_big_basic)
+                .into(binding.profileProfileImgIv)
+
+            viewModel.profileUrlFromFirebase.postValue(intent.getStringExtra(PROFILE_URL))
         }
 
         observeNickname()
-        observeProfileUrlFromFirebase()
+        //observeProfileUrlFromFirebase()
     }
 
     override fun onRestart() {
         super.onRestart()
         binding.profileEditPasswordTv.isClickable = true
+        binding.profileNicknameEt.clearFocus()
+        binding.profilePwEt.clearFocus()
     }
-
 
     override fun onClick(v: View?) {
         super.onClick(v)
@@ -90,6 +112,16 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
         }
     }
 
+    private fun setKeyListenerToEt(et: EditText){
+        et.setOnKeyListener{ v, keyCode, event ->
+            if(keyCode == KeyEvent.KEYCODE_ENTER){
+                hideKeyboard()
+            }
+
+            false
+        }
+    }
+
     private fun hideKeyboard() {
         binding.profileRootLayout.hideKeyboard()
         binding.profileNicknameEt.clearFocus()
@@ -97,11 +129,11 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
     }
 
     private fun patchProfile() {
-        if (viewModel.profileUrl.value == null || viewModel.profileUrlFromFirebase.value!!.isNotEmpty()) {
-            viewModel.patchProfile()
-        } else if(viewModel.profileUrlFromFirebase.value!!.isEmpty()) {
-            viewModel.uploadToFirebase()
-        }
+       if (viewModel.profileUrl.value == null) {
+            viewModel.patchProfile() // 프로필사진이 Firebase Storage에 업데이트 성공( profileUrlFromFB 갱신) 후 profileUrl을 null로 초기화
+       } else if(viewModel.profileUrl.value != null) {
+            viewModel.uploadToFirebase() // 프로필 사진을 변경한 경우
+       }
     }
 
     private fun signOut(){
@@ -153,6 +185,9 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
 //    }
 
     private fun convertDeleteUserMode() {
+        binding.profilePwEt.clearFocus()
+        binding.profileNicknameEt.clearFocus()
+
         if (viewModel.mFlagDeleteUser) {
             viewModel.mFlagDeleteUser = false
 
@@ -164,6 +199,8 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
             viewModel.oldPassword.postValue("")
             binding.profilePwEt.clearFocus()
             binding.profilePwEtLayout.error = null
+
+            binding.profileNicknameEt.isFocusableInTouchMode = true
         } else {
             viewModel.mFlagDeleteUser = true
 
@@ -172,6 +209,8 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
             binding.profileEditCompleteBtn.visibility = View.GONE
             binding.profileDeleteUserCompleteBtn.visibility = View.VISIBLE
             binding.profileDeleteUserCompleteBtn.isClickable = true
+
+            binding.profileNicknameEt.isFocusableInTouchMode = false
         }
     }
 
@@ -185,19 +224,22 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
         })
     }
 
-    private fun observeProfileUrlFromFirebase() {
-        viewModel.profileUrlFromFirebase.observe(this, Observer {
-            if(it.isNotEmpty()) {
-                patchProfile()
-            }
-        })
-    }
+//    private fun observeProfileUrlFromFirebase() {
+//        viewModel.profileUrlFromFirebase.observe(this, Observer {
+//            // Firebase 업로드 성공 후 url을 받아와 갱신에 성공했을 때, 업데이트 성공 후 profileUrl을 null로 갱신해주기 때문에 무한 루프 방지
+//            if(it.isNotEmpty()) {
+//                patchProfile()
+//            }
+//        })
+//    }
 
     private fun pickImageFromGallery() {
         binding.profileProfileImgIv.isClickable = false
+        binding.profileNicknameEt.clearFocus()
 
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-        startActivityForResult(gallery, GlobalConstant.IMAGE_PICK_CODE)
+        gallery.type = "image/*";
+        startActivityForResult(gallery, IMAGE_PICK_CODE)
     }
 
     private fun exifOrientationToDegree(exifOrientation: Int): Int {
@@ -255,7 +297,7 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
                 }
             }
         } catch (e: Exception) {
-            binding.profileRootLayout.snackbar("Error: " + e.message)
+            Log.d(DEBUG_TAG, "Error: " + e.message)
         }
 
         return bitmap
@@ -333,13 +375,15 @@ class ProfileActivity : BaseActivity(), ProfileListener, WekitV2Dialog.WekitV2Di
     override fun onUploadToFirebaseSuccess() {
         binding.profileLoading.hide()
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+        patchProfile()
     }
 
     override fun onUploadToFirebaseFailure() {
         binding.profileLoading.hide()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
         showDialog(getString(R.string.network_error))
-        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     override fun onDeleteUserStarted() {
