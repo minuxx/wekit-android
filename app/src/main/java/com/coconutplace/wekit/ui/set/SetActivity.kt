@@ -2,14 +2,12 @@ package com.coconutplace.wekit.ui.set
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Auth
 import com.coconutplace.wekit.data.remote.auth.listeners.SetListener
 import com.coconutplace.wekit.ui.BaseActivity
-import com.coconutplace.wekit.ui.WekitV1Dialog
 import com.coconutplace.wekit.ui.WekitV2Dialog
 import com.coconutplace.wekit.ui.badge.BadgeActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
@@ -18,13 +16,11 @@ import com.coconutplace.wekit.ui.opensource.OpensourceActivity
 import com.coconutplace.wekit.ui.profile.ProfileActivity
 import com.coconutplace.wekit.ui.rule.RuleActivity
 import com.coconutplace.wekit.ui.tutorial.TutorialActivity
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_LOGOUT
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TUTORIAL_SET
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.PROFILE_URL
 import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.show
-import com.coconutplace.wekit.utils.snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.plusfriend.PlusFriendService
 import com.kakao.util.exception.KakaoException
