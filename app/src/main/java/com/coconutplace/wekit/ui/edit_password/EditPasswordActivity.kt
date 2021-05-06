@@ -91,7 +91,7 @@ class EditPasswordActivity : BaseActivity(), EditPasswordListener {
             303, 308 -> binding.editPasswordCurLayout.error = message
             304, 310 -> binding.editPasswordNewEtLayout.error = message
             305, 309 -> binding.editPasswordNewCheckEtLayout.error = message
-            404 -> binding.editPasswordRootLayout.snackbar(getString(R.string.network_error))
+            404 -> showDialog(getString(R.string.network_error))
         }
 
         binding.editPasswordCompleteBtn.isClickable = true

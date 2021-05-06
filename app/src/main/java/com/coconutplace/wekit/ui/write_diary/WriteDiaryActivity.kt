@@ -88,7 +88,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                 binding.writeDiaryTitleTv.text = "식단일기"
                 binding.writeDiaryEventBtn.visibility = GONE
                 binding.writeDiaryPickPhotoBtn.visibility = GONE
-                binding.writeDiaryEditTv.visibility = VISIBLE
+//                binding.writeDiaryEditTv.visibility = VISIBLE
                 binding.writeDiaryDefaultIv.visibility = GONE
 
                 binding.writeDiarySatisfactionHappyIv.isClickable = false
@@ -152,7 +152,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                 viewModel.uploadToFirebase()
             }
 
-            binding.writeDiaryEditTv -> binding.writeDiaryRootLayout.snackbar(getString(R.string.guide_update))
+//            binding.writeDiaryEditTv -> binding.writeDiaryRootLayout.snackbar(getString(R.string.guide_update))
         }
     }
 
@@ -160,7 +160,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryRootLayout.setOnClickListener(this)
         binding.writeDiaryBackBtn.setOnClickListener(this)
         binding.writeDiaryPickPhotoBtn.setOnClickListener(this)
-        binding.writeDiaryEditTv.setOnClickListener(this)
+//        binding.writeDiaryEditTv.setOnClickListener(this)
         binding.writeDiaryDefaultIv.setOnClickListener(this)
 
         binding.writeDiarySatisfactionHappyIv.setOnClickListener(this)
@@ -183,7 +183,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     private fun setIsClickable(isClickable: Boolean) {
         binding.writeDiaryBackBtn.isClickable = isClickable
         binding.writeDiaryPickPhotoBtn.isClickable = isClickable
-        binding.writeDiaryEditTv.isClickable = isClickable
+//        binding.writeDiaryEditTv.isClickable = isClickable
         binding.writeDiaryDefaultIv.isClickable = isClickable
 
         binding.writeDiarySatisfactionHappyIv.isClickable = isClickable

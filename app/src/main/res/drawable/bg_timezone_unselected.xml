@@ -10,5 +10,5 @@
     <corners
         android:radius="30dp" />
 
-    <stroke android:color="@color/write_diary_timezone_unselected" android:width="2dp"/>
+    <stroke android:color="@color/write_diary_timezone_unselected" android:width="1dp"/>
 </shape>
