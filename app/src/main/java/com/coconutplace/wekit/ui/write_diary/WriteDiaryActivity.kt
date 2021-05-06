@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
@@ -324,6 +325,8 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
     override fun onUploadToFirebaseStarted() {
         binding.writeDiaryLoading.show()
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     override fun onUploadToFirebaseSuccess() {
@@ -339,12 +342,15 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         if (viewModel.getUriCount() == viewModel.getTriedUploadCount()) {
             viewModel.postDiary()
         }
+
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     override fun onPostDiaryStarted() {
         binding.writeDiaryLoading.show()
 
         setIsClickable(false)
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     override fun onPostDiarySuccess(message: String) {
@@ -395,6 +401,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         }
 
         setIsClickable(true)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         viewModel.clearTiredUpload()
     }
 
