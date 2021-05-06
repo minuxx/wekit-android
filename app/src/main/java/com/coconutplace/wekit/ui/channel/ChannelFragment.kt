@@ -84,6 +84,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 
     override fun onPause() {
         super.onPause()
+        mBinding.channelBlurView.bringToFront()
         mBinding.channelBlurView.visibility = RealtimeBlurView.VISIBLE
     }
 
