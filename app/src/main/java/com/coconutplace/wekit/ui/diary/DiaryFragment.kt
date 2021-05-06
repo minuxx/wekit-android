@@ -209,7 +209,9 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         binding.diaryLoading.hide()
 
         binding.diaryCalendarView.addDecorators(WrittenDatesDecorator(context, viewModel.writtenDates))
-        binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, CalendarDay.today()))
+        if(binding.diaryCalendarView.selectedDate == CalendarDay.today()){
+            binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, CalendarDay.today()))
+        }
     }
 
     override fun onGetWrittenDatesFailure(code: Int, message: String) {
