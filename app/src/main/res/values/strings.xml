@@ -3,7 +3,7 @@
     <string name="network_error"><strong>네트워크 연결 끊김</strong>\n연결 상태 확인 후 다시 이용해주세요🙏</string>
     <string name="kakao_app_key">4bf95a8bc8e02e07223e286cac7df2b1</string>
     <string name="sendbird_app_key">6B8F5013-5158-41D8-898F-58E9B7D6C6B4</string>
-    <string name="kakao_channel_id">_yQBxcK</string>
+    <string name="kakao_channel_id">_Fxdhxhs</string>
     <string name="notice_cd_dropdown">dropdown icon</string>
 
     <!--common-->
