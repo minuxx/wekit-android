@@ -223,6 +223,9 @@ class HomeFragment : BaseFragment(), HomeListener {
 
         binding.homeGreetingTv.text = span
 
+        binding.homeChallengeTv.text =  home.challengeText
+
+
         val targetWeight = getString(R.string.home_target_weight_title) + " " + home.targetWeight + "kg"
 
         binding.homeTargetWeightTitleTv.text = targetWeight

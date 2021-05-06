@@ -97,13 +97,13 @@
                 app:layout_constraintTop_toTopOf="@+id/home_character_bg_iv" />
 
             <TextView
-                android:id="@+id/home_certification_title_tv"
+                android:id="@+id/home_challenge_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/notosanskr_medium"
-                android:text="@string/home_certification_title"
+                android:text="@string/home_certification_words"
                 android:textColor="@color/home_certification_title"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -119,33 +119,19 @@
                 android:textColor="@color/home_certification_sub_title"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_certification_title_tv" />
-
-            <TextView
-                android:id="@+id/home_certification_words_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/notosanskr_regular"
-                android:text="@string/home_certification_words"
-                android:textColor="@color/home_certification_words"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_certification_sub_title_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/home_challenge_tv" />
 
             <TextView
                 android:id="@+id/home_certification_counts_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="18dp"
                 android:fontFamily="@font/notosanskr_bold"
                 android:text="@string/home_certification_counts"
                 android:textColor="@color/home_certification_counts"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_certification_sub_title_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/home_challenge_tv" />
 
             <ProgressBar
                 android:id="@+id/home_certification_pb"
@@ -162,7 +148,7 @@
                 android:progressDrawable="@drawable/wekit_progressbar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_certification_words_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/home_certification_sub_title_tv" />
 
             <View
                 android:id="@+id/home_percent_view"
