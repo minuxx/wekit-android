@@ -183,6 +183,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     private fun setRecentChannelView(){ //status 1 상태
         adapter.clear()
         mBinding.channelListText.text = "채팅방 목록"
+        mBinding.channelListText.visibility = View.GONE
         mBinding.channelMyChatRoomText.visibility = View.VISIBLE
         mBinding.channelMychattingroomCardview.visibility = View.VISIBLE
         mBinding.channelNoBelongedLayout.visibility = View.VISIBLE
@@ -193,11 +194,13 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mBinding.channelSearchIc.visibility = View.VISIBLE
         mBinding.channelSearchEdittextLayout.visibility = View.GONE
         mBinding.channelExampleTagLayout.visibility = View.GONE
+        mBinding.channelLogoIv.visibility = View.VISIBLE
         mChannelViewModel.refresh()
     }
     private fun setAllChannelView(){ //status 2 상태
         adapter.clear()
         mBinding.channelListText.text = "모든 채팅방"
+        mBinding.channelListText.visibility = View.VISIBLE
         mBinding.channelMyChatRoomText.visibility = View.GONE
         mBinding.channelMychattingroomCardview.visibility = View.GONE
         mBinding.channelNoBelongedLayout.visibility = View.GONE
@@ -208,11 +211,13 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mBinding.channelSearchIc.visibility = View.VISIBLE
         mBinding.channelSearchEdittextLayout.visibility = View.GONE
         mBinding.channelExampleTagLayout.visibility = View.GONE
+        mBinding.channelLogoIv.visibility = View.GONE
         mChannelViewModel.refresh()
     }
     private fun setFilteredChannelView(){ //status 3 상태
         adapter.clear()
         mBinding.channelListText.text = "필터된 채팅방"
+        mBinding.channelListText.visibility = View.VISIBLE
         mBinding.channelMyChatRoomText.visibility = View.GONE
         mBinding.channelMychattingroomCardview.visibility = View.GONE
         mBinding.channelNoBelongedLayout.visibility = View.GONE
@@ -223,11 +228,13 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mBinding.channelSearchIc.visibility = View.VISIBLE
         mBinding.channelSearchEdittextLayout.visibility = View.GONE
         mBinding.channelExampleTagLayout.visibility = View.GONE
+        mBinding.channelLogoIv.visibility = View.GONE
         mChannelViewModel.refresh()
     }
     private fun setSearchChannelView(){ //status 4 상태
         adapter.clear()
         mBinding.channelListText.text = "채팅방 찾기"
+        mBinding.channelListText.visibility = View.VISIBLE
         mBinding.channelMyChatRoomText.visibility = View.GONE
         mBinding.channelMychattingroomCardview.visibility = View.GONE
         mBinding.channelNoBelongedLayout.visibility = View.GONE
@@ -239,6 +246,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mBinding.channelSearchEdittextLayout.visibility = View.VISIBLE
         mBinding.channelExampleTagLayout.visibility = View.VISIBLE
         mBinding.channelExampleTagLayout.bringToFront()
+        mBinding.channelLogoIv.visibility = View.GONE
         mChannelViewModel.refresh()
     }
 

@@ -21,18 +21,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/diary_title_tv"
+<!--            <TextView-->
+<!--                android:id="@+id/diary_title_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:fontFamily="@font/notosanskr_regular"-->
+<!--                android:text="@string/diary_title"-->
+<!--                android:textColor="@color/activity_title"-->
+<!--                android:textSize="16sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+            <ImageView
+                android:id="@+id/diary_logo_iv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/notosanskr_regular"
-                android:text="@string/diary_title"
-                android:textColor="@color/activity_title"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="24dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/wekit_text_logo"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/home_cd_text_logo"/>
 
             <ImageButton
                 android:id="@+id/diary_write_btn"
@@ -41,9 +52,9 @@
                 android:background="@null"
                 android:contentDescription="@string/cd_ic_back"
                 android:paddingStart="16dp"
-                android:paddingTop="16dp"
                 android:paddingEnd="20dp"
-                android:paddingBottom="12dp"
+                android:paddingBottom="15dp"
+                android:layout_marginTop="40dp"
                 android:src="@drawable/icn_plus"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,28 +64,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="26dp"
                 android:fontFamily="@font/notosanskr_bold"
                 android:textColor="@color/diary_year"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toStartOf="@+id/diary_month_tv"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/diary_title_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_logo_iv"
                 tools:text="2021" />
 
             <TextView
                 android:id="@+id/diary_month_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="26dp"
                 android:fontFamily="@font/notosanskr_bold"
                 android:paddingStart="6dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/diary_month"
                 android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@+id/diary_year_tv"
-                app:layout_constraintTop_toBottomOf="@+id/diary_title_tv"
+                app:layout_constraintTop_toBottomOf="@+id/diary_logo_iv"
                 tools:text="09" />
 
             <TextView
@@ -215,6 +226,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/diary_recyclerview"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
