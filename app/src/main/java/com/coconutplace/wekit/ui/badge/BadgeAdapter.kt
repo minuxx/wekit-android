@@ -1,5 +1,6 @@
 package com.coconutplace.wekit.ui.badge
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -25,6 +26,7 @@ class BadgeAdapter(context: Context) : BaseAdapter() {
     private val badgeList = ArrayList<BadgeInfo>()
     private val inf :LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         if(convertView!=null){

@@ -20,12 +20,12 @@ class ChatMessageUtil {
         }
 
         fun formatDate(timeInMillis: Long): String {
-            val dateFormat = SimpleDateFormat("YYYY년 M월 d일 E요일", Locale.KOREA)
+            val dateFormat = SimpleDateFormat("yyyy년 M월 d일 E요일", Locale.KOREA)
             return dateFormat.format(timeInMillis)
         }
 
         fun formatDateTime(timeInMillis: Long): String{
-            val dateFormat = SimpleDateFormat("YYYYMMdd_HHmmss", Locale.KOREA)
+            val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA)
             return dateFormat.format(timeInMillis)
         }
 

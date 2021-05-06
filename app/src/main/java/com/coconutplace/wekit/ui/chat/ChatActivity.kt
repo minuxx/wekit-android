@@ -109,7 +109,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
 
         binding.chatRecyclerview.layoutManager = linearLayoutManager
 
-        messageAdapter = ChatMessageAdapter(this)
+        messageAdapter = ChatMessageAdapter()
 
         binding.chatRecyclerview.adapter = messageAdapter
         binding.chatRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -322,7 +322,8 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
         }
     }
 
-    override fun onActivityResult(requestCode:Int,resultCode:Int,data:Intent?){
+    @Suppress("UNCHECKED_CAST")
+    override fun onActivityResult(requestCode:Int, resultCode:Int, data:Intent?){
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQ_CODE_SELECT_IMAGE){
             if(resultCode==Activity.RESULT_OK){

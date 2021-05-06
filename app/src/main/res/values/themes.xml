@@ -64,4 +64,5 @@
         <item name="android:windowTitleStyle">@null</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+
 </resources>

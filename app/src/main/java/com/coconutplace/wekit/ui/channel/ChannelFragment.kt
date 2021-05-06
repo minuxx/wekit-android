@@ -147,7 +147,8 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mBinding.channelSearchBtn.setOnClickListener {
             val keyword = mBinding.channelSearchEt.text.toString()
             if(keyword==""){
-                makeSnackBar("검색어를 입력해주세요")
+                makeTopSnackbar("검색어를 입력해주세요")
+                //makeSnackBar("검색어를 입력해주세요")
                 return@setOnClickListener
             }
             mBinding.channelExampleTagLayout.visibility = View.GONE
@@ -379,6 +380,9 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mChannelViewModel.setChannelUrlWithPush(channelUrl)
     }
 
+    fun makeTopSnackbar(str: String){
+        mBinding.channelTopSnackbarPositionLayout.snackbar(str)
+    }
 
     override fun callChatActivity(channelUrl:String, roomIdx:Int){
         val intent = Intent(context,ChatActivity::class.java)
@@ -407,7 +411,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 
     override fun noChannelSearched() {
         activity?.runOnUiThread {
-            makeSnackBar("검색 결과가 없습니다.")
+            makeTopSnackbar("검색 결과가 없습니다.")
             adapter.clear()
         }
     }

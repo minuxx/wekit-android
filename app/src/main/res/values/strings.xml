@@ -97,6 +97,8 @@
     <string name="chat_member_host_img">chat member host icon</string>
     <string name="chat_dialog_badge_img">chat dialog badge image</string>
     <string name="chat_dialog_cancel_img">chat dialog cancel image</string>
+    <string name="chat_send_auth_img">chat send auth image</string>
+    <string name="chat_send_normal_img">chat send normal image</string>
 
     <!--channel-->
     <string name="channel_list">채팅방 목록</string>
