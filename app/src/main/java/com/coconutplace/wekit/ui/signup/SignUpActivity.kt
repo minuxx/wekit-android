@@ -231,8 +231,8 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
             309, 310, 311, 318 -> binding.signupNicknameEtLayout.error = message
             314, 317 -> binding.signupIdEtLayout.error = message
             315 -> binding.signupBirthdayEtLayout.error = message
-            404 -> showDialog(getString(R.string.network_error))
-            else -> binding.signupRootLayout.snackbar(message)
+            340 -> showDialog(getString(R.string.signup_agree_rule))
+            else -> showDialog(getString(R.string.network_error))
         }
         
         binding.signupCompleteBtn.isClickable = true

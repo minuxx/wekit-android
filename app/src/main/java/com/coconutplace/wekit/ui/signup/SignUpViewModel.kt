@@ -92,7 +92,7 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
         val _pwCheck = pwCheck.value.toString()
 
         if(!tncAgree.value!!){
-            signUpListener?.onSignUpFailure(319, "이용약관 및 개인정보처리방침에 동의해주세요.")
+            signUpListener?.onSignUpFailure(340, "이용약관 및 개인정보처리방침에 동의해주세요.")
             return
         }
 

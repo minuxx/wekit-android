@@ -12,7 +12,7 @@ class GlobalConstant {
         const val FLAG_VERSION_UPDATE = 777
 
         //sendbird
-        const val APP_ID = "9466BEF9-EC21-46D4-ACD9-98BC069551D7"
+        const val APP_ID = "CF664CC0-BBD9-4CFA-8AA5-4690F253660B"
 
         //diary
         const val IMAGE_PICK_CODE = 1000
