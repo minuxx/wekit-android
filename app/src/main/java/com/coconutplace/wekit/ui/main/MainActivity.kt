@@ -2,11 +2,11 @@ package com.coconutplace.wekit.ui.main
 
 //import com.coconutplace.wekit.utils.GlobalConstant.Companion.APP_ID
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -21,10 +21,11 @@ import com.coconutplace.wekit.ui.channel.ChannelFragment
 import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
-import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.NICKNAME
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sendbird.android.SendBird
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class MainActivity : BaseActivity(), MainListener{
@@ -32,6 +33,7 @@ class MainActivity : BaseActivity(), MainListener{
     lateinit var navController:NavController
     lateinit var navHostFragment: NavHostFragment
     private var mFlag = 0;
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,16 +163,24 @@ class MainActivity : BaseActivity(), MainListener{
 
     override fun onBackPressed() {
         val fragment: Fragment? = navHostFragment.childFragmentManager.fragments[0] //현재 보는 fragment
-        if(fragment is BackPressListener){
-            if(fragment.onBackPressed()){//channel fragment 종료해도 됨
+        if (fragment is BackPressListener) {
+            if (fragment.onBackPressed()) {//channel fragment 종료해도 됨
                 super.onBackPressed()
-            }
-            else{
+            } else {
                 //channel fragment 종료하지 않고 내부 처리함
             }
-        }
-        else{
-            super.onBackPressed()
+        } else {
+            //back key를 연속으로 두 번 눌러야 앱 종료
+            if (doubleBackToExitPressedOnce) {
+                finish()
+                return
+            }
+
+            doubleBackToExitPressedOnce = true
+
+            Timer().schedule(2000) {
+                doubleBackToExitPressedOnce = false
+            }
         }
     }
 }

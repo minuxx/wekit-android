@@ -4,21 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Auth
 import com.coconutplace.wekit.data.remote.auth.listeners.LoginListener
 import com.coconutplace.wekit.databinding.ActivityLoginBinding
 import com.coconutplace.wekit.ui.BaseActivity
+import com.coconutplace.wekit.ui.channel.BackPressListener
 import com.coconutplace.wekit.ui.main.MainActivity
 import com.coconutplace.wekit.ui.signup.SignUpActivity
 import com.coconutplace.wekit.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 import java.util.regex.Pattern
+import kotlin.concurrent.schedule
 
 class LoginActivity : BaseActivity(), LoginListener {
     private lateinit var binding : ActivityLoginBinding
     private val viewModel : LoginViewModel by viewModel()
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,5 +112,18 @@ class LoginActivity : BaseActivity(), LoginListener {
         }
 
         binding.loginLoginBtn.isClickable = true
+    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finish()
+            return
+        }
+
+        doubleBackToExitPressedOnce = true
+
+        Timer().schedule(2000) {
+            doubleBackToExitPressedOnce = false
+        }
     }
 }
