@@ -140,6 +140,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 
         mBinding.channelCancelBtn.setOnClickListener {
             mBinding.channelSearchEt.setText("")
+            mChannelViewModel.setSearchKeyWord("")
             adapter.clear()
             mBinding.channelExampleTagLayout.visibility = View.VISIBLE
             mBinding.channelExampleTagLayout.bringToFront()
@@ -349,6 +350,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     //정보) onActivityResult는 반드시 onResume()이전에 실행된다.(경우에 따라 onStart()이전에 실행될수도 있음)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.e(CHECK_TAG,"onActivityResult Code : $resultCode, request code : $requestCode")
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 100 -> { //방 만들고 나옴
@@ -379,7 +381,6 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
                 101 -> {
                     Log.e(CHECK_TAG,"필터 설정 해제")
                     mChannelViewModel.liveStatus.value = 2
-                    setAllChannelView()
                 }
             }
         }
@@ -390,6 +391,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     }
 
     fun makeTopSnackbar(str: String){
+        mBinding.channelTopSnackbarPositionLayout.bringToFront()
         mBinding.channelTopSnackbarPositionLayout.snackbar(str)
     }
 

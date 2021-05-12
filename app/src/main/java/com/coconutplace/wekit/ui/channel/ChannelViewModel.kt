@@ -428,6 +428,9 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     }
     private fun loadNextSearchChannelList(){
         val keyword = this.searchKeyWord!!
+        if(keyword.isEmpty()){
+            return
+        }
         CoroutineScope(Dispatchers.IO).launch{
             try {
                 val response = repository.getSearchChannelList(keyword,pageForRoomList)
