@@ -20,12 +20,14 @@ import com.coconutplace.wekit.data.remote.chat.listeners.ChatListener
 import com.coconutplace.wekit.data.remote.chat.listeners.DialogListener
 import com.coconutplace.wekit.databinding.ActivityChatBinding
 import com.coconutplace.wekit.ui.BaseActivity
+import com.coconutplace.wekit.ui.WekitV2Dialog
 import com.coconutplace.wekit.ui.chat.dialog.*
 import com.coconutplace.wekit.ui.member_gallery.MemberGalleryActivity
 import com.coconutplace.wekit.ui.photo_viewer.PhotoViewerActivity
 import com.coconutplace.wekit.ui.write_diary.WriteDiaryActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.DUMMY_MESSAGE_COUNT
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_LEAVE_CHANNEL
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.REQ_CODE_AUTH_IMAGE
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.REQ_CODE_SELECT_IMAGE
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.RES_CODE_AUTH_FAILURE
@@ -52,7 +54,7 @@ import java.net.URLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatActivity : BaseActivity(),ChatListener, DialogListener {
+class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.WekitV2DialogClickListener {
 
     private lateinit var binding: ActivityChatBinding//layout이름을 그대로 가져와야함( _ 없애고 대문자로 고쳐서 + Binding)
     private val chatViewModel: ChatViewModel by viewModel()
@@ -184,8 +186,12 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
             actionTypeDialog.callFunction(this)
         }
         binding.chatNavExitBtn.setOnClickListener{
-            val exitDialog = ChatExitDialog(this)
-            exitDialog.callFunction(this)
+//            val exitDialog = ChatExitDialog(this)
+//            exitDialog.callFunction(this)
+
+            val exitDialog = WekitV2Dialog(this, FLAG_LEAVE_CHANNEL)
+            exitDialog.listener = this
+            exitDialog.show(getString(R.string.chat_dialog_exit_title))
         }
 
         if(chatViewModel.getPushFlag()){
@@ -523,6 +529,12 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener {
         }
         Log.e(ERROR_TAG,"파일을 찾지 못하였습니다")
         return null
+    }
+
+    override fun onOKClicked(flag: Int) {
+        when(flag){
+            FLAG_LEAVE_CHANNEL -> chatViewModel.exitChannel()
+        }
     }
 
 }

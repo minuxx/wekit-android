@@ -65,5 +65,6 @@ class GlobalConstant {
         //dialog
         const val FLAG_LOGOUT = 210
         const val FLAG_SIGNOUT = 211
+        const val FLAG_LEAVE_CHANNEL = 301
     }
 }

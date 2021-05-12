@@ -365,6 +365,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
                         val badgeDialog = ChatBadgeDialog(requireContext())
                         badgeDialog.callFunction(badgeTitle,badgeUrl!!,badgeExplain!!,backgroundColor!!)
                     }
+                    mChannelViewModel.liveStatus.value = 1
                     //mChannelViewModel.refresh() 이거 하면안됨. 2번중복됨
                 }
                 101 -> { //채널 필터링 설정하고 나옴
@@ -390,7 +391,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mChannelViewModel.setChannelUrlWithPush(channelUrl)
     }
 
-    fun makeTopSnackbar(str: String){
+    private fun makeTopSnackbar(str: String){
         mBinding.channelTopSnackbarPositionLayout.bringToFront()
         mBinding.channelTopSnackbarPositionLayout.snackbar(str)
     }
