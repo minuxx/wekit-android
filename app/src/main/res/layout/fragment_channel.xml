@@ -456,6 +456,6 @@
             android:id="@+id/channel_blur_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:realtimeBlurRadius="2dp" />
+            app:realtimeBlurRadius="8dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
