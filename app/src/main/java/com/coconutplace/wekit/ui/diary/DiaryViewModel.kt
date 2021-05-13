@@ -1,5 +1,6 @@
 package com.coconutplace.wekit.ui.diary
 
+import androidx.databinding.Observable
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,6 +19,17 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
     val diaries = ObservableArrayList<Diary>()
     val writtenDates = ObservableArrayList<CalendarDay>()
     var previousDay: CalendarDay = CalendarDay.today()
+
+    val pagedListConfig = PagedList.Config.Builder()
+        .setPageSize(10)
+        .setInitialLoadSizeHint(10)
+        .setPrefetchDistance(10)
+        .setEnablePlaceholders(false)
+        .build()
+
+//    private var pagedListObservable: Observable<PagedList<Diary>> = PagingData(tourDataSourceFactory,config).buildObservable()
+
+
 
     fun getDiaries(date: String){
         diaryListener?.onDiaryStarted()

@@ -15,6 +15,7 @@
 
     <!--common-->
     <color name="primary">#7d6ce9</color>
+    <color name="base_bg">#fff</color>
     <color name="activity_title">#000</color>
     <color name="primary_button">#7d6ce9</color>
     <color name="network_progress">#7d6ce9</color>

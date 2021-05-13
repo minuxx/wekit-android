@@ -16,7 +16,7 @@ class HomeViewModel(private val repository: HomeRepository, private val sharedPr
     var homeListener: HomeListener? = null
 
     init {
-        home()
+//        home()
     }
 
     fun sendFcmToken(fcmToken: String?){

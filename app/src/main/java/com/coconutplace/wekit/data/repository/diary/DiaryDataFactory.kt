@@ -7,7 +7,7 @@ import com.coconutplace.wekit.data.remote.diary.DiaryService
 
 class DiaryDataFactory(private val date: String, private val service: DiaryService) :
     DataSource.Factory<Int, Diary>() {
-    private val mutableLiveData: MutableLiveData<DiaryDataSource> = MutableLiveData<DiaryDataSource>()
+    val mutableLiveData: MutableLiveData<DiaryDataSource> = MutableLiveData<DiaryDataSource>()
     private var diaryDataSource: DiaryDataSource? = null
 
     override fun create(): DataSource<Int, Diary> {

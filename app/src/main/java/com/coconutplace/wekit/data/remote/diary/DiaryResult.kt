@@ -1,11 +1,15 @@
 package com.coconutplace.wekit.data.remote.diary
 
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.coconutplace.wekit.data.entities.Diary
 import com.google.gson.annotations.SerializedName
 
 class DiaryResult {
     @SerializedName(value = "diaryList")
     var diaryList: ArrayList<Diary>? = null
+//    var diaryList: LiveData<PagedList<Diary>>? = null
+
 
     @SerializedName(value = "diaryInfo")
     var diaryInfo: Diary? = null

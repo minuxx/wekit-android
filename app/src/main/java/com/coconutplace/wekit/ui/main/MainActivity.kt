@@ -6,11 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.coconutplace.wekit.BuildConfig
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Auth
@@ -18,10 +17,13 @@ import com.coconutplace.wekit.data.remote.auth.listeners.MainListener
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.channel.BackPressListener
 import com.coconutplace.wekit.ui.channel.ChannelFragment
+import com.coconutplace.wekit.ui.diary.DiaryFragment
+import com.coconutplace.wekit.ui.home.HomeFragment
 import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.sendbird.android.SendBird
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -29,6 +31,8 @@ import kotlin.concurrent.schedule
 
 
 class MainActivity : BaseActivity(), MainListener{
+    private val tabNames = listOf("투데이", "혜택존", "랭킹")
+    private val tabIcons = listOf(R.drawable.icn_home_normal, R.drawable.icn_chat_normal, R.drawable.icn_diary_normal)
     private val viewModel: MainViewModel by viewModel()
     lateinit var navController:NavController
     lateinit var navHostFragment: NavHostFragment
@@ -43,11 +47,13 @@ class MainActivity : BaseActivity(), MainListener{
 
         val channelUrl = intent.getStringExtra("groupChannelUrl")
 
-        if(channelUrl == null){
-            initNavigation()
-        }else{
-            initNavigationWithPush()
-        }
+//        if(channelUrl == null){
+//            initNavigation()
+//        }else{
+//            initNavigationWithPush()
+//        }
+
+        initTab()
 
         initSendBird(channelUrl)
     }
@@ -57,32 +63,51 @@ class MainActivity : BaseActivity(), MainListener{
         viewModel.getVersion()
     }
 
-    private fun initNavigation() {
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-        navController = navHostFragment.navController
+    private fun initTab(){
+        val tabLayout: TabLayout = findViewById(R.id.main_tabs)
 
-        bottomNavigationView.setupWithNavController(navController)
-        bottomNavigationView.itemIconTintList = null
+        val pagerAdapter = MainPagerAdapter(this)
+        pagerAdapter.addFragment(HomeFragment())
+        pagerAdapter.addFragment(ChannelFragment())
+        pagerAdapter.addFragment(DiaryFragment())
 
-        val graph = navController.navInflater.inflate(R.navigation.nav_main)
-        graph.startDestination = R.id.homeFragment
-        navHostFragment.navController.graph = graph
+        val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
+
+        viewPager.adapter = pagerAdapter
+        viewPager.isUserInputEnabled = false
+
+        TabLayoutMediator(tabLayout, viewPager){ tab, position ->
+//            tab.text = tabNames[position]
+            tab.setIcon(tabIcons[position])
+        }.attach()
     }
 
-    //푸시알람을 클릭해서 SplashActivity를 거쳤을 때의 navigation 세팅(channelFragment부터 시작)
-    private fun initNavigationWithPush(){
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-        navController = navHostFragment.navController
-
-        bottomNavigationView.setupWithNavController(navController)
-        bottomNavigationView.itemIconTintList = null
-
-        val graph = navController.navInflater.inflate(R.navigation.nav_main)
-        graph.startDestination = R.id.channelFragment
-        navHostFragment.navController.graph = graph
-    }
+//    private fun initNavigation() {
+//        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
+//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+//        navController = navHostFragment.navController
+//
+//        bottomNavigationView.setupWithNavController(navController)
+//        bottomNavigationView.itemIconTintList = null
+//
+//        val graph = navController.navInflater.inflate(R.navigation.nav_main)
+//        graph.startDestination = R.id.homeFragment
+//        navHostFragment.navController.graph = graph
+//    }
+//
+//    //푸시알람을 클릭해서 SplashActivity를 거쳤을 때의 navigation 세팅(channelFragment부터 시작)
+//    private fun initNavigationWithPush(){
+//        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
+//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+//        navController = navHostFragment.navController
+//
+//        bottomNavigationView.setupWithNavController(navController)
+//        bottomNavigationView.itemIconTintList = null
+//
+//        val graph = navController.navInflater.inflate(R.navigation.nav_main)
+//        graph.startDestination = R.id.channelFragment
+//        navHostFragment.navController.graph = graph
+//    }
 
     private fun initSendBird(channelUrl: String?) {
         SendBird.init(getString(R.string.sendbird_app_key), this)
