@@ -19,6 +19,7 @@
 <!--        app:layout_constraintBottom_toTopOf="@id/main_bottom_nav"-->
 <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
+
 <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
 <!--        android:id="@+id/main_bottom_nav"-->
 <!--        android:layout_width="match_parent"-->
@@ -36,36 +37,50 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/main_tabs">
+        app:layout_constraintEnd_toEndOf="parent">
     </androidx.viewpager2.widget.ViewPager2>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/main_tabs"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintTop_toBottomOf="@id/main_viewpager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:tabUnboundedRipple="false"
-        app:tabIndicator="@color/white"
-        app:tabRippleColor="@color/white">
+        app:itemBackground="@color/white"
+        app:menu="@menu/nav_main_menu" />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/main_tab_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+<!--    <com.google.android.material.tabs.TabLayout-->
+<!--        android:id="@+id/main_tab"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/main_viewpager"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:tabUnboundedRipple="false"-->
+<!--        app:tabIndicator="@color/white"-->
+<!--        app:tabRippleColor="@color/white">-->
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/main_tab_benefit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:id="@+id/main_tab_today"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="@null"/>-->
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/main_tab_ranking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.tabs.TabLayout>
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:id="@+id/main_tab_benefit"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:id="@+id/main_tab_ranking"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--    </com.google.android.material.tabs.TabLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
 

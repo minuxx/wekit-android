@@ -6,9 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.coconutplace.wekit.BuildConfig
 import com.coconutplace.wekit.R
@@ -22,6 +26,7 @@ import com.coconutplace.wekit.ui.home.HomeFragment
 import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sendbird.android.SendBird
@@ -32,7 +37,8 @@ import kotlin.concurrent.schedule
 
 class MainActivity : BaseActivity(), MainListener{
     private val tabNames = listOf("투데이", "혜택존", "랭킹")
-    private val tabIcons = listOf(R.drawable.icn_home_normal, R.drawable.icn_chat_normal, R.drawable.icn_diary_normal)
+    private val unselectedTabIcons = listOf(R.drawable.icn_home_normal, R.drawable.icn_chat_normal, R.drawable.icn_diary_normal)
+    private val selectedTabIcons = listOf(R.drawable.icn_home_selected, R.drawable.icn_chat_selected, R.drawable.icn_diary_selected)
     private val viewModel: MainViewModel by viewModel()
     lateinit var navController:NavController
     lateinit var navHostFragment: NavHostFragment
@@ -53,8 +59,8 @@ class MainActivity : BaseActivity(), MainListener{
 //            initNavigationWithPush()
 //        }
 
-        initTab()
-
+//        initTab()
+        initNavigation()
         initSendBird(channelUrl)
     }
 
@@ -63,28 +69,86 @@ class MainActivity : BaseActivity(), MainListener{
         viewModel.getVersion()
     }
 
-    private fun initTab(){
-        val tabLayout: TabLayout = findViewById(R.id.main_tabs)
-
+    private fun initNavigation() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        bottomNavigationView.itemIconTintList = null
+        val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
         val pagerAdapter = MainPagerAdapter(this)
         pagerAdapter.addFragment(HomeFragment())
         pagerAdapter.addFragment(ChannelFragment())
         pagerAdapter.addFragment(DiaryFragment())
-
-        val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
-
         viewPager.adapter = pagerAdapter
-        viewPager.isUserInputEnabled = false
 
-        TabLayoutMediator(tabLayout, viewPager){ tab, position ->
-//            tab.text = tabNames[position]
-            tab.setIcon(tabIcons[position])
-        }.attach()
+        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(viewPager, it) }
     }
+
+    private fun navSelector(viewPager: ViewPager2, item: MenuItem) : Boolean{
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+
+        val checked = item.setChecked(true)
+        when(checked.itemId){
+            R.id.homeFragment -> {
+                viewPager.currentItem = 0
+
+                return true
+            }
+            R.id.channelFragment -> {
+                viewPager.currentItem = 1
+                return true
+            }
+            R.id.diaryFragment ->{
+                viewPager.currentItem = 2
+                return true
+            }
+        }
+
+        return false
+    }
+
+
+//    private fun initTab(){
+//        val tabLayout: TabLayout = findViewById(R.id.main_tab)
+//
+//        val pagerAdapter = MainPagerAdapter(this)
+//        pagerAdapter.addFragment(HomeFragment())
+//        pagerAdapter.addFragment(ChannelFragment())
+//        pagerAdapter.addFragment(DiaryFragment())
+//
+//        val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
+//
+//        viewPager.adapter = pagerAdapter
+//        viewPager.offscreenPageLimit = 2
+//        viewPager.isUserInputEnabled = false
+//
+//        TabLayoutMediator(tabLayout, viewPager){ tab, position ->
+////            tab.text = tabNames[position]
+////            tab.setIcon(unselectedTabIcons[position])
+//        }.attach()
+//
+//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
+//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
+//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
+//
+//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                tab!!.setIcon(selectedTabIcons[tab.position])
+//                viewPager.currentItem = tab.position
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//
+//            }
+//        })
+//    }
 
 //    private fun initNavigation() {
 //        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
 //        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+////        NavigationUI.setupWithNavController(bottomNavigationView, findNavController(R.id.main_nav_host))
 //        navController = navHostFragment.navController
 //
 //        bottomNavigationView.setupWithNavController(navController)

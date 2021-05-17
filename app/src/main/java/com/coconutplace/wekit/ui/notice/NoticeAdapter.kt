@@ -3,7 +3,6 @@ package com.coconutplace.wekit.ui.notice
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
