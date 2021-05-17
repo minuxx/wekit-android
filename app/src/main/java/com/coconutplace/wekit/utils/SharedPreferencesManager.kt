@@ -3,6 +3,7 @@ package com.coconutplace.wekit.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.coconutplace.wekit.data.entities.BodyInfo
+import com.coconutplace.wekit.data.entities.User
 import com.google.gson.Gson
 
 class SharedPreferencesManager(private val context: Context){
@@ -15,6 +16,7 @@ class SharedPreferencesManager(private val context: Context){
         const val NICKNAME = "NICKNAME"
         const val PUSH_FLAG = "PUSH_FLAG"
         const val BODY = "BODY"
+        const val USER = "USER"
     }
 
     fun getSharedPreferences() : SharedPreferences {
@@ -29,6 +31,29 @@ class SharedPreferencesManager(private val context: Context){
         editor.remove(NICKNAME)
         editor.remove(PUSH_FLAG)
         editor.remove(BODY)
+        editor.apply()
+    }
+
+    fun saveUser(user: User){
+        val spf = getSharedPreferences()
+        val editor = spf.edit()
+        val gson = Gson()
+        val json = gson.toJson(user)
+        editor.putString(USER, json)
+        editor.apply()
+    }
+
+    fun getUser() : User? {
+        val gson = Gson()
+        val json = getSharedPreferences().getString(USER, null)
+
+        return gson.fromJson(json, User::class.java)
+    }
+
+    fun removeUser(){
+        val spf = getSharedPreferences()
+        val editor = spf.edit()
+        editor.remove(USER)
         editor.apply()
     }
 

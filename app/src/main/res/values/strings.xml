@@ -250,8 +250,9 @@
 
     <!--profile-->
     <string name="certify_email">이메일 인증</string>
-    <string name="certify_email_guide_01">비밀번호 수정을 위해\n이메일 인증이 필요합니다.</string>
-    <string name="certify_email_guide_02">아래 이메일로 인증코드가 발송됩니다.</string>
+    <string name="certify_email_guide_password">비밀번호 수정을 위해\n이메일 인증이 필요합니다.</string>
+    <string name="certify_email_guide_signup">비밀번호 수정을 위해\n이메일 인증이 필요합니다.</string>
+    <string name="certify_email_guide_code">아래 이메일로 인증코드가 발송됩니다.</string>
     <string name="certify_email_email">이메일</string>
     <string name="certify_email_certification_number">인증번호</string>
     <string name="certify_email_send_certification_number">인증번호 보내기</string>

@@ -8,14 +8,18 @@ import com.coconutplace.wekit.data.remote.auth.listeners.SignUpListener
 import com.coconutplace.wekit.data.repository.auth.AuthRepository
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_EMAIL
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_SIGNUP
 import com.coconutplace.wekit.utils.SharedPreferencesManager
-import com.sendbird.android.SendBird
-import java.lang.Exception
 import java.util.regex.Pattern
 
 class SignUpViewModel(private val repository: AuthRepository, private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel() {
     var signUpListener: SignUpListener? = null
     var certifyEmailListener: CertifyEmailListener? = null
+    var flag = FLAG_CERTIFY_EMAIL
+    var nextFlag = FLAG_CERTIFY_EMAIL
+    var receivedUser: User? = null
+    var second = 180
 
     val email: MutableLiveData<String> by lazy {
         MutableLiveData<String>().apply {
@@ -34,7 +38,6 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
             postValue(0)
         }
     }
-
 
     val nickname: MutableLiveData<String> by lazy {
         MutableLiveData<String>().apply {
@@ -79,44 +82,12 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
     }
 
 
-    private fun getUser(): User = User(id = id.value.toString(), pw = pw.value.toString(), email= email.value.toString(),
+    fun getUser(): User = User(id = id.value.toString(), pw = pw.value.toString(), email= email.value.toString(),
                                        nickname = nickname.value.toString(), gender = if(gender.value == true) "M" else "F",
                                        birthday = birthday.value.toString())
 
     fun signUp() {
-        val _email = email.value.toString()
-        val _nickname = nickname.value.toString()
-        val _birthday = birthday.value.toString()
-        val _id = id.value.toString()
-        val _pw = pw.value.toString()
-        val _pwCheck = pwCheck.value.toString()
-
-        if(!tncAgree.value!!){
-            signUpListener?.onSignUpFailure(340, "이용약관 및 개인정보처리방침에 동의해주세요.")
-            return
-        }
-
-        if(_email.isEmpty() || !Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.0-]+\\.[a-zA-Z]{2,6}\$", _email)){
-            return
-        }
-
-        if(_id.isEmpty() || !Pattern.matches("^[a-zA-Z]+[a-zA-Z0-9]{5,15}\$", _id)){
-            return
-        }
-
-        if(_pw.isEmpty() || !Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&^])[A-Za-z[0-9]\$@\$!%*#?&]{10,16}\$", _pw)){
-            return
-        }
-
-        if(_pw != _pwCheck){
-            return
-        }
-
-        if(_nickname.isEmpty() || !Pattern.matches("^[a-zA-Z0-9가-힣]{1,10}\$", _nickname)){
-            return
-        }
-
-        if(_birthday.isEmpty() || !Pattern.matches("^(19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\$", _birthday)){
+        if(receivedUser == null){
             return
         }
 
@@ -124,7 +95,7 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
 
         Coroutines.main {
             try {
-                val authResponse = repository.signUp(getUser())
+                val authResponse = repository.signUp(receivedUser!!)
 
                 authResponse.auth?.let {
                     signUpListener?.onSignUpSuccess(authResponse.message)
@@ -169,3 +140,63 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
         }
     }
 }
+
+
+//fun signUp() {
+//    val _email = email.value.toString()
+//    val _nickname = nickname.value.toString()
+//    val _birthday = birthday.value.toString()
+//    val _id = id.value.toString()
+//    val _pw = pw.value.toString()
+//    val _pwCheck = pwCheck.value.toString()
+//
+//    if(!tncAgree.value!!){
+//        signUpListener?.onSignUpFailure(340, "이용약관 및 개인정보처리방침에 동의해주세요.")
+//        return
+//    }
+//
+//    if(_email.isEmpty() || !Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.0-]+\\.[a-zA-Z]{2,6}\$", _email)){
+//        return
+//    }
+//
+//    if(_id.isEmpty() || !Pattern.matches("^[a-zA-Z]+[a-zA-Z0-9]{5,15}\$", _id)){
+//        return
+//    }
+//
+//    if(_pw.isEmpty() || !Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&^])[A-Za-z[0-9]\$@\$!%*#?&]{10,16}\$", _pw)){
+//        return
+//    }
+//
+//    if(_pw != _pwCheck){
+//        return
+//    }
+//
+//    if(_nickname.isEmpty() || !Pattern.matches("^[a-zA-Z0-9가-힣]{1,10}\$", _nickname)){
+//        return
+//    }
+//
+//    if(_birthday.isEmpty() || !Pattern.matches("^(19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\$", _birthday)){
+//        return
+//    }
+//
+//    signUpListener?.onSignUpStarted()
+//
+//    Coroutines.main {
+//        try {
+//            val authResponse = repository.signUp(getUser())
+//
+//            authResponse.auth?.let {
+//                signUpListener?.onSignUpSuccess(authResponse.message)
+//                sharedPreferencesManager.saveJwtToken(authResponse.auth.jwtToken!!)
+//                sharedPreferencesManager.saveClientID(id.value.toString())
+//                return@main
+//            }
+//
+//            signUpListener?.onSignUpFailure(authResponse.code, authResponse.message)
+//        } catch (e: ApiException) {
+//            signUpListener?.onSignUpFailure(404, e.message!!)
+//        } catch (e: Exception){
+//            signUpListener?.onSignUpFailure(404, e.message!!)
+//        }
+//    }
+//}

@@ -57,6 +57,8 @@ class GlobalConstant {
         //certify email
         const val FLAG_CERTIFY_EMAIL = 601
         const val FLAG_CERTIFY_NUMBER = 602
+        const val FLAG_SIGNUP = 603
+        const val FLAG_EDIT_PASSWORD = 604
 
         //rule
         const val FLAG_TNC = 920

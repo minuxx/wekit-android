@@ -49,7 +49,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="37dp"
             android:fontFamily="@font/notosanskr_medium"
-            android:text="@string/certify_email_guide_01"
+            android:text="@string/certify_email_guide_password"
             android:textColor="@color/certify_email_guide_01"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/notosanskr_regular"
-            android:text="@string/certify_email_guide_02"
+            android:text="@string/certify_email_guide_code"
             android:textColor="@color/certify_email_guide_02"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/certify_email_email_et"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:fontFamily="@font/notosanskr_regular"
                 android:hint="@string/certify_email_email"
                 android:inputType="textEmailAddress"
@@ -106,7 +106,6 @@
             android:layout_marginEnd="20dp"
             app:hintTextColor="@color/certify_email_input_hint"
             app:errorEnabled="true"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/certify_email_email_et_layout">
@@ -114,7 +113,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/certify_email_certification_number_et"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:fontFamily="@font/notosanskr_regular"
                 android:hint="@string/certify_email_certification_number"
                 android:inputType="number"
@@ -127,13 +126,26 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:id="@+id/certify_email_timer_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/certify_email_timer"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="14dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@+id/certify_email_certification_number_et_layout"
+            app:layout_constraintEnd_toEndOf="@+id/certify_email_certification_number_et_layout"
+            tools:text="03:00"/>
+
+        <TextView
             android:id="@+id/certify_email_send_certification_number_tv"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/certify_email_send_certification_number_btn_inactive"
+            android:background="@color/certify_email_send_certification_number_btn_active"
             android:fontFamily="@font/notosanskr_medium"
             android:gravity="center"
             android:text="@string/certify_email_send_certification_number"

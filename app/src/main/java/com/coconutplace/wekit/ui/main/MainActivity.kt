@@ -83,8 +83,6 @@ class MainActivity : BaseActivity(), MainListener{
     }
 
     private fun navSelector(viewPager: ViewPager2, item: MenuItem) : Boolean{
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-
         val checked = item.setChecked(true)
         when(checked.itemId){
             R.id.homeFragment -> {

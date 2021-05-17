@@ -14,13 +14,11 @@ import com.coconutplace.wekit.data.remote.auth.listeners.SignUpListener
 import com.coconutplace.wekit.databinding.ActivitySignupBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.WekitV1Dialog
+import com.coconutplace.wekit.ui.certify_email.CertifyEmailActivity
 import com.coconutplace.wekit.ui.poll.PollActivity
+import com.coconutplace.wekit.utils.*
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_PERSONAL_INFO
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TNC
-import com.coconutplace.wekit.utils.hide
-import com.coconutplace.wekit.utils.hideKeyboard
-import com.coconutplace.wekit.utils.show
-import com.coconutplace.wekit.utils.snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.regex.Pattern
 
@@ -49,6 +47,7 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
         binding.signupBackBtn.setOnClickListener(this)
         binding.signupTncTv.setOnClickListener(this)
         binding.signupPersonalInfoTv.setOnClickListener(this)
+        binding.signupCompleteBtn.setOnClickListener(this)
 
 
 //        binding.signupBirthdayEt.setOnKeyListener(View.OnKeyListener{ v, keyCode, event ->
@@ -94,9 +93,10 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
 
         when(v){
             binding.signupRootLayout -> binding.signupRootLayout.hideKeyboard()
+            binding.signupBackBtn -> finish()
             binding.signupTncTv -> openRuleDialog(FLAG_TNC)
             binding.signupPersonalInfoTv -> openRuleDialog(FLAG_PERSONAL_INFO)
-            binding.signupBackBtn -> finish()
+            binding.signupCompleteBtn -> startCertifyEmailActivity()
         }
     }
 
@@ -159,26 +159,6 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
         })
     }
 
-    fun openRuleDialog(flag: Int){
-        val ruleDialog = RuleDialog(flag)
-        ruleDialog.show(supportFragmentManager, ruleDialog.tag)
-    }
-
-    fun onGenderCheckboxClicked(view: View) {
-        when(view as CheckBox){
-            binding.signupManCb -> {
-                binding.signupManCb.setBackgroundResource(R.drawable.checkbox_checked)
-                binding.signupWomanCb.setBackgroundResource(R.drawable.checkbox_unchecked)
-                binding.signupWomanCb.isChecked = false
-            }
-            binding.signupWomanCb -> {
-                binding.signupWomanCb.setBackgroundResource(R.drawable.checkbox_checked)
-                binding.signupManCb.setBackgroundResource(R.drawable.checkbox_unchecked)
-                binding.signupManCb.isChecked = false
-            }
-        }
-    }
-
     private fun observeBirthday() {
         viewModel.birthday.observe(this, Observer {
             if (it.isNotEmpty() && !Pattern.matches(
@@ -204,9 +184,112 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
         })
     }
 
+    fun openRuleDialog(flag: Int){
+        val ruleDialog = RuleDialog(flag)
+        ruleDialog.show(supportFragmentManager, ruleDialog.tag)
+    }
+
+    fun onGenderCheckboxClicked(view: View) {
+        when(view as CheckBox){
+            binding.signupManCb -> {
+                binding.signupManCb.setBackgroundResource(R.drawable.checkbox_checked)
+                binding.signupWomanCb.setBackgroundResource(R.drawable.checkbox_unchecked)
+                binding.signupWomanCb.isChecked = false
+            }
+            binding.signupWomanCb -> {
+                binding.signupWomanCb.setBackgroundResource(R.drawable.checkbox_checked)
+                binding.signupManCb.setBackgroundResource(R.drawable.checkbox_unchecked)
+                binding.signupManCb.isChecked = false
+            }
+        }
+    }
+
     override fun onOKClicked() {
 
     }
+
+    private fun isValidateUser() : Boolean{
+        val _email = viewModel.email.value.toString()
+        val _nickname = viewModel.nickname.value.toString()
+        val _birthday = viewModel.birthday.value.toString()
+        val _id = viewModel.id.value.toString()
+        val _pw = viewModel.pw.value.toString()
+        val _pwCheck = viewModel.pwCheck.value.toString()
+
+        if(!viewModel.tncAgree.value!!){
+            onSignUpFailure(340, "이용약관 및 개인정보처리방침에 동의해주세요.")
+            return false
+        }
+
+        if(_email.isEmpty()){
+            onSignUpFailure(307, "이메일 주소를 입력해주세요.")
+            return false
+        }
+
+        if(!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.0-]+\\.[a-zA-Z]{2,6}\$", _email)){
+            onSignUpFailure(308, "정확한 이메일 주소를 입력해주세요.")
+            return false
+        }
+
+        if(_id.isEmpty()){
+            onSignUpFailure(301, "아이디를 입력해주세요.")
+            return false
+        }
+
+        if(!Pattern.matches("^[a-zA-Z]+[a-zA-Z0-9]{5,15}\$", _id)){
+            onSignUpFailure(302, "아이디는 대/소문자, 숫자를 포함한 6~15자로 입력해주세요.")
+            return false
+        }
+
+        if(_pw.isEmpty()){
+            onSignUpFailure(304, "비밀번호를 입력해주세요.")
+            return false
+        }
+
+        if(!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&^])[A-Za-z[0-9]\$@\$!%*#?&]{10,16}\$", _pw)){
+            onSignUpFailure(305, "비밀번호는 영문, 숫자, 특수문자를 포함한 10~16자로 입력해주세요.")
+            return false
+        }
+
+        if(_pw != _pwCheck){
+            onSignUpFailure(305, getString(R.string.password_check))
+            return false
+        }
+
+        if(_nickname.isEmpty()){
+            onSignUpFailure(309, "닉네임을 입력해주세요.")
+            return false
+        }
+
+        if(!Pattern.matches("^[a-zA-Z0-9가-힣]{1,10}\$", _nickname)){
+            onSignUpFailure(310, "닉네임은 10자 이내의 한글로 입력해주세요.")
+            return false
+        }
+
+        if(_birthday.isEmpty()){
+            onSignUpFailure(314, "생일을 입력해주세요.")
+            return false
+        }
+
+        if(!Pattern.matches("^(19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\$", _birthday)){
+            onSignUpFailure(315, "생일은 yyyy-mm-dd 형식으로 입력해주세요.")
+            return false
+        }
+
+        return true
+    }
+
+    private fun startCertifyEmailActivity(){
+        if(isValidateUser()){
+            SharedPreferencesManager(this).saveUser(viewModel.getUser())
+
+            val signUpIntent = Intent(this, CertifyEmailActivity::class.java)
+
+            startActivity(signUpIntent)
+            finish()
+        }
+    }
+
 
     override fun onSignUpStarted() {
         binding.signupLoading.show()
@@ -215,6 +298,7 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
 
     override fun onSignUpSuccess(message: String) {
         binding.signupLoading.hide()
+
 
         val signUpIntent = Intent(this, PollActivity::class.java)
         startActivity(signUpIntent)
@@ -225,16 +309,16 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
         binding.signupLoading.hide()
 
         when(code){
-            301, 302, 303 -> binding.signupIdEtLayout.error = message
+            301, 302, 303, 320, 321, 322 -> binding.signupIdEtLayout.error = message
             304, 305, 306 -> binding.signupPwEtLayout.error = message
-            307, 308, 319 -> binding.signupEmailEtLayout.error = message
-            309, 310, 311, 318 -> binding.signupNicknameEtLayout.error = message
+            307, 308, 319, 324, 325, 326 -> binding.signupEmailEtLayout.error = message
+            309, 310, 311, 318, 323 -> binding.signupNicknameEtLayout.error = message
             314, 317 -> binding.signupIdEtLayout.error = message
             315 -> binding.signupBirthdayEtLayout.error = message
             340 -> showDialog(getString(R.string.signup_agree_rule))
             else -> showDialog(getString(R.string.network_error))
         }
-        
+
         binding.signupCompleteBtn.isClickable = true
     }
 }
