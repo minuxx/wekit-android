@@ -19,7 +19,7 @@ class ChannelFilterViewModel : ViewModel() {
     }
     val isOngoing:MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply {
-            value = true
+            value = false
         }
     }
 
