@@ -26,15 +26,15 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
             try {
                 val diaryResponse = repository.getDiaries(date, 1)
 
-                if(diaryResponse.isSuccess){
-                    diaryResponse.result?.let {
-//                        diaryList = it.diaryList
-                        diaryListener?.onDiarySuccess(it.diaryList!!)
-                        return@main
-                    }
-                }else{
-                    diaryListener?.onDiaryFailure(diaryResponse.code, diaryResponse.message)
-                }
+//                if(diaryResponse.isSuccess){
+//                    diaryResponse.result?.let {
+////                        diaryList = it.diaryList
+//                        diaryListener?.onDiarySuccess(it.diaryList!!)
+//                        return@main
+//                    }
+//                }else{
+//                    diaryListener?.onDiaryFailure(diaryResponse.code, diaryResponse.message)
+//                }
             } catch (e: ApiException) {
                 diaryListener?.onDiaryFailure(404, e.message!!)
             } catch (e: Exception){

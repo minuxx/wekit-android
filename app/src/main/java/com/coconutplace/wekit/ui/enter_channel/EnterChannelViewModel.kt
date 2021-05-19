@@ -59,7 +59,6 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
         channelUrl = roomInfo.chatUrl!!
         roomIndex = roomInfo.roomIdx
 
-
         when (roomInfo.roomTerm) {
             "2주방" -> {
                 duration.postValue("[2주 챌린지]")
@@ -84,7 +83,7 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
         }
     }
 
-    fun enterRoom(){
+    fun enterChannel(){
         if(!enterFlag){
             enterChannelListener?.makeSnackBar("이미 소속된 채팅방이 있습니다")
             return
@@ -93,7 +92,28 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
             enterChannelListener?.makeSnackBar("이미 방이 최대인원입니다")
             return
         }
+        CoroutineScope(Dispatchers.IO).launch{
+            try{
+                val chatRoom = ChatRoom(roomIndex,null,null,null,null,null,null,null,null,null,null)
+                val enterChannelResponse = repository.enterChannel(chatRoom)
+                if(enterChannelResponse.isSuccess){
+                    Log.e(CHECK_TAG,"enter success")
+                    //enterChannelListener?.callChatActivity(channelUrl,roomIndex)
+                    enterSendBirdChannel()
+                }
+                else{
+                    Log.e(ERROR_TAG,"enter channel failed")
+                    enterChannelListener?.makeSnackBar(enterChannelResponse.message)
+                }
 
+            }catch (e:Exception){
+                Log.e(ERROR_TAG,"enter channel error: $e")
+                enterChannelListener?.makeSnackBar("입장에 실패하였습니다")
+            }
+        }
+    }
+
+    private fun enterSendBirdChannel(){
         GroupChannel.getChannel(channelUrl, GroupChannel.GroupChannelGetHandler { groupChannel, e ->
             if (e != null) {
                 // Error!
@@ -111,8 +131,8 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
                 }
             }
             if (isMember) {
-                Log.e(CHECK_TAG, "is member")
-                enterChannelApi()
+                Log.e(CHECK_TAG,"already member, enter success")
+                enterChannelListener?.callChatActivity(channelUrl,roomIndex)
             }
             else {
                 Log.e(CHECK_TAG, "is not member")
@@ -124,32 +144,12 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
                         }
                     }
                     else{
-                        enterChannelApi()
+                        enterChannelListener?.callChatActivity(channelUrl,roomIndex)
                     }
                 }
             }
         })
     }
 
-    private fun enterChannelApi(){
-        CoroutineScope(Dispatchers.IO).launch{
-            try{
-                val chatRoom = ChatRoom(roomIndex,null,null,null,null,null,null,null,null,null,null)
-                val enterChannelResponse = repository.enterChannel(chatRoom)
-                if(enterChannelResponse.isSuccess){
-                    Log.e(CHECK_TAG,"enter success")
-                    enterChannelListener?.callChatActivity(channelUrl,roomIndex)
-                }
-                else{
-                    Log.e(ERROR_TAG,"enter channel failed")
-                    enterChannelListener?.makeSnackBar(enterChannelResponse.message)
-                }
-
-            }catch (e:Exception){
-                Log.e(ERROR_TAG,"enter channel error: $e")
-                enterChannelListener?.makeSnackBar("입장에 실패하였습니다")
-            }
-        }
-    }
 
 }
