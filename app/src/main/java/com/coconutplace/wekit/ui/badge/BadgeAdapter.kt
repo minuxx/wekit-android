@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.remote.badge.BadgeInfo
+import com.coconutplace.wekit.ui.chat.dialog.ChatBadgeDialog
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
@@ -48,9 +49,11 @@ class BadgeAdapter(context: Context) : BaseAdapter() {
             else{
                 Glide.with(mContext).load(url).into(badgeImg)
             }
-
-
             backgroundCardView.setCardBackgroundColor(Color.parseColor(backColor))
+            badgeImg.setOnClickListener {
+                val badgeDialog = ChatBadgeDialog(mContext)
+                badgeDialog.callFunction(badgeList[position].badgeName,url,"",backColor)
+            }
         }
 
         return view

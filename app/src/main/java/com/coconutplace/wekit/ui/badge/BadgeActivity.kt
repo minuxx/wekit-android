@@ -50,10 +50,9 @@ class BadgeActivity: AppCompatActivity() {
     }
 
     private fun setupViewModel(){
-        mViewModel.liveExistBadgeList.observe(this, Observer<ArrayList<BadgeInfo>> {
+        mViewModel.liveExistBadgeList.observe(this, {
 
             myBadgeAdapter.clear()
-
             Log.e(CHECK_TAG,"myBadges observed, size : ${it.size}")
 
             if(it.size==0){
@@ -72,7 +71,7 @@ class BadgeActivity: AppCompatActivity() {
             mBinding.badgeMyBadgeCountText.text = myBadgeCount
         })
 
-        mViewModel.liveNonExistBadgeList.observe(this,Observer<ArrayList<BadgeInfo>>{
+        mViewModel.liveNonExistBadgeList.observe(this,{
 
             challengeBadgeAdapter.clear()
 
