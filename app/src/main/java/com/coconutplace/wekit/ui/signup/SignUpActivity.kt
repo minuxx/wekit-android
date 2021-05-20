@@ -10,6 +10,7 @@ import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.coconutplace.wekit.R
+import com.coconutplace.wekit.data.remote.auth.listeners.CheckUserListener
 import com.coconutplace.wekit.data.remote.auth.listeners.SignUpListener
 import com.coconutplace.wekit.databinding.ActivitySignupBinding
 import com.coconutplace.wekit.ui.BaseActivity
@@ -23,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.regex.Pattern
 
 
-class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialogClickListener {
+class SignUpActivity : BaseActivity(), CheckUserListener, WekitV1Dialog.WekitDialogClickListener {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel: SignUpViewModel by viewModel()
 
@@ -33,7 +34,7 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.signUpListener = this
+        viewModel.checkUserListener = this
 
         observeEmail()
         observeNickname()
@@ -88,6 +89,11 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        binding.signupCompleteBtn.isClickable = true
+    }
+
     override fun onClick(v: View?) {
         super.onClick(v)
 
@@ -96,7 +102,10 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
             binding.signupBackBtn -> finish()
             binding.signupTncTv -> openRuleDialog(FLAG_TNC)
             binding.signupPersonalInfoTv -> openRuleDialog(FLAG_PERSONAL_INFO)
-            binding.signupCompleteBtn -> startCertifyEmailActivity()
+            binding.signupCompleteBtn -> {
+                binding.signupRootLayout.hideKeyboard()
+                viewModel.checkUser()
+            }
         }
     }
 
@@ -208,104 +217,29 @@ class SignUpActivity : BaseActivity(), SignUpListener, WekitV1Dialog.WekitDialog
 
     }
 
-    private fun isValidateUser() : Boolean{
-        val _email = viewModel.email.value.toString()
-        val _nickname = viewModel.nickname.value.toString()
-        val _birthday = viewModel.birthday.value.toString()
-        val _id = viewModel.id.value.toString()
-        val _pw = viewModel.pw.value.toString()
-        val _pwCheck = viewModel.pwCheck.value.toString()
-
-        if(!viewModel.tncAgree.value!!){
-            onSignUpFailure(340, "이용약관 및 개인정보처리방침에 동의해주세요.")
-            return false
-        }
-
-        if(_email.isEmpty()){
-            onSignUpFailure(307, "이메일 주소를 입력해주세요.")
-            return false
-        }
-
-        if(!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.0-]+\\.[a-zA-Z]{2,6}\$", _email)){
-            onSignUpFailure(308, "정확한 이메일 주소를 입력해주세요.")
-            return false
-        }
-
-        if(_id.isEmpty()){
-            onSignUpFailure(301, "아이디를 입력해주세요.")
-            return false
-        }
-
-        if(!Pattern.matches("^[a-zA-Z]+[a-zA-Z0-9]{5,15}\$", _id)){
-            onSignUpFailure(302, "아이디는 대/소문자, 숫자를 포함한 6~15자로 입력해주세요.")
-            return false
-        }
-
-        if(_pw.isEmpty()){
-            onSignUpFailure(304, "비밀번호를 입력해주세요.")
-            return false
-        }
-
-        if(!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&^])[A-Za-z[0-9]\$@\$!%*#?&]{10,16}\$", _pw)){
-            onSignUpFailure(305, "비밀번호는 영문, 숫자, 특수문자를 포함한 10~16자로 입력해주세요.")
-            return false
-        }
-
-        if(_pw != _pwCheck){
-            onSignUpFailure(305, getString(R.string.password_check))
-            return false
-        }
-
-        if(_nickname.isEmpty()){
-            onSignUpFailure(309, "닉네임을 입력해주세요.")
-            return false
-        }
-
-        if(!Pattern.matches("^[a-zA-Z0-9가-힣]{1,10}\$", _nickname)){
-            onSignUpFailure(310, "닉네임은 10자 이내의 한글로 입력해주세요.")
-            return false
-        }
-
-        if(_birthday.isEmpty()){
-            onSignUpFailure(314, "생일을 입력해주세요.")
-            return false
-        }
-
-        if(!Pattern.matches("^(19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\$", _birthday)){
-            onSignUpFailure(315, "생일은 yyyy-mm-dd 형식으로 입력해주세요.")
-            return false
-        }
-
-        return true
-    }
-
     private fun startCertifyEmailActivity(){
-        if(isValidateUser()){
-            SharedPreferencesManager(this).saveUser(viewModel.getUser())
+        SharedPreferencesManager(this).saveUser(viewModel.getUser())
 
-            val signUpIntent = Intent(this, CertifyEmailActivity::class.java)
+        val signUpIntent = Intent(this, CertifyEmailActivity::class.java)
 
-            startActivity(signUpIntent)
-            finish()
-        }
-    }
-
-
-    override fun onSignUpStarted() {
-        binding.signupLoading.show()
-        binding.signupCompleteBtn.isClickable = false
-    }
-
-    override fun onSignUpSuccess(message: String) {
-        binding.signupLoading.hide()
-
-
-        val signUpIntent = Intent(this, PollActivity::class.java)
         startActivity(signUpIntent)
         finish()
     }
 
-    override fun onSignUpFailure(code: Int, message: String) {
+    override fun onCheckUserStarted() {
+        binding.signupLoading.show()
+        binding.signupCompleteBtn.isClickable = false
+    }
+
+    override fun onCheckUserSuccess(message: String) {
+        binding.signupLoading.hide()
+
+
+        startCertifyEmailActivity()
+        finish()
+    }
+
+    override fun onCheckUserFailure(code: Int, message: String) {
         binding.signupLoading.hide()
 
         when(code){

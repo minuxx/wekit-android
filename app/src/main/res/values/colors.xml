@@ -159,12 +159,14 @@
     <!--certify password-->
     <color name="certify_email_guide_01">#000</color>
     <color name="certify_email_guide_02">#7e7e7e</color>
+    <color name="certify_email_input_email">#7e7e7e</color>
     <color name="certify_email_input_text">#000</color>
     <color name="certify_email_input_hint">#b9b9b9</color>
     <color name="certify_email_send_certification_number_btn_active">#7d6ce9</color>
     <color name="certify_email_send_certification_number_btn_inactive">#c4c4c4</color>
     <color name="certify_email_send_certification_number_btn_text">#fff</color>
     <color name="certify_email_timer">#ed7d31</color>
+    <color name="certify_email_send_again">#7e7e7e</color>
 
     <!--notice-->
     <color name="notice_category">#000000</color>

@@ -76,7 +76,6 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            app:hintTextColor="@color/certify_email_input_hint"
             app:endIconDrawable="@drawable/icn_edit"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,10 +90,10 @@
                 android:hint="@string/certify_email_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:text="@={viewModel.email}"
-                android:textColor="@color/certify_email_input_text"
+                android:textColor="@color/certify_email_input_email"
                 android:textColorHint="@color/hint"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:focusable="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -104,8 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            app:hintTextColor="@color/certify_email_input_hint"
             app:errorEnabled="true"
+            app:errorIconDrawable="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/certify_email_email_et_layout">
@@ -155,6 +154,31 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/certify_email_certification_number_et_layout" />
+
+        <TextView
+            android:id="@+id/certify_email_send_again_label_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/certify_email_certify_send_again_label"
+            android:textSize="12sp"
+            android:textColor="@color/certify_email_send_again"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/certify_email_send_certification_number_tv"
+            app:layout_constraintEnd_toStartOf="@+id/certify_email_send_again_tv"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/certify_email_send_again_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/certify_email_certify_send_again"
+            android:textSize="12sp"
+            android:textColor="@color/certify_email_send_again"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/certify_email_send_certification_number_tv"
+            app:layout_constraintStart_toEndOf="@+id/certify_email_send_again_label_tv"/>
 
         <ProgressBar
             android:id="@+id/certify_email_loading"

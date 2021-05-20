@@ -22,6 +22,7 @@ import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.hideKeyboard
 import com.coconutplace.wekit.utils.show
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 import java.util.regex.Pattern
 import kotlin.concurrent.timer
 
@@ -47,11 +48,26 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
             binding.certifyEmailEmailEt.setText(it.email)
         }
 
+        SharedPreferencesManager(this).getEmail()?.let{
+            binding.certifyEmailEmailEt.setText(it)
+        }
+
         observeCertificationNumber()
 
         binding.certifyEmailRootLayout.setOnClickListener(this)
         binding.certifyEmailBackBtn.setOnClickListener(this)
         binding.certifyEmailSendCertificationNumberTv.setOnClickListener(this)
+        binding.certifyEmailSendAgainTv.setOnClickListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        viewModel.timer?.let{
+            it.cancel()
+            binding.certifyEmailTimerTv.visibility = View.INVISIBLE
+            binding.certifyEmailCertificationNumberEtLayout.error = null
+        }
     }
 
     override fun onClick(v: View?) {
@@ -60,20 +76,10 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
         when(v){
             binding.certifyEmailRootLayout -> binding.certifyEmailRootLayout.hideKeyboard()
             binding.certifyEmailBackBtn -> finish()
-            binding.certifyEmailSendCertificationNumberTv -> {
-                if(viewModel.flag == FLAG_CERTIFY_EMAIL){
-                    viewModel.certifyEmail()
-                } else if(viewModel.flag == FLAG_CERTIFY_NUMBER){
-                    if(viewModel.receivedCertificationNumber.value == Integer.parseInt(binding.certifyEmailCertificationNumberEt.text.toString())){
-                        if(viewModel.nextFlag == FLAG_SIGNUP){
-                            viewModel.signUp()
-                        }else if(viewModel.nextFlag == FLAG_EDIT_PASSWORD){
-                            startEditPasswordActivity()
-                        }
-                    }else{
-                        binding.certifyEmailCertificationNumberEtLayout.error = getString(R.string.certify_email_certification_number_invalid)
-                    }
-                }
+            binding.certifyEmailSendCertificationNumberTv -> clickCompleteButton(viewModel.flag)
+            binding.certifyEmailSendAgainTv -> {
+                binding.certifyEmailRootLayout.hideKeyboard()
+                viewModel.certifyEmail()
             }
         }
     }
@@ -82,29 +88,20 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
         viewModel.email.observe(this, Observer {
             if (it.isNotEmpty() && !Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.0-]+\\.[a-zA-Z]{2,6}$", it)) {
                 binding.certifyEmailEmailEtLayout.error = getString(R.string.signup_email_validation)
-                binding.certifyEmailSendCertificationNumberTv.setBackgroundColor(getColor(R.color.certify_email_send_certification_number_btn_inactive))
-            } else if(it.isEmpty()) {
-                binding.certifyEmailSendCertificationNumberTv.setBackgroundColor(getColor(R.color.certify_email_send_certification_number_btn_inactive))
             } else {
                 binding.certifyEmailEmailEtLayout.error = null
-                binding.certifyEmailSendCertificationNumberTv.setBackgroundColor(getColor(R.color.certify_email_send_certification_number_btn_active))
             }
         })
     }
 
     private fun observeCertificationNumber() {
         viewModel.certificationNumber.observe(this, Observer {
-            when {
-                it.isEmpty() -> {
-                    binding.certifyEmailSendCertificationNumberTv.setBackgroundColor(getColor(R.color.certify_email_send_certification_number_btn_inactive))
-                }
-                it.length == 4 -> {
+            when (it.length) {
+                0, 4 -> {
                     binding.certifyEmailCertificationNumberEtLayout.error = null
-                    binding.certifyEmailSendCertificationNumberTv.setBackgroundColor(getColor(R.color.certify_email_send_certification_number_btn_active))
                 }
                 else -> {
                     binding.certifyEmailCertificationNumberEtLayout.error = getString(R.string.certify_email_certification_number_validation)
-                    binding.certifyEmailSendCertificationNumberTv.setBackgroundColor(getColor(R.color.certify_email_send_certification_number_btn_inactive))
                 }
             }
         })
@@ -122,6 +119,7 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
+
         finish()
     }
 
@@ -132,14 +130,45 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
         finish()
     }
 
+    private fun clickCompleteButton(flag : Int){
+        binding.certifyEmailRootLayout.hideKeyboard()
+
+        if(flag == FLAG_CERTIFY_EMAIL){ // 인증번호 보내는
+            viewModel.certifyEmail()
+        } else if(flag == FLAG_CERTIFY_NUMBER){ // 인증번호 검사
+            if(viewModel.second > 0) { // 3분 이내
+                val number = binding.certifyEmailCertificationNumberEt.text.toString()
+
+                if(number.length == 4 && (viewModel.receivedCertificationNumber.value == Integer.parseInt(number))){ // 인증번호 일치
+                    if(viewModel.nextFlag == FLAG_SIGNUP){ // 회원가입 플로우
+                        viewModel.signUp()
+                    }else if(viewModel.nextFlag == FLAG_EDIT_PASSWORD){ // 비밀번호 수정 플로우
+                        startEditPasswordActivity()
+                    }
+                }else{ // 인증번호 불일치
+                    binding.certifyEmailCertificationNumberEtLayout.error = getString(R.string.certify_email_certification_number_invalid)
+                }
+            }else{ //3분 초과
+                binding.certifyEmailCertificationNumberEtLayout.error = getString(R.string.certify_email_exceeded_time)
+            }
+        }
+    }
+
     private fun startTimer(){
         binding.certifyEmailTimerTv.visibility = View.VISIBLE
+        viewModel.second = 180
 
-        timer(period = 1000, initialDelay = 1000){
-            binding.certifyEmailTimerTv.text = secondToTimeString(viewModel.second)
+        viewModel.timer?.let{
+            it.cancel()
+        }
 
+        viewModel.timer = timer(period = 1000, initialDelay = 1000){
             if(viewModel.second <= 0){
                 cancel()
+            }
+
+            runOnUiThread {
+                binding.certifyEmailTimerTv.text = secondToTimeString(viewModel.second)
             }
 
             viewModel.second--
@@ -147,6 +176,10 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
     }
 
     private fun secondToTimeString(leftSecond: Int): String{
+        if(leftSecond < 0){
+            return "00:00"
+        }
+
         var time = "0${leftSecond / 60}:"
         var second = leftSecond % 60
 
@@ -167,9 +200,7 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
         binding.certifyEmailLoading.hide()
 
         viewModel.flag = FLAG_CERTIFY_NUMBER
-        binding.certifyEmailCertificationNumberEtLayout.visibility = View.VISIBLE
         binding.certifyEmailSendCertificationNumberTv.text = getString(R.string.certify_email_certify)
-        binding.certifyEmailSendCertificationNumberTv.setBackgroundColor(getColor(R.color.certify_email_send_certification_number_btn_inactive))
         viewModel.receivedCertificationNumber.postValue(certificationNumber)
 
         startTimer()

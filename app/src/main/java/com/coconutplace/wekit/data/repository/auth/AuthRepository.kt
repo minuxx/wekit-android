@@ -12,6 +12,10 @@ class AuthRepository(private val authService: AuthService) : BaseRepository(){
         return apiRequest { authService.signUp(user) }
     }
 
+    suspend fun checkUser(user: User): AuthResponse {
+        return apiRequest { authService.checkUser(user) }
+    }
+
     suspend fun poll(body: BodyInfo): AuthResponse {
         return apiRequest { authService.poll(body) }
     }

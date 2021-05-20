@@ -17,6 +17,7 @@ class SharedPreferencesManager(private val context: Context){
         const val PUSH_FLAG = "PUSH_FLAG"
         const val BODY = "BODY"
         const val USER = "USER"
+        const val EMAIL = "EMAIL"
     }
 
     fun getSharedPreferences() : SharedPreferences {
@@ -82,15 +83,15 @@ class SharedPreferencesManager(private val context: Context){
         editor.apply()
     }
 
+    fun getClientID() : String? {
+        return getSharedPreferences().getString(CLIENT_ID, null)
+    }
+
     fun removeClientID(){
         val spf = getSharedPreferences()
         val editor = spf.edit()
         editor.remove(CLIENT_ID)
         editor.apply()
-    }
-
-    fun getClientID() : String? {
-        return getSharedPreferences().getString(CLIENT_ID, null)
     }
 
     fun saveNickname(nickname: String){
@@ -108,6 +109,25 @@ class SharedPreferencesManager(private val context: Context){
         val spf = getSharedPreferences()
         val editor = spf.edit()
         editor.remove(NICKNAME)
+        editor.apply()
+    }
+
+
+    fun saveEmail(email: String){
+        val spf = getSharedPreferences()
+        val editor =  spf.edit()
+        editor.putString(EMAIL, email)
+        editor.apply()
+    }
+
+    fun getEmail() : String?{
+        return getSharedPreferences().getString(EMAIL, null)
+    }
+
+    fun removeEmail(){
+        val spf = getSharedPreferences()
+        val editor = spf.edit()
+        editor.remove(EMAIL)
         editor.apply()
     }
 

@@ -13,6 +13,9 @@ interface AuthService {
     @POST("users/signup")
     suspend fun signUp(@Body user : User) : Response<AuthResponse>
 
+    @POST("users/check-info")
+    suspend fun checkUser(@Body user : User) : Response<AuthResponse>
+
     @POST("users/bodyinfo")
     suspend fun poll(@Body body : BodyInfo) : Response<AuthResponse>
 

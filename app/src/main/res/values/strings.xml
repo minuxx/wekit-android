@@ -19,7 +19,6 @@
     <string name="dialog_wekit_cancel">취소</string>
     <string name="denied_permission">권한을 거부하시면 서비스이용이 어렵습니다. [설정] > [앱 권한]에서 권한을 허용해주세요.</string>
 
-
     <!--splash-->
     <string name="splash_cd_logo">logo image</string>
     <string name="dialog_title_server_check">🚨<b> 긴급 점검 중</b>\n빠르게 해결할테니, 조금만 기다려주세요!</string>
@@ -251,12 +250,14 @@
     <!--profile-->
     <string name="certify_email">이메일 인증</string>
     <string name="certify_email_guide_password">비밀번호 수정을 위해\n이메일 인증이 필요합니다.</string>
-    <string name="certify_email_guide_signup">비밀번호 수정을 위해\n이메일 인증이 필요합니다.</string>
+    <string name="certify_email_guide_signup">이제 거의 다 왔어요!\n이메일 인증을 완료해주세요.</string>
     <string name="certify_email_guide_code">아래 이메일로 인증코드가 발송됩니다.</string>
     <string name="certify_email_email">이메일</string>
     <string name="certify_email_certification_number">인증번호</string>
     <string name="certify_email_send_certification_number">인증번호 보내기</string>
     <string name="certify_email_certify">인증하기</string>
+    <string name="certify_email_certify_send_again_label">인증 번호를 받지 못하셨나요?</string>
+    <string name="certify_email_certify_send_again"><u>인증 번호 다시 보내기</u></string>
     <string name="certify_email_cd_input_email">email input icon</string>
 
     <!--input body-->
@@ -322,6 +323,7 @@
     <!--certify email-->
     <string name="certify_email_certification_number_validation">인증번호는 숫자 4자리입니다.</string>
     <string name="certify_email_certification_number_invalid">인증번호가 일치하지 않습니다.</string>
+    <string name="certify_email_exceeded_time">인증시간을 초과했습니다.</string>
 
     <!-- rule -->
     <string name="rule">개인정보처리방침 및 이용약관</string>

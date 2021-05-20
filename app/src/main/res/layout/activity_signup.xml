@@ -379,7 +379,6 @@
                 android:fontFamily="@font/notosanskr_medium"
                 android:background="@drawable/bg_primary_button"
                 android:elevation="20dp"
-                android:onClick="@{() -> viewModel.signUp()}"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintStart_toStartOf="parent"
