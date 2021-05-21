@@ -29,7 +29,7 @@ class PhotoListAdapter(context: Context) : BaseAdapter() {
             return convertView
         }
 
-        val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = parent!!.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.item_gallery_photo,parent,false)
 
         val photo = view.findViewById<ImageView>(R.id.gallery_photo_iv)
@@ -50,7 +50,7 @@ class PhotoListAdapter(context: Context) : BaseAdapter() {
             val myOptions = RequestOptions()
                 .dontAnimate()
 
-            Glide.with(mContext)
+            Glide.with(parent.context)
                 .load(mUrls[position])
                 .thumbnail(0.4f)
                 .placeholder(R.drawable.img_chat_placeholder)

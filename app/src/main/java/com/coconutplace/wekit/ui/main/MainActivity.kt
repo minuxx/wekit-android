@@ -172,11 +172,12 @@ class MainActivity : BaseActivity(), MainListener{
 //    }
 
     private fun initSendBird(channelUrl: String?) {
-        SendBird.init(getString(R.string.sendbird_app_key), this)
+        val initFlag = SendBird.init(getString(R.string.sendbird_app_key), applicationContext)
+        Log.e(CHECK_TAG,"initFlag : $initFlag")
         val id = SharedPreferencesManager(this).getClientID()
-        SendBird.connect(id) { _, e ->
+        SendBird.connect(id) { user, e ->
             if (e != null) {
-                Log.e(CHECK_TAG, "connection failed 센드버드 연결 실패 $e")
+                Log.e(CHECK_TAG, "connection failed 센드버드 연결 실패 id:$id, error:$e")
 
                 return@connect
             }

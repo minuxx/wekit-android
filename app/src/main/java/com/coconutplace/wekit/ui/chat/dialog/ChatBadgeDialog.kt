@@ -40,6 +40,10 @@ class ChatBadgeDialog(context: Context) {
         backgroundDrawable?.colorFilter = LightingColorFilter(0,Color.parseColor(backColor))
         badgeLayout.background = backgroundDrawable
 
+        if(backColor=="#F1F1F1"){
+            badgeTitle.setTextColor(ContextCompat.getColor(mContext,R.color.gray))
+        }
+
         GlideToVectorYou
             .justLoadImage(mContext as Activity, Uri.parse(url),badgeImg)
 

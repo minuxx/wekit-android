@@ -241,6 +241,11 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
                 Log.e(CHECK_TAG,"background item 클릭함")
                 binding.root.hideKeyboard()
             }
+
+            override fun onProfileClick(profileUrl: String?) {
+                onProfileClicked(profileUrl!!)
+            }
+
         })
     }
 
@@ -305,6 +310,12 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         val intent = Intent(this,PhotoViewerActivity::class.java)
         intent.putExtra("url", message.url)
         intent.putExtra("type", message.type)
+        startActivity(intent)
+    }
+
+    private fun onProfileClicked(profileUrl: String){
+        val intent = Intent(this,PhotoViewerActivity::class.java)
+        intent.putExtra("url", profileUrl)
         startActivity(intent)
     }
 

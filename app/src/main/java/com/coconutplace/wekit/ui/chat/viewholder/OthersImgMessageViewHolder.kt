@@ -78,6 +78,11 @@ internal class OthersImgMessageViewHolder(itemView: View) : RecyclerView.ViewHol
         if (clickListener != null) {
             fileThumbnailImage.setOnClickListener { clickListener.onFileMessageItemClick(message) }
             itemView.setOnClickListener { clickListener.onBackgroundClick() }
+            if(!profileUrl.isNullOrEmpty()){
+                profileImg.setOnClickListener {
+                    clickListener.onProfileClick(profileUrl)
+                }
+            }
         }
     }
 

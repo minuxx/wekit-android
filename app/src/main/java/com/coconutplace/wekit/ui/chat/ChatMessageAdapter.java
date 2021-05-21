@@ -49,6 +49,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void onUserMessageItemClick(UserMessage message);
         void onFileMessageItemClick(FileMessage message);
         void onBackgroundClick();
+        void onProfileClick(String profileUrl);
     }
 
     @NonNull

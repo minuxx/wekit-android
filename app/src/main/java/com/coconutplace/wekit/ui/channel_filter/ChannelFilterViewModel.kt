@@ -1,9 +1,7 @@
 package com.coconutplace.wekit.ui.channel_filter
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 
 class ChannelFilterViewModel : ViewModel() {
 
@@ -19,7 +17,7 @@ class ChannelFilterViewModel : ViewModel() {
     }
     val isOngoing:MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply {
-            value = true
+            value = false
         }
     }
 
