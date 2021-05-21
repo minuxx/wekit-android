@@ -2,7 +2,6 @@ package com.coconutplace.wekit.ui.signup
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.User
 import com.coconutplace.wekit.data.remote.auth.listeners.CertifyEmailListener
 import com.coconutplace.wekit.data.remote.auth.listeners.CheckUserListener
@@ -11,7 +10,7 @@ import com.coconutplace.wekit.data.repository.auth.AuthRepository
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_EMAIL
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_SIGNUP
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_EDIT_PASSWORD
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import java.util.*
 import java.util.regex.Pattern
@@ -21,7 +20,7 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
     var certifyEmailListener: CertifyEmailListener? = null
     var checkUserListener: CheckUserListener? = null
     var flag = FLAG_CERTIFY_EMAIL
-    var nextFlag = FLAG_CERTIFY_EMAIL
+    var nextFlag = FLAG_EDIT_PASSWORD
     var receivedUser: User? = null
     var timer: Timer? = null
     var second = 180
@@ -220,7 +219,12 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
 
         Coroutines.main {
             try {
-                val authResponse = repository.certifyEmail(getUser())
+                val user: User = getUser()
+                if(flag == FLAG_CERTIFY_EMAIL){
+                    user.isRegister = "Y"
+                }
+
+                val authResponse = repository.certifyEmail(user)
 
                 authResponse.auth?.let {
                     certifyEmailListener?.onCertifyEmailSuccess(authResponse.auth.authenticNum)

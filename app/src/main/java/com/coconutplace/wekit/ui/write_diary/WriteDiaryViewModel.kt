@@ -65,8 +65,8 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
         return this.photos
     }
 
-    fun getPhotoUri(index: Int) : Uri{
-        return Uri.parse(this.photos[index].imgUrl)
+    fun getPhotoUri(index: Int) : String?{
+        return this.photos[index].imgUrl
     }
 
     fun getPhotoCount(): Int{

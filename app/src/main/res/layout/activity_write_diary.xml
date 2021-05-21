@@ -68,7 +68,7 @@
             <ImageButton
                 android:id="@+id/write_diary_pick_photo_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="270dp"
                 android:background="@null"
                 android:contentDescription="@string/cd_ic_back"
                 android:paddingStart="16dp"

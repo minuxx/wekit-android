@@ -50,6 +50,7 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
 
         SharedPreferencesManager(this).getEmail()?.let{
             binding.certifyEmailEmailEt.setText(it)
+            viewModel.email.postValue(it)
         }
 
         observeCertificationNumber()

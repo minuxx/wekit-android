@@ -1,13 +1,19 @@
 package com.coconutplace.wekit.ui.write_diary
 
 import android.content.Intent
+import android.graphics.*
+import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -39,6 +45,10 @@ import com.coconutplace.wekit.utils.snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.FileNotFoundException
+import java.io.InputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
@@ -249,7 +259,10 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             if (requestCode == REQUEST_PHOTOS) {
                 val gson = Gson()
                 val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
-                val photos: ArrayList<Photo> = gson.fromJson(data!!.getStringExtra("photo-items"), arrayPhotoType)
+                val photos: ArrayList<Photo> = gson.fromJson(
+                    data!!.getStringExtra("photo-items"),
+                    arrayPhotoType
+                )
 
                 viewModel.addPhotos(photos)
 
@@ -259,11 +272,27 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                     val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
                     val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
                     imageView.adjustViewBounds = true
+//                    imageView.id = R.id.write_diary_default_iv
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
                     Glide.with(this)
+                        .asBitmap()
                         .load(viewModel.getPhotoUri(i))
                         .into(imageView)
+
+
+//                    var bitmap: Bitmap? = null
+//                    viewModel.getPhotoUri(i)?.let{
+//                        bitmap = drawTextToBitmap(it)
+//                    }
+//
+//                    bitmap?.let{
+//                        Glide.with(this)
+//                            .asBitmap()
+//                            .load(it)
+//                            .into(imageView)
+//                    }
+
                     addView(view)
                 }
 
@@ -323,6 +352,103 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         }
     }
 
+//    private fun drawTextToBitmap(uri: String) {
+//        val file = File(uri)
+//        val originalBitmap = BitmapFactory.decodeFile(file.path)
+//
+//        try {
+//            val out = FileOutputStream(file)
+//
+//            // NEWLY ADDED CODE STARTS HERE
+//            val canvas = Canvas(originalBitmap)
+//            val paint = Paint()
+//            paint.color = Color.WHITE // Text Color
+//            paint.textSize = 12f // Text Size
+//            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER) // Text Overlapping Pattern
+//            // some more settings...
+//            canvas.drawBitmap(originalBitmap, 0f, 0f, paint)
+//            canvas.drawText("Testing...", 10f, 10f, paint)
+//            // NEWLY ADDED CODE ENDS HERE ]
+//            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+//            out.flush()
+//            out.close()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
+
+    //draw text on photo
+    private fun drawTextToBitmap(uri: String): Bitmap? {
+        val fileIs: InputStream? = contentResolver.openInputStream(Uri.parse(uri))
+        val bitmap = BitmapFactory.decodeStream(fileIs)
+
+        return try {
+            val scale: Float = resources.displayMetrics.density
+            var config: Bitmap.Config? = bitmap.config
+
+            if (config == null) {
+                config = Bitmap.Config.ARGB_8888
+            }
+
+            val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, config)
+            val newCanvas = Canvas(newBitmap)
+
+            newCanvas.drawBitmap(bitmap, 0f, 0f, null)
+
+            val dateTime = Calendar.getInstance().time
+
+            val captionString = convertDate("2021-01-23T21:32:44.333")
+
+            val paintText = Paint(Paint.ANTI_ALIAS_FLAG)
+            paintText.color = ContextCompat.getColor(this, R.color.white)
+            paintText.textSize = 100f
+            paintText.typeface = Typeface.createFromAsset(assets, "notosanskr_bold.otf")
+
+            val rectText = Rect()
+            paintText.getTextBounds(captionString, 0, captionString.length, rectText)
+
+            val y = ((newBitmap.height + rectText.height()) / 3) * scale
+            newCanvas.drawText(
+                captionString,
+                100f, y.toFloat(), paintText
+            )
+
+            newBitmap
+        } catch (e: FileNotFoundException) {
+            binding.writeDiaryRootLayout.snackbar("Error: " + e.message)
+            null
+        }
+    }
+
+    //2021-01-23T21:32:44.333
+    private fun convertDate(date: String): String {
+        val month = if (date.substring(5, 7).toInt() < 10) {
+            date.substring(6, 7)
+        } else {
+            date.substring(5, 7)
+        }
+
+        val day = if (date.substring(8, 10).toInt() < 10) {
+            date.substring(9, 10)
+        } else {
+            date.substring(8, 10)
+        }
+
+        val hour = if (date.substring(11, 13).toInt() < 12) {
+            "AM ${date.substring(12, 13)}"
+        } else {
+            "PM ${date.substring(11, 13).toInt() - 12}"
+        }
+
+        val minute = if (date.substring(14, 16).toInt() < 10) {
+            date.substring(15, 16)
+        } else {
+            date.substring(14, 16)
+        }
+
+        return "${hour}시 ${minute}분 ${month}월 ${day}일"
+    }
+
     override fun onUploadToFirebaseStarted() {
         binding.writeDiaryLoading.show()
 
@@ -372,7 +498,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         badgeTitle: String,
         badgeUrl: String,
         badgeExplain: String,
-        backgroundColor:String
+        backgroundColor: String
     ) {
         binding.writeDiaryLoading.hide()
 
@@ -380,10 +506,10 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             FLAG_CERTIFY_DIARY -> {
                 val intent = Intent()
                 intent.putExtra("imgList", viewModel.getImgUrlsFromFirebase())
-                intent.putExtra("badgeTitle",badgeTitle)
-                intent.putExtra("badgeUrl",badgeUrl)
-                intent.putExtra("badgeExplain",badgeExplain)
-                intent.putExtra("backgroundColor",backgroundColor)
+                intent.putExtra("badgeTitle", badgeTitle)
+                intent.putExtra("badgeUrl", badgeUrl)
+                intent.putExtra("badgeExplain", badgeExplain)
+                intent.putExtra("backgroundColor", backgroundColor)
                 setResult(RES_CODE_AUTH_SUCCESS, intent)
             }
         }

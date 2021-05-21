@@ -12,5 +12,6 @@ data class User(
     @SerializedName(value = "nickname") val nickname: String = "",
     @SerializedName(value = "gender") val gender: String = "",
     @SerializedName(value = "birthday") val birthday: String = "",
-    @SerializedName(value = "isIos") val isIos: String = "N"
+    @SerializedName(value = "isIos") val isIos: String = "N",
+    @SerializedName(value = "isRegister") var isRegister: String = "N"
 )

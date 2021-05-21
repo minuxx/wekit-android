@@ -142,7 +142,7 @@ class ChoicePhotoActivity : BaseActivity() {
     }
 
     private fun createImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss",Locale.KOREA).format(Date())
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date())
         val imageFileName = "diary_${timeStamp}.jpg"
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
@@ -190,7 +190,7 @@ class ChoicePhotoActivity : BaseActivity() {
         val options: UCrop.Options = UCrop.Options()
 
         options.setActiveControlsWidgetColor(getColor(R.color.primary))
-        options.setFreeStyleCropEnabled(true)
+        options.setFreeStyleCropEnabled(false)
         uCrop.withOptions(options)
 
         uCrop.start(this)
