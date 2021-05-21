@@ -1,18 +1,18 @@
 package com.coconutplace.wekit.ui.write_diary
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -48,7 +48,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 
 class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
@@ -67,6 +67,12 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         viewModel.writeDiaryListener = this
 
+        mFlag = intent.getIntExtra("flag", 0)
+
+        if (mFlag == 0) {
+            finish()
+        }
+
         initPhotoViewPager()
         setOnClickListenerAll()
         observeSatisfaction()
@@ -74,13 +80,50 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         selectedDate = intent.getStringExtra("date")
         viewModel.setDate(selectedDate ?: "")
-        mFlag = intent.getIntExtra("flag", 0)
-
-        if (mFlag == 0) {
-            finish()
-        }
         
         setMode()
+
+        screenSizeInDp.apply {
+            viewModel.screenX = x
+
+            // screen width in dp
+//            binding.writeDiaryDefaultIv.append("\n\nWidth : $x dp")
+//
+//            // screen height in dp
+//            binding.writeDiaryTitleTv.append("\n\nHeight : $y dp")
+        }
+    }
+
+    private val Activity.displayMetrics: DisplayMetrics
+        get() {
+            // display metrics is a structure describing general information
+            // about a display, such as its size, density, and font scaling
+            val displayMetrics = DisplayMetrics()
+
+            if (Build.VERSION.SDK_INT >= 30){
+                display?.apply {
+                    getRealMetrics(displayMetrics)
+                }
+            }else{
+                // getMetrics() method was deprecated in api level 30
+                windowManager.defaultDisplay.getMetrics(displayMetrics)
+            }
+
+            return displayMetrics
+        }
+
+    private val Activity.screenSizeInDp: Point
+        get() {
+            val point = Point()
+            displayMetrics.apply {
+                // screen width in dp
+                point.x = (widthPixels / density).roundToInt()
+
+                // screen height in dp
+                point.y = (heightPixels / density).roundToInt()
+            }
+
+            return point
     }
 
 
@@ -279,7 +322,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                         .asBitmap()
                         .load(viewModel.getPhotoUri(i))
                         .into(imageView)
-
 
 //                    var bitmap: Bitmap? = null
 //                    viewModel.getPhotoUri(i)?.let{
