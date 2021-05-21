@@ -72,7 +72,10 @@ class MainActivity : BaseActivity(), MainListener{
     private fun initNavigation() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
         bottomNavigationView.itemIconTintList = null
+
         val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
+        viewPager.isUserInputEnabled = false
+
         val pagerAdapter = MainPagerAdapter(this)
         pagerAdapter.addFragment(HomeFragment())
         pagerAdapter.addFragment(ChannelFragment())
