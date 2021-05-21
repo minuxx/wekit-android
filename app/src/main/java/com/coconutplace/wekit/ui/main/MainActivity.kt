@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -40,10 +41,12 @@ class MainActivity : BaseActivity(), MainListener{
     private val unselectedTabIcons = listOf(R.drawable.icn_home_normal, R.drawable.icn_chat_normal, R.drawable.icn_diary_normal)
     private val selectedTabIcons = listOf(R.drawable.icn_home_selected, R.drawable.icn_chat_selected, R.drawable.icn_diary_selected)
     private val viewModel: MainViewModel by viewModel()
-    lateinit var navController:NavController
-    lateinit var navHostFragment: NavHostFragment
     private var mFlag = 0;
     private var doubleBackToExitPressedOnce = false
+    private lateinit var viewPager: ViewPager2
+    private lateinit var pagerAdapter:MainPagerAdapter
+    private lateinit var channelFragment: ChannelFragment
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,14 +56,13 @@ class MainActivity : BaseActivity(), MainListener{
 
         val channelUrl = intent.getStringExtra("groupChannelUrl")
 
-//        if(channelUrl == null){
-//            initNavigation()
-//        }else{
-//            initNavigationWithPush()
-//        }
+        initNavigation()
+        channelUrl?.let {
+            viewPager.registerOnPageChangeCallback(PageChangeCallback())
+            viewPager.currentItem = 1
+        }
 
 //        initTab()
-        initNavigation()
         initSendBird(channelUrl)
     }
 
@@ -70,27 +72,27 @@ class MainActivity : BaseActivity(), MainListener{
     }
 
     private fun initNavigation() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        bottomNavigationView = findViewById(R.id.main_bottom_nav)
         bottomNavigationView.itemIconTintList = null
 
-        val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
+        viewPager = findViewById(R.id.main_viewpager)
         viewPager.isUserInputEnabled = false
 
-        val pagerAdapter = MainPagerAdapter(this)
+        channelFragment = ChannelFragment()
+        pagerAdapter = MainPagerAdapter(this)
         pagerAdapter.addFragment(HomeFragment())
-        pagerAdapter.addFragment(ChannelFragment())
+        pagerAdapter.addFragment(channelFragment)
         pagerAdapter.addFragment(DiaryFragment())
         viewPager.adapter = pagerAdapter
 
-        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(viewPager, it) }
+        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(it) }
     }
 
-    private fun navSelector(viewPager: ViewPager2, item: MenuItem) : Boolean{
+    private fun navSelector(item: MenuItem) : Boolean{
         val checked = item.setChecked(true)
         when(checked.itemId){
             R.id.homeFragment -> {
                 viewPager.currentItem = 0
-
                 return true
             }
             R.id.channelFragment -> {
@@ -160,25 +162,24 @@ class MainActivity : BaseActivity(), MainListener{
 //        navHostFragment.navController.graph = graph
 //    }
 //
-//    //푸시알람을 클릭해서 SplashActivity를 거쳤을 때의 navigation 세팅(channelFragment부터 시작)
-//    private fun initNavigationWithPush(){
-//        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
-//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-//        navController = navHostFragment.navController
-//
-//        bottomNavigationView.setupWithNavController(navController)
-//        bottomNavigationView.itemIconTintList = null
-//
-//        val graph = navController.navInflater.inflate(R.navigation.nav_main)
-//        graph.startDestination = R.id.channelFragment
-//        navHostFragment.navController.graph = graph
-//    }
+
+    private inner class PageChangeCallback: ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            bottomNavigationView.selectedItemId = when (position) {
+                0 -> R.id.homeFragment
+                1 -> R.id.channelFragment
+                2 -> R.id.diaryFragment
+                else -> error("no such position: $position")
+            }
+        }
+    }
 
     private fun initSendBird(channelUrl: String?) {
         val initFlag = SendBird.init(getString(R.string.sendbird_app_key), applicationContext)
         Log.e(CHECK_TAG,"initFlag : $initFlag")
         val id = SharedPreferencesManager(this).getClientID()
-        SendBird.connect(id) { user, e ->
+        SendBird.connect(id) { _, e ->
             if (e != null) {
                 Log.e(CHECK_TAG, "connection failed 센드버드 연결 실패 id:$id, error:$e")
 
@@ -203,8 +204,9 @@ class MainActivity : BaseActivity(), MainListener{
     }
 
     private fun moveToChatActivity(channelUrl: String){
-        val channelFragment = navHostFragment.childFragmentManager.fragments[0] as ChannelFragment
-        channelFragment.startChatWithPush(channelUrl)
+        //channelFragment.startChatWithPush(channelUrl)
+        val fag = pagerAdapter.fragments[1] as ChannelFragment
+        fag.startChatWithPush((channelUrl))
     }
 
     override fun onStarted() {
@@ -253,10 +255,17 @@ class MainActivity : BaseActivity(), MainListener{
     }
 
     override fun onBackPressed() {
-        val fragment: Fragment? = navHostFragment.childFragmentManager.fragments[0] //현재 보는 fragment
-        if (fragment is BackPressListener) {
-            if (fragment.onBackPressed()) {//channel fragment 종료해도 됨
-                super.onBackPressed()
+        Log.e(CHECK_TAG,"viewPager currrentItem ${viewPager.currentItem}")
+        if (viewPager.currentItem == 1) {
+            if (channelFragment.onBackPressed()) {//channel fragment 종료해도 됨
+                if (doubleBackToExitPressedOnce) {
+                    finish()
+                    return
+                }
+                doubleBackToExitPressedOnce = true
+                Timer().schedule(2000) {
+                    doubleBackToExitPressedOnce = false
+                }
             } else {
                 //channel fragment 종료하지 않고 내부 처리함
             }
@@ -266,9 +275,7 @@ class MainActivity : BaseActivity(), MainListener{
                 finish()
                 return
             }
-
             doubleBackToExitPressedOnce = true
-
             Timer().schedule(2000) {
                 doubleBackToExitPressedOnce = false
             }

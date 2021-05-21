@@ -32,6 +32,10 @@ import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
 import com.coconutplace.wekit.utils.hideKeyboard
 import com.coconutplace.wekit.utils.snackbar
 import com.github.mmin18.widget.RealtimeBlurView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
@@ -388,6 +392,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     }
 
     fun startChatWithPush(channelUrl:String){
+
         mChannelViewModel.setChannelUrlWithPush(channelUrl)
     }
 

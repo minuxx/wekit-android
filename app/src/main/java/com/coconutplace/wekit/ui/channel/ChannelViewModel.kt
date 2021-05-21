@@ -41,6 +41,10 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     val dialogEvent: LiveData<Event<Any>>
         get() = _dialogEvent
 
+    private val _pushClickEvent = MutableLiveData<Event<Unit>>()
+    val pushClickEvent: LiveData<Event<Unit>>
+        get() = _pushClickEvent
+
     fun getMyRoomCount():Int{
         return myRoomCount
     }
@@ -86,6 +90,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
         if(myRoomUrl!=null){
             enterRoom()
+            Log.e(CHECK_TAG,"myRoomUrl is not null -> direct enterRoom, $myRoomUrl")
         }
         else{
             CoroutineScope(Dispatchers.IO).launch {
@@ -495,7 +500,12 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
             if (isMember) {
                 Log.e(CHECK_TAG, "is member")
                 isEntering = false
-                channelListener?.callChatActivity(channelUrl!!,myChannelResponse.result!!.chatList!![0].roomIdx)
+                if(this::myChannelResponse.isInitialized){
+                    channelListener?.callChatActivity(channelUrl!!,myChannelResponse.result!!.chatList!![0].roomIdx)
+                }
+                else{
+                    Log.e(CHECK_TAG,"myChannelResponse is not initialized")
+                }
             }
             else {
                 Log.e(CHECK_TAG, "is not member")
