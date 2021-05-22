@@ -7,20 +7,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.coconutplace.wekit.BuildConfig
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Auth
 import com.coconutplace.wekit.data.remote.auth.listeners.MainListener
 import com.coconutplace.wekit.ui.BaseActivity
-import com.coconutplace.wekit.ui.channel.BackPressListener
 import com.coconutplace.wekit.ui.channel.ChannelFragment
 import com.coconutplace.wekit.ui.diary.DiaryFragment
 import com.coconutplace.wekit.ui.home.HomeFragment
@@ -28,8 +24,6 @@ import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.sendbird.android.SendBird
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -44,7 +38,7 @@ class MainActivity : BaseActivity(), MainListener{
     private var mFlag = 0;
     private var doubleBackToExitPressedOnce = false
     private lateinit var viewPager: ViewPager2
-    private lateinit var pagerAdapter:MainPagerAdapter
+    private lateinit var pagerAdapter:PagerAdapter
     private lateinit var channelFragment: ChannelFragment
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -79,10 +73,8 @@ class MainActivity : BaseActivity(), MainListener{
         viewPager.isUserInputEnabled = false
 
         channelFragment = ChannelFragment()
-        pagerAdapter = MainPagerAdapter(this)
-        pagerAdapter.addFragment(HomeFragment())
-        pagerAdapter.addFragment(channelFragment)
-        pagerAdapter.addFragment(DiaryFragment())
+        pagerAdapter = PagerAdapter(supportFragmentManager,lifecycle)
+
         viewPager.adapter = pagerAdapter
 
         bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(it) }
@@ -108,6 +100,17 @@ class MainActivity : BaseActivity(), MainListener{
         return false
     }
 
+    private inner class PagerAdapter(fm: FragmentManager, lc: Lifecycle): FragmentStateAdapter(fm, lc) {
+        override fun getItemCount() = 3
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> HomeFragment()
+                1 -> channelFragment // 2021.05.23 Ethan # channelFragment를 전역변수로 두고 다른 함수에서도 효율적인것 같아 이렇게했습니다.
+                2 -> DiaryFragment()
+                else -> error("no such position: $position")
+            }
+        }
+    }
 
 //    private fun initTab(){
 //        val tabLayout: TabLayout = findViewById(R.id.main_tab)
@@ -182,31 +185,19 @@ class MainActivity : BaseActivity(), MainListener{
         SendBird.connect(id) { _, e ->
             if (e != null) {
                 Log.e(CHECK_TAG, "connection failed 센드버드 연결 실패 id:$id, error:$e")
-
                 return@connect
             }
             if(channelUrl!=null){
-                moveToChatActivity(channelUrl)
+                //moveToChatActivity(channelUrl)
+                viewModel.setPushUrl(channelUrl)
             }
-
-//            val nickname = SharedPreferencesManager(this).getNickname()
-//            SendBird.updateCurrentUserInfo(nickname, null) {
-//                if (it != null) {
-//                    Log.e(CHECK_TAG,"sendbird init error: $it")
-//                    //ERROR
-//                } else{
-//                    if(channelUrl!=null){
-//                        moveToChatActivity(channelUrl)
-//                    }
-//                }
-//            }
         }
     }
 
-    private fun moveToChatActivity(channelUrl: String){
-        //channelFragment.startChatWithPush(channelUrl)
-        val fag = pagerAdapter.fragments[1] as ChannelFragment
-        fag.startChatWithPush((channelUrl))
+    fun getChannelUrlWithPush(): String?{
+        val pushUrl = viewModel.getPushUrl()
+        viewModel.setPushUrl(null)
+        return pushUrl
     }
 
     override fun onStarted() {

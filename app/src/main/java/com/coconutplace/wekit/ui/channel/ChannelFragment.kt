@@ -27,6 +27,7 @@ import com.coconutplace.wekit.ui.chat.ChatActivity
 import com.coconutplace.wekit.ui.chat.dialog.ChatBadgeDialog
 import com.coconutplace.wekit.ui.create_channel.CreateChannelActivity
 import com.coconutplace.wekit.ui.enter_channel.EnterChannelActivity
+import com.coconutplace.wekit.ui.main.MainActivity
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
 import com.coconutplace.wekit.utils.hideKeyboard
@@ -328,6 +329,15 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 
             }
         })
+
+        mChannelViewModel.myChannelSetEvent.observe(mBinding.lifecycleOwner!!,{
+            it.getContextIfNotHandled()?.let{
+                (activity as MainActivity).getChannelUrlWithPush()?.let{ pushUrl ->
+                    Log.e(CHECK_TAG,"setChannelUrlWithPush called")
+                    mChannelViewModel.setChannelUrlWithPush(pushUrl)
+                }
+            }
+        })
     }
 
     private fun setUpChannelListAdapter() {
@@ -392,7 +402,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     }
 
     fun startChatWithPush(channelUrl:String){
-
+        Log.e(CHECK_TAG,"DSFSDF")
         mChannelViewModel.setChannelUrlWithPush(channelUrl)
     }
 

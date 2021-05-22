@@ -8,6 +8,7 @@ import com.coconutplace.wekit.utils.Coroutines
 
 class MainViewModel(private val repository: AuthRepository): ViewModel()  {
     var mainListener: MainListener? = null
+    var pushChannelUrl:String? = null
 
     init {
         getVersion()
@@ -34,5 +35,13 @@ class MainViewModel(private val repository: AuthRepository): ViewModel()  {
                 mainListener?.onGetVersionFailure(404, e.message!!)
             }
         }
+    }
+
+    fun setPushUrl(pushUrl: String?){
+        pushChannelUrl = pushUrl
+    }
+
+    fun getPushUrl():String?{
+        return pushChannelUrl
     }
 }

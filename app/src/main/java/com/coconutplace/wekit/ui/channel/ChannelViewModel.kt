@@ -10,7 +10,6 @@ import com.coconutplace.wekit.data.entities.ChatRoom
 import com.coconutplace.wekit.data.remote.channel.ChannelResponse
 import com.coconutplace.wekit.data.remote.channel.listeners.ChannelListener
 import com.coconutplace.wekit.data.repository.channel.ChannelRepository
-import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Event
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
@@ -41,9 +40,9 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     val dialogEvent: LiveData<Event<Any>>
         get() = _dialogEvent
 
-    private val _pushClickEvent = MutableLiveData<Event<Unit>>()
-    val pushClickEvent: LiveData<Event<Unit>>
-        get() = _pushClickEvent
+    private val _myChannelSetEvent = MutableLiveData<Event<Unit>>()
+    val myChannelSetEvent: LiveData<Event<Unit>>
+        get() = _myChannelSetEvent
 
     fun getMyRoomCount():Int{
         return myRoomCount
@@ -163,6 +162,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                     Log.e(CHECK_TAG,"myRoomCount : $myRoomCount")
                     if(myRoomCount>0){
                         val myFirstRoom = myChannelResponse.result!!.chatList!![0]
+                        _myChannelSetEvent.postValue(Event(Unit))
 
                         liveMyChatRoomName.postValue(myFirstRoom.roomName) //방 이름
                         liveMyChatMemberCount.postValue("${myFirstRoom.currentNum}/${myFirstRoom.maxLimit}") //현재 인원/최대 인원
