@@ -6,7 +6,9 @@ import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -24,6 +26,7 @@ import com.coconutplace.wekit.data.remote.diary.listeners.WriteDiaryListener
 import com.coconutplace.wekit.databinding.ActivityWriteDiaryBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.choice_photo.ChoicePhotoActivity
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_READ_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
@@ -73,16 +76,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             finish()
         }
 
-        initPhotoViewPager()
-        setOnClickListenerAll()
-        observeSatisfaction()
-        observeTimezone()
-
-        selectedDate = intent.getStringExtra("date")
-        viewModel.setDate(selectedDate ?: "")
-        
-        setMode()
-
         screenSizeInDp.apply {
             viewModel.screenX = x
 
@@ -92,6 +85,18 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 //            // screen height in dp
 //            binding.writeDiaryTitleTv.append("\n\nHeight : $y dp")
         }
+
+        initPhotoViewPager()
+        setOnClickListenerAll()
+        observeSatisfaction()
+        observeTimezone()
+
+        Log.d(DEBUG_TAG, "screen width: " + viewModel.screenX)
+
+        selectedDate = intent.getStringExtra("date")
+        viewModel.setDate(selectedDate ?: "")
+        
+        setMode()
     }
 
     private val Activity.displayMetrics: DisplayMetrics
@@ -118,7 +123,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             displayMetrics.apply {
                 // screen width in dp
                 point.x = (widthPixels / density).roundToInt()
-
+                Log.d(DEBUG_TAG, "screen width px: " + widthPixels)
                 // screen height in dp
                 point.y = (heightPixels / density).roundToInt()
             }
@@ -257,6 +262,15 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     private fun initPhotoViewPager() {
         pagerAdapter = PhotoPagerAdapter()
         binding.writeDiaryPager.adapter = pagerAdapter
+
+//        val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, viewModel.screenX)
+//        layoutParams.topToBottom = R.id.write_diary_title_tv
+//        layoutParams.leftToLeft = R.id.write_diary_root_layout
+//        layoutParams.rightToRight = R.id.write_diary_root_layout
+//        layoutParams.setMargins(0, 30, 0, 0)
+//
+//        binding.writeDiaryPager.layoutParams = layoutParams
+//        binding.writeDiaryDefaultIv.layoutParams = layoutParams
     }
 
     private fun addView(newPage: View) {
@@ -319,16 +333,12 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
                     Glide.with(this)
-                        .asBitmap()
                         .load(viewModel.getPhotoUri(i))
                         .into(imageView)
 
 //                    var bitmap: Bitmap? = null
-//                    viewModel.getPhotoUri(i)?.let{
-//                        bitmap = drawTextToBitmap(it)
-//                    }
 //
-//                    bitmap?.let{
+//                    drawTextToBitmap(viewModel.getPhotoUri(i)!!)?.let{
 //                        Glide.with(this)
 //                            .asBitmap()
 //                            .load(it)
@@ -422,11 +432,23 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     //draw text on photo
     private fun drawTextToBitmap(uri: String): Bitmap? {
         val fileIs: InputStream? = contentResolver.openInputStream(Uri.parse(uri))
-        val bitmap = BitmapFactory.decodeStream(fileIs)
+        var bitmap: Bitmap? = null
+        val contentResolver = contentResolver
+
+        try {
+            bitmap = if (Build.VERSION.SDK_INT < 28) {
+                MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(uri))
+            } else {
+                val source = ImageDecoder.createSource(contentResolver, Uri.parse(uri))
+                ImageDecoder.decodeBitmap(source)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         return try {
             val scale: Float = resources.displayMetrics.density
-            var config: Bitmap.Config? = bitmap.config
+            var config: Bitmap.Config? = bitmap!!.config
 
             if (config == null) {
                 config = Bitmap.Config.ARGB_8888
@@ -452,7 +474,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             val y = ((newBitmap.height + rectText.height()) / 3) * scale
             newCanvas.drawText(
                 captionString,
-                100f, y.toFloat(), paintText
+                0f, 0f, paintText
             )
 
             newBitmap
