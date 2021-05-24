@@ -4,15 +4,12 @@ import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -48,7 +45,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
@@ -275,23 +271,23 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 //                    imageView.id = R.id.write_diary_default_iv
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
-                    Glide.with(this)
-                        .asBitmap()
-                        .load(viewModel.getPhotoUri(i))
-                        .into(imageView)
+//                    Glide.with(this)
+//                        .asBitmap()
+//                        .load(viewModel.getPhotoUri(i))
+//                        .into(imageView)
 
+                    var bitmap: Bitmap? = null
 
-//                    var bitmap: Bitmap? = null
-//                    viewModel.getPhotoUri(i)?.let{
-//                        bitmap = drawTextToBitmap(it)
-//                    }
-//
-//                    bitmap?.let{
-//                        Glide.with(this)
-//                            .asBitmap()
-//                            .load(it)
-//                            .into(imageView)
-//                    }
+                    viewModel.getPhotoUri(i)?.let{
+                        bitmap = drawTextToBitmap(it)
+                    }
+
+                    bitmap?.let{
+                        Glide.with(this)
+                            .asBitmap()
+                            .load(it)
+                            .into(imageView)
+                    }
 
                     addView(view)
                 }
