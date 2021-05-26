@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.coconutplace.wekit.R
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
@@ -44,8 +45,13 @@ class ChatBadgeDialog(context: Context) {
             badgeTitle.setTextColor(ContextCompat.getColor(mContext,R.color.gray))
         }
 
-        GlideToVectorYou
-            .justLoadImage(mContext as Activity, Uri.parse(url),badgeImg)
+        if(url.contains(".svg")){
+            GlideToVectorYou
+                .justLoadImage(mContext as Activity,Uri.parse(url),badgeImg)
+        }
+        else{
+            Glide.with(mContext).load(url).into(badgeImg)
+        }
 
         dig.show()
 

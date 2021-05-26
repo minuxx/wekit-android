@@ -112,60 +112,6 @@ class MainActivity : BaseActivity(), MainListener{
         }
     }
 
-//    private fun initTab(){
-//        val tabLayout: TabLayout = findViewById(R.id.main_tab)
-//
-//        val pagerAdapter = MainPagerAdapter(this)
-//        pagerAdapter.addFragment(HomeFragment())
-//        pagerAdapter.addFragment(ChannelFragment())
-//        pagerAdapter.addFragment(DiaryFragment())
-//
-//        val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
-//
-//        viewPager.adapter = pagerAdapter
-//        viewPager.offscreenPageLimit = 2
-//        viewPager.isUserInputEnabled = false
-//
-//        TabLayoutMediator(tabLayout, viewPager){ tab, position ->
-////            tab.text = tabNames[position]
-////            tab.setIcon(unselectedTabIcons[position])
-//        }.attach()
-//
-//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
-//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
-//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
-//
-//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                tab!!.setIcon(selectedTabIcons[tab.position])
-//                viewPager.currentItem = tab.position
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//
-//            }
-//        })
-//    }
-
-//    private fun initNavigation() {
-//        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
-//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-////        NavigationUI.setupWithNavController(bottomNavigationView, findNavController(R.id.main_nav_host))
-//        navController = navHostFragment.navController
-//
-//        bottomNavigationView.setupWithNavController(navController)
-//        bottomNavigationView.itemIconTintList = null
-//
-//        val graph = navController.navInflater.inflate(R.navigation.nav_main)
-//        graph.startDestination = R.id.homeFragment
-//        navHostFragment.navController.graph = graph
-//    }
-//
-
     private inner class PageChangeCallback: ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
