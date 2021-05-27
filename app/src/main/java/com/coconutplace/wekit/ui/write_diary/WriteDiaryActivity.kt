@@ -1,14 +1,11 @@
 package com.coconutplace.wekit.ui.write_diary
 
-import android.app.Activity
+import android.R.attr.*
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -27,7 +24,6 @@ import com.coconutplace.wekit.databinding.ActivityWriteDiaryBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.choice_photo.ChoicePhotoActivity
 import com.coconutplace.wekit.utils.*
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_READ_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
@@ -44,17 +40,12 @@ import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_LINNER
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_LUNCH
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.CalendarDay.today
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.roundToInt
 
 
 class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
@@ -89,39 +80,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         
         setMode()
     }
-
-    private val Activity.displayMetrics: DisplayMetrics
-        get() {
-            // display metrics is a structure describing general information
-            // about a display, such as its size, density, and font scaling
-            val displayMetrics = DisplayMetrics()
-
-            if (Build.VERSION.SDK_INT >= 30){
-                display?.apply {
-                    getRealMetrics(displayMetrics)
-                }
-            }else{
-                // getMetrics() method was deprecated in api level 30
-                windowManager.defaultDisplay.getMetrics(displayMetrics)
-            }
-
-            return displayMetrics
-        }
-
-    private val Activity.screenSizeInDp: Point
-        get() {
-            val point = Point()
-            displayMetrics.apply {
-                // screen width in dp
-                point.x = (widthPixels / density).roundToInt()
-                Log.d(DEBUG_TAG, "screen width px: " + widthPixels)
-                // screen height in dp
-                point.y = (heightPixels / density).roundToInt()
-            }
-
-            return point
-    }
-
 
     private fun setMode() {
         when (mFlag) {
@@ -253,15 +211,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     private fun initPhotoViewPager() {
         pagerAdapter = PhotoPagerAdapter()
         binding.writeDiaryPager.adapter = pagerAdapter
-
-//        val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, viewModel.screenX)
-//        layoutParams.topToBottom = R.id.write_diary_title_tv
-//        layoutParams.leftToLeft = R.id.write_diary_root_layout
-//        layoutParams.rightToRight = R.id.write_diary_root_layout
-//        layoutParams.setMargins(0, 30, 0, 0)
-//
-//        binding.writeDiaryPager.layoutParams = layoutParams
-//        binding.writeDiaryDefaultIv.layoutParams = layoutParams
     }
 
     private fun addView(newPage: View) {
@@ -394,31 +343,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         }
     }
 
-//    private fun drawTextToBitmap(uri: String) {
-//        val file = File(uri)
-//        val originalBitmap = BitmapFactory.decodeFile(file.path)
-//
-//        try {
-//            val out = FileOutputStream(file)
-//
-//            // NEWLY ADDED CODE STARTS HERE
-//            val canvas = Canvas(originalBitmap)
-//            val paint = Paint()
-//            paint.color = Color.WHITE // Text Color
-//            paint.textSize = 12f // Text Size
-//            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER) // Text Overlapping Pattern
-//            // some more settings...
-//            canvas.drawBitmap(originalBitmap, 0f, 0f, paint)
-//            canvas.drawText("Testing...", 10f, 10f, paint)
-//            // NEWLY ADDED CODE ENDS HERE ]
-//            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
-//            out.flush()
-//            out.close()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//    }
-
     //draw text on photo
     private fun drawTextToBitmap(uri: String): Bitmap? {
         val fileIs: InputStream? = contentResolver.openInputStream(Uri.parse(uri))
@@ -439,7 +363,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
                 newCanvas.drawBitmap(it, 0f, 0f, null)
 
-
                 val currentDateTime:String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     LocalDateTime.now().toString()
                 } else {
@@ -457,10 +380,13 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                 paintText.typeface = Typeface.createFromAsset(assets, "notosanskr_bold.otf")
                 paintText.getTextBounds(captionString, 0, captionString.length, rectText)
 
+                val logoMark = BitmapFactory.decodeResource(resources, R.drawable.icn_wekit_mark)
+
 //                Log.d(DEBUG_TAG, "width: ${newBitmap.width}, height: ${newBitmap.height}")
 
                 val y = ((newBitmap.height + rectText.height()) / 3) * scale
                 newCanvas.drawText(captionString, 50f, y, paintText)
+                newCanvas.drawBitmap(logoMark, newBitmap.width - logoMark.width - 50f, y - logoMark.height, paintText)
 
                 drawBitmap = newBitmap
             } catch (e: FileNotFoundException) {
@@ -469,52 +395,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         }
 
         return drawBitmap
-
-
-//        try {
-//            bitmap = if (Build.VERSION.SDK_INT < 28) {
-//                MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(uri))
-//            } else {
-//                val source = ImageDecoder.createSource(contentResolver, Uri.parse(uri))
-//                ImageDecoder.decodeBitmap(source)
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-
-//        return try {
-//            val scale: Float = resources.displayMetrics.density
-////            var config: Bitmap.Config? = bitmap!!.config
-////
-////            if (config == null) {
-////                config = Bitmap.Config.ARGB_8888
-////            }
-//
-//
-//
-//            val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
-//            val newCanvas = Canvas(newBitmap)
-//
-//            newCanvas.drawBitmap(bitmap, 0f, 0f, null)
-//
-//            val captionString = convertDate("2021-01-23T21:32:44.333")
-//
-//            val paintText = Paint(Paint.ANTI_ALIAS_FLAG)
-//            paintText.color = ContextCompat.getColor(this, R.color.white)
-//            paintText.textSize = 100f
-//            paintText.typeface = Typeface.createFromAsset(assets, "notosanskr_bold.otf")
-//
-//            val rectText = Rect()
-//            paintText.getTextBounds(captionString, 0, captionString.length, rectText)
-//
-//            val y = ((newBitmap.height + rectText.height()) / 3) * scale
-//            newCanvas.drawText(captionString, 50f, 50f, paintText)
-//
-//            newBitmap
-//        } catch (e: FileNotFoundException) {
-//            binding.writeDiaryRootLayout.snackbar("Error: " + e.message)
-//            null
-//        }
     }
 
     //2021-01-23T21:32:44.333

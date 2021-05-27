@@ -190,6 +190,7 @@ class ChoicePhotoActivity : BaseActivity() {
         val options: UCrop.Options = UCrop.Options()
 
         options.setShowCropFrame(false)
+        options.setShowCropGrid(false)
         options.setHideBottomControls(true)
         options.setActiveControlsWidgetColor(getColor(R.color.primary))
         options.setFreeStyleCropEnabled(false)
