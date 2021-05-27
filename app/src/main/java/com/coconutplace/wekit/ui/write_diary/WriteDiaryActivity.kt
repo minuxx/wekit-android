@@ -1,8 +1,10 @@
 package com.coconutplace.wekit.ui.write_diary
 
+import android.R.attr.*
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
@@ -21,6 +23,7 @@ import com.coconutplace.wekit.data.remote.diary.listeners.WriteDiaryListener
 import com.coconutplace.wekit.databinding.ActivityWriteDiaryBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.choice_photo.ChoicePhotoActivity
+import com.coconutplace.wekit.utils.*
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_READ_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
@@ -35,15 +38,13 @@ import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_BREAKFAST
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_DINNER
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_LINNER
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_LUNCH
-import com.coconutplace.wekit.utils.hide
-import com.coconutplace.wekit.utils.hideKeyboard
-import com.coconutplace.wekit.utils.show
-import com.coconutplace.wekit.utils.snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -63,6 +64,12 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         viewModel.writeDiaryListener = this
 
+        mFlag = intent.getIntExtra("flag", 0)
+
+        if (mFlag == 0) {
+            finish()
+        }
+
         initPhotoViewPager()
         setOnClickListenerAll()
         observeSatisfaction()
@@ -70,15 +77,9 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         selectedDate = intent.getStringExtra("date")
         viewModel.setDate(selectedDate ?: "")
-        mFlag = intent.getIntExtra("flag", 0)
-
-        if (mFlag == 0) {
-            finish()
-        }
         
         setMode()
     }
-
 
     private fun setMode() {
         when (mFlag) {
@@ -268,21 +269,15 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                     val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
                     val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
                     imageView.adjustViewBounds = true
-//                    imageView.id = R.id.write_diary_default_iv
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+//                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
 //                    Glide.with(this)
-//                        .asBitmap()
 //                        .load(viewModel.getPhotoUri(i))
 //                        .into(imageView)
 
-                    var bitmap: Bitmap? = null
-
-                    viewModel.getPhotoUri(i)?.let{
-                        bitmap = drawTextToBitmap(it)
-                    }
-
-                    bitmap?.let{
+//                    var bitmap: Bitmap? = null
+//
+                    drawTextToBitmap(viewModel.getPhotoUri(i)!!)?.let{
                         Glide.with(this)
                             .asBitmap()
                             .load(it)
@@ -348,72 +343,58 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         }
     }
 
-//    private fun drawTextToBitmap(uri: String) {
-//        val file = File(uri)
-//        val originalBitmap = BitmapFactory.decodeFile(file.path)
-//
-//        try {
-//            val out = FileOutputStream(file)
-//
-//            // NEWLY ADDED CODE STARTS HERE
-//            val canvas = Canvas(originalBitmap)
-//            val paint = Paint()
-//            paint.color = Color.WHITE // Text Color
-//            paint.textSize = 12f // Text Size
-//            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER) // Text Overlapping Pattern
-//            // some more settings...
-//            canvas.drawBitmap(originalBitmap, 0f, 0f, paint)
-//            canvas.drawText("Testing...", 10f, 10f, paint)
-//            // NEWLY ADDED CODE ENDS HERE ]
-//            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
-//            out.flush()
-//            out.close()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//    }
-
     //draw text on photo
     private fun drawTextToBitmap(uri: String): Bitmap? {
         val fileIs: InputStream? = contentResolver.openInputStream(Uri.parse(uri))
-        val bitmap = BitmapFactory.decodeStream(fileIs)
+        val bitmap: Bitmap? = BitmapFactory.decodeStream(fileIs).copy(Bitmap.Config.ARGB_8888, true)
+        var drawBitmap: Bitmap? = null
 
-        return try {
-            val scale: Float = resources.displayMetrics.density
-            var config: Bitmap.Config? = bitmap.config
+        bitmap?.let {
+            try {
+                val scale: Float = resources.displayMetrics.density
+                var config: Bitmap.Config? = bitmap!!.config
 
-            if (config == null) {
-                config = Bitmap.Config.ARGB_8888
+                if (config == null) {
+                    config = Bitmap.Config.ARGB_8888
+                }
+
+                val newBitmap = Bitmap.createBitmap(it.width, it.height, config)
+                val newCanvas = Canvas(newBitmap)
+
+                newCanvas.drawBitmap(it, 0f, 0f, null)
+
+                val currentDateTime:String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalDateTime.now().toString()
+                } else {
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(Calendar.getInstance().time)
+                }
+
+//                Log.d(DEBUG_TAG, "currDateTime: $currentDateTime")
+
+                val captionString = convertDate(currentDateTime)
+                val rectText = Rect()
+
+                val paintText = Paint(Paint.ANTI_ALIAS_FLAG)
+                paintText.color = ContextCompat.getColor(this, R.color.white)
+                paintText.textSize =  48f
+                paintText.typeface = Typeface.createFromAsset(assets, "notosanskr_bold.otf")
+                paintText.getTextBounds(captionString, 0, captionString.length, rectText)
+
+                val logoMark = BitmapFactory.decodeResource(resources, R.drawable.icn_wekit_mark)
+
+//                Log.d(DEBUG_TAG, "width: ${newBitmap.width}, height: ${newBitmap.height}")
+
+                val y = ((newBitmap.height + rectText.height()) / 3) * scale
+                newCanvas.drawText(captionString, 50f, y, paintText)
+                newCanvas.drawBitmap(logoMark, newBitmap.width - logoMark.width - 50f, y - logoMark.height, paintText)
+
+                drawBitmap = newBitmap
+            } catch (e: FileNotFoundException) {
+                drawBitmap = null
             }
-
-            val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, config)
-            val newCanvas = Canvas(newBitmap)
-
-            newCanvas.drawBitmap(bitmap, 0f, 0f, null)
-
-            val dateTime = Calendar.getInstance().time
-
-            val captionString = convertDate("2021-01-23T21:32:44.333")
-
-            val paintText = Paint(Paint.ANTI_ALIAS_FLAG)
-            paintText.color = ContextCompat.getColor(this, R.color.white)
-            paintText.textSize = 100f
-            paintText.typeface = Typeface.createFromAsset(assets, "notosanskr_bold.otf")
-
-            val rectText = Rect()
-            paintText.getTextBounds(captionString, 0, captionString.length, rectText)
-
-            val y = ((newBitmap.height + rectText.height()) / 3) * scale
-            newCanvas.drawText(
-                captionString,
-                100f, y.toFloat(), paintText
-            )
-
-            newBitmap
-        } catch (e: FileNotFoundException) {
-            binding.writeDiaryRootLayout.snackbar("Error: " + e.message)
-            null
         }
+
+        return drawBitmap
     }
 
     //2021-01-23T21:32:44.333

@@ -39,8 +39,8 @@ class MainActivity : BaseActivity(), MainListener{
     private var doubleBackToExitPressedOnce = false
     private lateinit var viewPager: ViewPager2
     private lateinit var pagerAdapter:PagerAdapter
-    private lateinit var channelFragment: ChannelFragment
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var channelFragment: ChannelFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +73,11 @@ class MainActivity : BaseActivity(), MainListener{
         viewPager.isUserInputEnabled = false
 
         channelFragment = ChannelFragment()
-        pagerAdapter = PagerAdapter(supportFragmentManager,lifecycle)
 
+        val pagerAdapter = MainPagerAdapter(this)
+        pagerAdapter.addFragment(HomeFragment())
+        pagerAdapter.addFragment(channelFragment)
+        pagerAdapter.addFragment(DiaryFragment())
         viewPager.adapter = pagerAdapter
 
         bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(it) }

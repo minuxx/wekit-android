@@ -186,9 +186,12 @@ class ChoicePhotoActivity : BaseActivity() {
     private fun startCropActivity(uri: Uri) {
         val mDestinationUri = Uri.fromFile(File(cacheDir, "${UUID.randomUUID()}.jpg"))
 
-        val uCrop = UCrop.of(uri, mDestinationUri).withAspectRatio(1f, 1f)
+        val uCrop = UCrop.of(uri, mDestinationUri).withAspectRatio(1f, 1f).withMaxResultSize(1080, 1080)
         val options: UCrop.Options = UCrop.Options()
 
+        options.setShowCropFrame(false)
+        options.setShowCropGrid(false)
+        options.setHideBottomControls(true)
         options.setActiveControlsWidgetColor(getColor(R.color.primary))
         options.setFreeStyleCropEnabled(false)
         uCrop.withOptions(options)
