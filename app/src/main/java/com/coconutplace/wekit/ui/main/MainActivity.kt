@@ -38,7 +38,6 @@ class MainActivity : BaseActivity(), MainListener{
     private var mFlag = 0;
     private var doubleBackToExitPressedOnce = false
     private lateinit var viewPager: ViewPager2
-    private lateinit var pagerAdapter:PagerAdapter
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var channelFragment: ChannelFragment
 
@@ -56,7 +55,6 @@ class MainActivity : BaseActivity(), MainListener{
             viewPager.currentItem = 1
         }
 
-//        initTab()
         initSendBird(channelUrl)
     }
 
@@ -65,8 +63,23 @@ class MainActivity : BaseActivity(), MainListener{
         viewModel.getVersion()
     }
 
+//    private fun initNavigation() {
+//        bottomNavigationView = findViewById(R.id.main_bottom_nav)
+//        bottomNavigationView.itemIconTintList = null
+//
+//        viewPager = findViewById(R.id.main_viewpager)
+//        viewPager.isUserInputEnabled = false
+//
+//        channelFragment = ChannelFragment()
+//        pagerAdapter = PagerAdapter(supportFragmentManager,lifecycle)
+//
+//        viewPager.adapter = pagerAdapter
+//
+//        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(it) }
+//    }
+
     private fun initNavigation() {
-        bottomNavigationView = findViewById(R.id.main_bottom_nav)
+        bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
         bottomNavigationView.itemIconTintList = null
 
         viewPager = findViewById(R.id.main_viewpager)
@@ -80,10 +93,9 @@ class MainActivity : BaseActivity(), MainListener{
         pagerAdapter.addFragment(DiaryFragment())
         viewPager.adapter = pagerAdapter
 
-        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(it) }
+        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(viewPager, it) }
     }
-
-    private fun navSelector(item: MenuItem) : Boolean{
+    private fun navSelector(viewPager: ViewPager2, item: MenuItem) : Boolean{
         val checked = item.setChecked(true)
         when(checked.itemId){
             R.id.homeFragment -> {
@@ -99,75 +111,40 @@ class MainActivity : BaseActivity(), MainListener{
                 return true
             }
         }
-
         return false
     }
 
-    private inner class PagerAdapter(fm: FragmentManager, lc: Lifecycle): FragmentStateAdapter(fm, lc) {
-        override fun getItemCount() = 3
-        override fun createFragment(position: Int): Fragment {
-            return when (position) {
-                0 -> HomeFragment()
-                1 -> channelFragment // 2021.05.23 Ethan # channelFragment를 전역변수로 두고 다른 함수에서도 효율적인것 같아 이렇게했습니다.
-                2 -> DiaryFragment()
-                else -> error("no such position: $position")
-            }
-        }
-    }
-
-//    private fun initTab(){
-//        val tabLayout: TabLayout = findViewById(R.id.main_tab)
-//
-//        val pagerAdapter = MainPagerAdapter(this)
-//        pagerAdapter.addFragment(HomeFragment())
-//        pagerAdapter.addFragment(ChannelFragment())
-//        pagerAdapter.addFragment(DiaryFragment())
-//
-//        val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
-//
-//        viewPager.adapter = pagerAdapter
-//        viewPager.offscreenPageLimit = 2
-//        viewPager.isUserInputEnabled = false
-//
-//        TabLayoutMediator(tabLayout, viewPager){ tab, position ->
-////            tab.text = tabNames[position]
-////            tab.setIcon(unselectedTabIcons[position])
-//        }.attach()
-//
-//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
-//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
-//        tabLayout.getTabAt(0).setIcon(selectedTabIcons[0])
-//
-//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                tab!!.setIcon(selectedTabIcons[tab.position])
-//                viewPager.currentItem = tab.position
+//    private fun navSelector(item: MenuItem) : Boolean{
+//        val checked = item.setChecked(true)
+//        when(checked.itemId){
+//            R.id.homeFragment -> {
+//                viewPager.currentItem = 0
+//                return true
 //            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//
+//            R.id.channelFragment -> {
+//                viewPager.currentItem = 1
+//                return true
 //            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//
+//            R.id.diaryFragment ->{
+//                viewPager.currentItem = 2
+//                return true
 //            }
-//        })
+//        }
+//
+//        return false
 //    }
 
-//    private fun initNavigation() {
-//        navHostFragment = supportFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
-//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-////        NavigationUI.setupWithNavController(bottomNavigationView, findNavController(R.id.main_nav_host))
-//        navController = navHostFragment.navController
-//
-//        bottomNavigationView.setupWithNavController(navController)
-//        bottomNavigationView.itemIconTintList = null
-//
-//        val graph = navController.navInflater.inflate(R.navigation.nav_main)
-//        graph.startDestination = R.id.homeFragment
-//        navHostFragment.navController.graph = graph
+//    private inner class PagerAdapter(fm: FragmentManager, lc: Lifecycle): FragmentStateAdapter(fm, lc) {
+//        override fun getItemCount() = 3
+//        override fun createFragment(position: Int): Fragment {
+//            return when (position) {
+//                0 -> HomeFragment()
+//                1 -> channelFragment // 2021.05.23 Ethan # channelFragment를 전역변수로 두고 다른 함수에서도 효율적인것 같아 이렇게했습니다.
+//                2 -> DiaryFragment()
+//                else -> error("no such position: $position")
+//            }
+//        }
 //    }
-//
 
     private inner class PageChangeCallback: ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {

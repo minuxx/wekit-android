@@ -42,11 +42,6 @@
         <item name="fontFamily">@font/notosanskr_bold</item>
     </style>
 
-    <style name="myButton" parent="@style/Base.Widget.AppCompat.Button">
-        <item name="android:colorButtonNormal">#3578A9</item>
-        <item name="android:inset">0dp</item>
-    </style>
-
     <style name="PrimaryBubbleEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/primary</item>
     </style>
