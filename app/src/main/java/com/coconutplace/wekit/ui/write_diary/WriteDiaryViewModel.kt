@@ -29,7 +29,6 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
     private lateinit var date: String
     private var triedUpload = 0
     private var roomIdx:Int = 0
-    var screenX = 0
 
     val timezone: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>().apply {

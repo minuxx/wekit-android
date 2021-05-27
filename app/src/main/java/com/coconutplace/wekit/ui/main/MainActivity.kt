@@ -2,8 +2,10 @@ package com.coconutplace.wekit.ui.main
 
 //import com.coconutplace.wekit.utils.GlobalConstant.Companion.APP_ID
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -31,6 +33,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sendbird.android.SendBird
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -44,6 +48,7 @@ class MainActivity : BaseActivity(), MainListener{
     lateinit var navHostFragment: NavHostFragment
     private var mFlag = 0;
     private var doubleBackToExitPressedOnce = false
+    private lateinit var channelFragment: ChannelFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,9 +81,10 @@ class MainActivity : BaseActivity(), MainListener{
         val viewPager: ViewPager2 = findViewById(R.id.main_viewpager)
         viewPager.isUserInputEnabled = false
 
+        channelFragment = ChannelFragment()
         val pagerAdapter = MainPagerAdapter(this)
         pagerAdapter.addFragment(HomeFragment())
-        pagerAdapter.addFragment(ChannelFragment())
+        pagerAdapter.addFragment(channelFragment)
         pagerAdapter.addFragment(DiaryFragment())
         viewPager.adapter = pagerAdapter
 
