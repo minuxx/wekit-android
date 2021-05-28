@@ -25,7 +25,6 @@ import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.ITEM_TYPE_ADD_PHOTO
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.REQUEST_SELECT_PICTURE
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.REQUEST_TAKE_PICTURE
-import com.coconutplace.wekit.utils.snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -39,7 +38,7 @@ import java.util.*
 class ChoicePhotoActivity : BaseActivity() {
     private lateinit var binding: ActivityChoicePhotoBinding
     private val viewModel: ChoiceViewModel by viewModel()
-    private lateinit var mAdapter: ChoicePhotoAdapter
+    private lateinit var adapter: ChoicePhotoAdapter
     private var mFlag: Int = 0
     var mImageFile: File? = null
 
@@ -80,31 +79,32 @@ class ChoicePhotoActivity : BaseActivity() {
         val gridLayoutManager = GridLayoutManager(applicationContext, 3)
         gridLayoutManager.orientation = LinearLayoutManager.VERTICAL
 
-        mAdapter = ChoicePhotoAdapter(applicationContext, itemClick = {
+        adapter = ChoicePhotoAdapter(applicationContext, itemClick = {
             if (it == 0) {
-                if (mAdapter.itemCount > 5) {
+                if (adapter.itemCount > 5) {
                     showDialog(getString(R.string.choice_photo_count_limit))
                 } else {
                     if (mFlag == FLAG_CERTIFY_DIARY) {
-                        launchCameraActivity() // 인증 다이어리(사진)을 보낼 때는 카메라로 찍은 사지만 가능
+                        launchCameraActivity() // 인증 다이어리(사진)을 보낼 때는 카메라로 찍은 사진만 가능
                     } else if (mFlag == FLAG_WRITE_DIARY) {
                         pickImageFromGallery() // 일반 다이어리(사진)을 생성할 때는 갤러리, 카메라 모두 가능
                     }
                 }
             } else {
-                mAdapter.removeItem(it)
+                adapter.removeItem(it)
             }
         })
 
         binding.choicePhotoRecyclerview.layoutManager = gridLayoutManager
         binding.choicePhotoRecyclerview.addItemDecoration(GridSpacingItemDecoration(3, 1, false))
-        binding.choicePhotoRecyclerview.adapter = mAdapter
+        binding.choicePhotoRecyclerview.adapter = adapter
 
         intent!!.getStringExtra("photo-items")?.let{
             val gson = Gson()
             val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
             val photos: ArrayList<Photo> = gson.fromJson(it, arrayPhotoType)
             viewModel.addPhotos(photos)
+            adapter.addItems(photos)
         }
 
         if(viewModel.getPhotoCount() == 0){
@@ -112,6 +112,7 @@ class ChoicePhotoActivity : BaseActivity() {
             addPhotoItem.type = ITEM_TYPE_ADD_PHOTO
 
             viewModel.addPhoto(addPhotoItem)
+            adapter.addItem(addPhotoItem)
         }
     }
 

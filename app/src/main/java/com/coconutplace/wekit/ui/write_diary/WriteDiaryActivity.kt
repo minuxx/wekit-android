@@ -1,6 +1,5 @@
 package com.coconutplace.wekit.ui.write_diary
 
-import android.R.attr.*
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
@@ -308,8 +307,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
             when (satisfaction) {
                 SATISFACTION_HAPPY -> binding.writeDiarySatisfactionHappyIv.isSelected = true
-                SATISFACTION_SPEECHLESS -> binding.writeDiarySatisfactionSpeechlessIv.isSelected =
-                    true
+                SATISFACTION_SPEECHLESS -> binding.writeDiarySatisfactionSpeechlessIv.isSelected = true
                 SATISFACTION_SAD -> binding.writeDiarySatisfactionSadIv.isSelected = true
                 SATISFACTION_ANGRY -> binding.writeDiarySatisfactionAngryIv.isSelected = true
             }
@@ -371,7 +369,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
 //                Log.d(DEBUG_TAG, "currDateTime: $currentDateTime")
 
-                val captionString = convertDate(currentDateTime)
+                val captionString = convertDateTimeFormat(currentDateTime)
                 val rectText = Rect()
 
                 val paintText = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -398,7 +396,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     }
 
     //2021-01-23T21:32:44.333
-    private fun convertDate(date: String): String {
+    private fun convertDateTimeFormat(date: String): String {
         val month = if (date.substring(5, 7).toInt() < 10) {
             date.substring(6, 7)
         } else {
@@ -411,10 +409,18 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             date.substring(8, 10)
         }
 
-        val hour = if (date.substring(11, 13).toInt() < 12) {
-            "AM ${date.substring(12, 13)}"
+        val meridiem = if (date.substring(11, 13).toInt() < 12){
+            "AM "
         } else {
-            "PM ${date.substring(11, 13).toInt() - 12}"
+            "PM "
+        }
+
+        val hour = meridiem + if (date.substring(11, 13).toInt() < 10) {
+            date.substring(12, 13)
+        } else if(date.substring(11, 13).toInt() <= 12){
+            date.substring(11, 13).toInt()
+        } else {
+            date.substring(11, 13).toInt() - 12
         }
 
         val minute = if (date.substring(14, 16).toInt() < 10) {
