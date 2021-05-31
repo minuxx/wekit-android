@@ -281,6 +281,8 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                             .asBitmap()
                             .load(it)
                             .into(imageView)
+
+                        viewModel.saveBitmap(i, it)
                     }
 
                     addView(view)
@@ -440,6 +442,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
     override fun onUploadToFirebaseSuccess() {
         binding.writeDiaryLoading.hide()
+
         if (viewModel.getUriCount() == viewModel.getTriedUploadCount()) {
             viewModel.postDiary()
         }
@@ -447,6 +450,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
     override fun onUploadToFirebaseFailure() {
         binding.writeDiaryLoading.hide()
+
         binding.writeDiaryEventBtn.isClickable = true
         if (viewModel.getUriCount() == viewModel.getTriedUploadCount()) {
             viewModel.postDiary()
@@ -527,11 +531,11 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         for (url in diary.imageList) {
             val view: View = layoutInflater.inflate(R.layout.fragment_diary_photo, null)
             val imageView = view.findViewById<ImageView>(R.id.write_diary_photo_iv)
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
             Glide.with(this)
                 .load(url)
                 .into(imageView)
+
             addView(view)
         }
 

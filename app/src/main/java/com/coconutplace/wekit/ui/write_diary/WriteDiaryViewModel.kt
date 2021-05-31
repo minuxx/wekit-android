@@ -1,5 +1,7 @@
 package com.coconutplace.wekit.ui.write_diary
 
+import android.R.attr.bitmap
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
@@ -16,10 +18,15 @@ import com.coconutplace.wekit.utils.GlobalConstant.Companion.FIREBASE_STORAGE_UR
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
-class WriteDiaryViewModel(private val repository: DiaryRepository, private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel() {
+
+class WriteDiaryViewModel(
+    private val repository: DiaryRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager
+) : ViewModel() {
     var writeDiaryListener: WriteDiaryListener? = null
     val photos = ObservableArrayList<Photo>()
 
@@ -48,7 +55,7 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
         }
     }
 
-    fun setRoomIdx(idx:Int){
+    fun setRoomIdx(idx: Int){
         this.roomIdx = idx
     }
 
@@ -67,6 +74,14 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
 
     fun getPhotoUri(index: Int) : String?{
         return this.photos[index].imgUrl
+    }
+
+    fun saveBitmap(index: Int, bitmap: Bitmap){
+        photos[index].bitmap = bitmap
+    }
+
+    fun getBitmap(index: Int) : Bitmap?{
+        return photos[index].bitmap
     }
 
     fun getPhotoCount(): Int{
@@ -115,7 +130,12 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
                                               .child("$clientID")
                                               .child("${UUID.randomUUID()}.jpg")
 
-            val uploadTask = storageRef.putFile(Uri.parse(photos[i].imgUrl))
+            val baos = ByteArrayOutputStream()
+            photos[i].bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data: ByteArray = baos.toByteArray()
+
+//            val uploadTask = storageRef.putFile(Uri.parse(photos[i].imgUrl))
+            val uploadTask = storageRef.putBytes(data)
 
             uploadTask.addOnProgressListener {
                 writeDiaryListener!!.onUploadToFirebaseStarted()
@@ -167,7 +187,13 @@ class WriteDiaryViewModel(private val repository: DiaryRepository, private val s
                         val badgeUrl = response.result.badgeUrl!!
                         val badgeExplain = response.result.badgeExplain!!
                         val backgroundColor = response.result.backgroundColor!!
-                        writeDiaryListener!!.onPostDiarySuccess(response.message, badgeTitle,badgeUrl,badgeExplain,backgroundColor)
+                        writeDiaryListener!!.onPostDiarySuccess(
+                            response.message,
+                            badgeTitle,
+                            badgeUrl,
+                            badgeExplain,
+                            backgroundColor
+                        )
                     }
 
                 } else {
