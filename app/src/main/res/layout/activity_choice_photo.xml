@@ -10,7 +10,6 @@
             type="com.coconutplace.wekit.ui.choice_photo.ChoiceViewModel" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/choice_photo_root_layout"
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
             android:paddingBottom="12dp"
             android:src="@drawable/icn_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/choice_photo_title_tv"

@@ -181,17 +181,17 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         }.timeInMillis
     }
 
-    override fun onDiaryStarted() {
+    override fun onGetDiaryStarted() {
         binding.diaryLoading.show()
     }
 
-    override fun onDiarySuccess(diaries: ArrayList<Diary>) {
+    override fun onGetDiarySuccess(diaries: ArrayList<Diary>) {
         binding.diaryLoading.hide()
 
         mDiaryAdapter.addItems(diaries)
     }
 
-    override fun onDiaryFailure(code: Int, message: String) {
+    override fun onGetDiaryFailure(code: Int, message: String) {
         binding.diaryLoading.hide()
 
         when(code){

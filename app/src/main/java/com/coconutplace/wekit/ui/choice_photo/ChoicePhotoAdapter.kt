@@ -28,6 +28,7 @@ class ChoicePhotoAdapter(private val context: Context, private val itemClick: (I
             if(it.type == ITEM_TYPE_ADD_PHOTO){
                 holder.convertItemTypeAdd()
             }
+
             holder.itemView.setOnClickListener{ itemClick(position) }
             holder.bind(it)
         }
