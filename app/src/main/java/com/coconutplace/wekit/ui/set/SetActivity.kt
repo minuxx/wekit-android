@@ -59,8 +59,8 @@ class SetActivity : BaseActivity(), SetListener, WekitV2Dialog.WekitV2DialogClic
         when(v){
             set_back_btn -> finish()
             set_notice_tv -> {
-//                startNoticeActivity()
-                 showDialog(getString(R.string.guide_update))
+                startNoticeActivity()
+//                 showDialog(getString(R.string.guide_update))
             }
             set_profile_iv -> startProfileActivity()
             set_inquiry_tv -> openKakao()

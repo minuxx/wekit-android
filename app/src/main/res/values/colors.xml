@@ -172,6 +172,7 @@
     <color name="notice_category">#000000</color>
     <color name="notice_title">#000000</color>
     <color name="notice_date">#7e7e7e</color>
+    <color name="notice_content">#7e7e7e</color>
 
     <!-- opensource -->
     <color name="opensource_license_content_bg">#FAFAFA</color>
