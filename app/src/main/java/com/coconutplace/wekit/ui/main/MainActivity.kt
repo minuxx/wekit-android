@@ -31,9 +31,6 @@ import kotlin.concurrent.schedule
 
 
 class MainActivity : BaseActivity(), MainListener{
-    private val tabNames = listOf("투데이", "혜택존", "랭킹")
-    private val unselectedTabIcons = listOf(R.drawable.icn_home_normal, R.drawable.icn_chat_normal, R.drawable.icn_diary_normal)
-    private val selectedTabIcons = listOf(R.drawable.icn_home_selected, R.drawable.icn_chat_selected, R.drawable.icn_diary_selected)
     private val viewModel: MainViewModel by viewModel()
     private var mFlag = 0;
     private var doubleBackToExitPressedOnce = false
@@ -79,7 +76,7 @@ class MainActivity : BaseActivity(), MainListener{
 //    }
 
     private fun initNavigation() {
-        bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        bottomNavigationView = findViewById(R.id.main_bottom_nav)
         bottomNavigationView.itemIconTintList = null
 
         viewPager = findViewById(R.id.main_viewpager)
@@ -95,8 +92,10 @@ class MainActivity : BaseActivity(), MainListener{
 
         bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(viewPager, it) }
     }
+
     private fun navSelector(viewPager: ViewPager2, item: MenuItem) : Boolean{
         val checked = item.setChecked(true)
+
         when(checked.itemId){
             R.id.homeFragment -> {
                 viewPager.currentItem = 0
@@ -111,6 +110,7 @@ class MainActivity : BaseActivity(), MainListener{
                 return true
             }
         }
+
         return false
     }
 
