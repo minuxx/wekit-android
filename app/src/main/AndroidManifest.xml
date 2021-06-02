@@ -24,6 +24,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.WEKIT"
+        android:hardwareAccelerated="false"
         tools:targetApi="q">
 
         <meta-data

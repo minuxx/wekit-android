@@ -57,8 +57,6 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mChannelViewModel.setChannelListener(this)
 
         val view = mBinding.root
-
-        mChannelViewModel.init()
         
         id = mChannelViewModel.getID()
         if(id==null||id==""){
