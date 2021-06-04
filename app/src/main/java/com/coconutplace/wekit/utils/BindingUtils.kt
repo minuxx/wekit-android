@@ -102,12 +102,12 @@ object BindingUtils {
     }
 
     //notice
-    @BindingAdapter("setNotices")
-    @JvmStatic
-    fun setNotices(recyclerView: RecyclerView, items: ObservableArrayList<Notice>) {
-        (recyclerView.adapter as NoticeAdapter).items = items
-        recyclerView.adapter?.notifyDataSetChanged()
-    }
+//    @BindingAdapter("setNotices")
+//    @JvmStatic
+//    fun setNotices(recyclerView: RecyclerView, items: ObservableArrayList<Notice>) {
+//        (recyclerView.adapter as NoticeAdapter).items = items
+//        recyclerView.adapter?.notifyDataSetChanged()
+//    }
 
     @BindingAdapter("title")
     @JvmStatic
