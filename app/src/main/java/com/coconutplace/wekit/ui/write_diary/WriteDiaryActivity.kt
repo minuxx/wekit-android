@@ -52,8 +52,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     private val viewModel: WriteDiaryViewModel by viewModel()
     private lateinit var pagerAdapter: PhotoPagerAdapter
     private var selectedDate: String? = null
-    private var mFlag: Int = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,9 +61,9 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         viewModel.writeDiaryListener = this
 
-        mFlag = intent.getIntExtra("flag", 0)
+        viewModel.flag = intent.getIntExtra("flag", 0)
 
-        if (mFlag == 0) {
+        if (viewModel.flag == 0) {
             finish()
         }
 
@@ -81,7 +79,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     }
 
     private fun setMode() {
-        when (mFlag) {
+        when (viewModel.flag) {
             FLAG_CERTIFY_DIARY -> {
                 binding.writeDiaryEventBtn.text = "보내기"
 
@@ -235,7 +233,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryDefaultIv.isClickable = false
 
         val intent = Intent(this, ChoicePhotoActivity::class.java)
-        intent.putExtra("flag", mFlag)
+        intent.putExtra("flag",  viewModel.flag)
 
         if(viewModel.getPhotoCount() > 1){
             val gson = Gson()
@@ -469,7 +467,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     override fun onPostDiarySuccess(message: String) {
         binding.writeDiaryLoading.hide()
 
-        when (mFlag) {
+        when (viewModel.flag) {
             FLAG_CERTIFY_DIARY -> {
                 val intent = Intent()
                 intent.putExtra("imgList", viewModel.getImgUrlsFromFirebase())
@@ -489,7 +487,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
     ) {
         binding.writeDiaryLoading.hide()
 
-        when(mFlag){
+        when(viewModel.flag){
             FLAG_CERTIFY_DIARY -> {
                 val intent = Intent()
                 intent.putExtra("imgList", viewModel.getImgUrlsFromFirebase())
@@ -545,7 +543,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         viewModel.timezone.postValue(diary.timezone)
 
         viewModel.memo.postValue(diary.memo)
-        if(diary.memo == "" && mFlag == FLAG_READ_DIARY){
+        if(diary.memo == "" && viewModel.flag == FLAG_READ_DIARY){
             binding.writeDiaryMemoEt.hint = ""
         }
     }

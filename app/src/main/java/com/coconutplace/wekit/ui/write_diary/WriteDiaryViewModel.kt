@@ -14,9 +14,14 @@ import com.coconutplace.wekit.di.TEST_URL
 import com.coconutplace.wekit.di.getBaseUrl
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
+import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FIREBASE_STORAGE_URL
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -35,7 +40,8 @@ class WriteDiaryViewModel(
 
     private lateinit var date: String
     private var triedUpload = 0
-    private var roomIdx:Int = 0
+    private var roomIdx: Int = 0
+    var flag: Int = 0
 
     val timezone: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>().apply {
@@ -130,27 +136,34 @@ class WriteDiaryViewModel(
                                               .child("$clientID")
                                               .child("${UUID.randomUUID()}.jpg")
 
-            val baos = ByteArrayOutputStream()
-            photos[i].bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val data: ByteArray = baos.toByteArray()
+            var uploadTask: UploadTask? = null
 
-//            val uploadTask = storageRef.putFile(Uri.parse(photos[i].imgUrl))
-            val uploadTask = storageRef.putBytes(data)
+            if(flag == FLAG_WRITE_DIARY){
+                uploadTask = storageRef.putFile(Uri.parse(photos[i].imgUrl))
+            }else if(flag == FLAG_CERTIFY_DIARY){
+                val baos = ByteArrayOutputStream()
+                photos[i].bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data: ByteArray = baos.toByteArray()
 
-            uploadTask.addOnProgressListener {
-                writeDiaryListener!!.onUploadToFirebaseStarted()
+                uploadTask = storageRef.putBytes(data)
             }
-                .addOnSuccessListener {
-                    it.storage.downloadUrl.addOnSuccessListener { url ->
-                        imgUrlsFromFirebase.add(url.toString())
-                        triedUpload++
-                        writeDiaryListener!!.onUploadToFirebaseSuccess()
+
+            uploadTask?.let{
+                uploadTask.addOnProgressListener {
+                    writeDiaryListener!!.onUploadToFirebaseStarted()
+                }
+                    .addOnSuccessListener {
+                        it.storage.downloadUrl.addOnSuccessListener { url ->
+                            imgUrlsFromFirebase.add(url.toString())
+                            triedUpload++
+                            writeDiaryListener!!.onUploadToFirebaseSuccess()
+                        }
                     }
-                }
-                .addOnFailureListener{
-                    triedUpload++
-                    writeDiaryListener!!.onUploadToFirebaseFailure()
-                }
+                    .addOnFailureListener{
+                        triedUpload++
+                        writeDiaryListener!!.onUploadToFirebaseFailure()
+                    }
+            }
         }
     }
 

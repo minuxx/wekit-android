@@ -1,24 +1,17 @@
 package com.coconutplace.wekit.ui.notice
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.engine.Engine
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Notice
 import com.coconutplace.wekit.data.remote.notice.NoticeListener
-import com.coconutplace.wekit.databinding.ActivityNoticeBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.show
 import com.coconutplace.wekit.utils.snackbar
 import kotlinx.android.synthetic.main.activity_notice.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
