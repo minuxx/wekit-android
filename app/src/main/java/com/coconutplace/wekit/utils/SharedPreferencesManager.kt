@@ -18,6 +18,7 @@ class SharedPreferencesManager(private val context: Context){
         const val BODY = "BODY"
         const val USER = "USER"
         const val EMAIL = "EMAIL"
+        const val ROUTINE = "ROUTINE"
     }
 
     fun getSharedPreferences() : SharedPreferences {
@@ -166,6 +167,26 @@ class SharedPreferencesManager(private val context: Context){
         val spf = getSharedPreferences()
         val editor = spf.edit()
         editor.remove(BODY)
+        editor.apply()
+    }
+
+    fun saveMiracle(){}
+    fun getMiracle(){}
+    fun removeMiracle(){}
+
+    fun saveRoutine(routine: String){
+        val spf = getSharedPreferences()
+        val editor = spf.edit()
+        editor.putString(ROUTINE, routine)
+        editor.apply()
+    }
+    fun getRoutine() : String?{
+        return getSharedPreferences().getString(ROUTINE, null)
+    }
+    fun removeRoutine(){
+        val spf = getSharedPreferences()
+        val editor = spf.edit()
+        editor.remove(ROUTINE)
         editor.apply()
     }
 }

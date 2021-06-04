@@ -18,6 +18,7 @@ import com.coconutplace.wekit.ui.member_gallery.MemberGalleryViewModel
 import com.coconutplace.wekit.ui.notice.NoticeViewModel
 import com.coconutplace.wekit.ui.poll.PollViewModel
 import com.coconutplace.wekit.ui.profile.ProfileViewModel
+import com.coconutplace.wekit.ui.select_interest.SelectInterestViewModel
 import com.coconutplace.wekit.ui.set.SetViewModel
 import com.coconutplace.wekit.ui.signup.SignUpViewModel
 import com.coconutplace.wekit.ui.splash.SplashViewModel
@@ -48,4 +49,5 @@ val viewModelModule = module {
     viewModel { MemberGalleryViewModel(get()) }
     viewModel { ChannelFilterViewModel() }
     viewModel { BadgeViewModel(get(),get()) }
+    viewModel { SelectInterestViewModel(get()) }
 }

@@ -8,6 +8,7 @@ import com.coconutplace.wekit.data.repository.channel.ChannelRepository
 import com.coconutplace.wekit.data.repository.chat.ChatRepository
 import com.coconutplace.wekit.data.repository.gallery.GalleryRepository
 import com.coconutplace.wekit.data.repository.home.HomeRepository
+import com.coconutplace.wekit.data.repository.interest.InterestRepository
 import com.coconutplace.wekit.data.repository.notice.NoticeRepository
 import org.koin.dsl.module
 
@@ -21,4 +22,5 @@ val repositoryModule = module {
     single { NoticeRepository(get()) }
     single { GalleryRepository(get()) }
     single { BadgeRepository(get()) }
+    single { InterestRepository(get())}
 }
