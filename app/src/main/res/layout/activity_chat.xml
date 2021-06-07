@@ -109,6 +109,7 @@
                 android:id="@+id/chat_msgbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:minHeight="60dp"
                 android:orientation="horizontal">
 
@@ -117,6 +118,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_vertical">
+
                     <ImageButton
                         android:id="@+id/chat_send_picture_button"
                         android:layout_width="24dp"
@@ -180,6 +182,7 @@
             android:layout_gravity="end"
             app:itemIconTint="@color/primary"
             app:itemTextColor="@color/black">
+            
             <LinearLayout
                 android:layout_width="300dp"
                 android:layout_height="match_parent"

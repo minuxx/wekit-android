@@ -57,8 +57,6 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mChannelViewModel.setChannelListener(this)
 
         val view = mBinding.root
-
-        mChannelViewModel.init()
         
         id = mChannelViewModel.getID()
         if(id==null||id==""){
@@ -322,7 +320,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         })
 
         mChannelViewModel.dialogEvent.observe(mBinding.lifecycleOwner!!,{ event ->
-            event.getContextIfNotHandled()?.let {
+            event.getContentIfNotHandled()?.let {
                 when(it){
                     404 -> showDialog(getString(R.string.network_error),requireContext())
                 }
@@ -330,8 +328,10 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
             }
         })
 
-        mChannelViewModel.myChannelSetEvent.observe(mBinding.lifecycleOwner!!,{
-            it.getContextIfNotHandled()?.let{
+        mChannelViewModel.myChannelSetEvent.observe(mBinding.lifecycleOwner!!,{ event ->
+            Log.e(CHECK_TAG,"push setEvent handled1 : ${event.hasBeenHandled}")
+            event.getContentIfNotHandled()?.let{
+                Log.e(CHECK_TAG,"push setEvent handled2 : ${event.hasBeenHandled}")
                 (activity as MainActivity).getChannelUrlWithPush()?.let{ pushUrl ->
                     Log.e(CHECK_TAG,"setChannelUrlWithPush called")
                     mChannelViewModel.setChannelUrlWithPush(pushUrl)
@@ -401,11 +401,6 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         }
     }
 
-    fun startChatWithPush(channelUrl:String){
-        Log.e(CHECK_TAG,"DSFSDF")
-        mChannelViewModel.setChannelUrlWithPush(channelUrl)
-    }
-
     private fun makeTopSnackbar(str: String){
         mBinding.channelTopSnackbarPositionLayout.bringToFront()
         mBinding.channelTopSnackbarPositionLayout.snackbar(str)
@@ -425,14 +420,16 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     }
 
     override fun showCardView(hasChatRoom: Boolean) {
-        if(hasChatRoom){
-            mBinding.channelMyroomDurationText.background= ContextCompat.getDrawable(requireContext(),R.drawable.bg_channel_myroom_duration_text)
-            mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.primary))
+        activity?.runOnUiThread {
+            if(hasChatRoom){
+                mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_channel_myroom_duration_text)
+                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.primary))
 
-        }
-        else{
-            mBinding.channelMyroomDurationText.background= ContextCompat.getDrawable(requireContext(),R.color.transparent)
-            mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.channel_myroom_cardview_bg))
+            }
+            else{
+                mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.color.transparent)
+                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.channel_myroom_cardview_bg))
+            }
         }
     }
 
