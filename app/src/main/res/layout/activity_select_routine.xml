@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.coconutplace.wekit.ui.select_interest.SelectInterestViewModel" />
+            type="com.coconutplace.wekit.ui.select_routine.SelectRoutineViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
             android:layout_marginTop="1dp"
             android:fontFamily="@font/notosanskr_bold"
             android:gravity="center"
-            android:text="@string/selectChallenge_intro03"
+            android:text="@string/selectRoutine_intro01"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +63,7 @@
             android:layout_marginEnd="62dp"
             android:fontFamily="@font/notosanskr_regular"
             android:gravity="center"
-            android:text="@string/selectChallenge_intro04"
+            android:text="@string/selectRoutine_intro02"
             android:textColor="@color/gray"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,9 +99,9 @@
             android:layout_width="240dp"
             android:layout_height="52dp"
             android:layout_marginBottom="63dp"
-            android:background="@drawable/bg_select_interest_btn_unactive"
+            android:background="@drawable/bg_select_routine_btn_unactive"
             android:elevation="30dp"
-            android:text="@string/selectInterest_btn"
+            android:text="@string/selectRoutine_btn"
             android:onClick="@{() -> viewModel.submitInterest()}"
             android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"

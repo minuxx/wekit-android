@@ -1,4 +1,4 @@
-package com.coconutplace.wekit.ui.select_interest
+package com.coconutplace.wekit.ui.select_routine
 
 import android.content.Context
 import android.util.Log
@@ -12,24 +12,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.InnerInterest
 
-class SelectInterestAdapter(context: Context) : RecyclerView.Adapter<SelectInterestAdapter.InterestViewHolder>(){
+class SelectRoutineAdapter(context: Context) :
+    RecyclerView.Adapter<SelectRoutineAdapter.InterestViewHolder>() {
+
+    companion object {
+
+        const val routineMaxSize = 5 // 루틴 최대 선택 가능 개수
+
+    }
 
 
     private val mContext = context
     private val interestList = ArrayList<InnerInterest>()
     private var mItemClickListener: OnItemClickListener? = null
 
-    lateinit var tempRoutine : String
     var selectedList = ArrayList<Int>()
 
-    private val stringList = {""}
-
-
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         fun onClick(position: Int)
     }
 
-    fun setItemClickListener(listener: OnItemClickListener){
+    fun setItemClickListener(listener: OnItemClickListener) {
         mItemClickListener = listener
 
     }
@@ -145,11 +148,12 @@ class SelectInterestAdapter(context: Context) : RecyclerView.Adapter<SelectInter
         )
     }
 
-    inner class InterestViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class InterestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val interestImage = itemView.findViewById<ImageView>(R.id.item_interest_iv)
         private val interestText = itemView.findViewById<TextView>(R.id.item_interest_tv)
-        private val interestLayout = itemView.findViewById<ConstraintLayout>(R.id.item_interest_layout)
+        private val interestLayout =
+            itemView.findViewById<ConstraintLayout>(R.id.item_interest_layout)
 
         fun onBind(interest: InnerInterest, listener: OnItemClickListener?, position: Int) {
 
@@ -166,14 +170,27 @@ class SelectInterestAdapter(context: Context) : RecyclerView.Adapter<SelectInter
         }
 
         private fun checkItem(position: Int) {
-            if(selectedList.contains(position)) { // 클릭한 아이템이 이미 클릭한것이라면
+            Log.e("selectedListSize", selectedList.size.toString())
+            if (selectedList.contains(position)) { // 클릭한 아이템이 이미 클릭한것이라면
                 selectedList.remove(position)
-                interestLayout.setBackgroundResource(R.drawable.bg_selectinterest_item)
+                interestLayout.setBackgroundResource(R.drawable.bg_selectroutine_item)
             } else {
-                selectedList.add(position)
-                interestLayout.setBackgroundResource(R.drawable.bg_selectinterest_itemclick)
+                if (selectedList.size >= routineMaxSize) { // 새로운 아이템을 클릭했으나 size가 가득 찬 경우
+                    return
+                } else {
+                    selectedList.add(position)
+                    interestLayout.setBackgroundResource(R.drawable.bg_selectroutine_itemclick)
+                }
+
             }
         }
+
+        private fun checkList(arrayList: ArrayList<Int>) {
+            for(i in 0 until arrayList.size) {
+                Log.e("selectedList", arrayList[i].toString())
+            }
+        }
+
     }
 
 }

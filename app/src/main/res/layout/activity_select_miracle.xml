@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.select_challenge.SelectChallengeActivity">
+    tools:context=".ui.select_miracle.SelectMiracleActivity">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.coconutplace.wekit.ui.select_challenge.SelectChallengeViewModel" />
+            type="com.coconutplace.wekit.ui.select_miracle.SelectMiracleViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/selectChallenge_back_layout"
+            android:id="@+id/selectMiracle_back_layout"
             android:layout_width="0dp"
             android:layout_height="56dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/selectChallenge_back_btn"
+                android:id="@+id/selectMiracle_back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -42,21 +42,21 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/selectChallenge_intro01_tv"
+            android:id="@+id/selectMiracle_intro01_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/notosanskr_regular"
             android:gravity="center"
-            android:text="@string/selectChallenge_intro01"
+            android:text="@string/selectMiracle_intro01"
             android:textColor="@color/gray"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectChallenge_back_layout" />
+            app:layout_constraintTop_toBottomOf="@id/selectMiracle_back_layout" />
 
         <TextView
-            android:id="@+id/selectChallenge_intro02_tv"
+            android:id="@+id/selectMiracle_intro02_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="62dp"
@@ -64,145 +64,156 @@
             android:layout_marginEnd="62dp"
             android:fontFamily="@font/notosanskr_bold"
             android:gravity="center"
-            android:text="@string/selectChallenge_intro02"
+            android:text="@string/selectMiracle_intro02"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectChallenge_intro01_tv"
+            app:layout_constraintTop_toBottomOf="@id/selectMiracle_intro01_tv"
             tools:text="도전하고 싶은\n미라클 챌린지를 알려주세요" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/selectChallenge_select01_layout"
+            android:id="@+id/selectMiracle_select01_layout"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="65dp"
             android:layout_marginTop="54dp"
             android:layout_marginEnd="65dp"
-            android:background="@drawable/bg_selectchallenge_menu"
+            android:background="@{viewModel.miracle.equals(@string/miracle_M) ? @drawable/bg_selectmiracle_menuclick : @drawable/bg_selectmiracle_menu}"
+            android:clickable="true"
             android:elevation="10dp"
+            android:focusable="true"
+            android:onClick="@{() -> viewModel.miracleMorning()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectChallenge_intro02_tv">
+            app:layout_constraintTop_toBottomOf="@id/selectMiracle_intro02_tv">
 
             <ImageView
-                android:id="@+id/selectChallenge_select01_iv"
+                android:id="@+id/selectMiracle_select01_iv"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="9dp"
-                android:src="@drawable/icn_emoji_angry_selected"
+                android:src="@drawable/icn_sun"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/selectChallenge_select01_tv"
+                app:layout_constraintEnd_toStartOf="@id/selectMiracle_select01_tv"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/selectChallenge_select01_tv"
+                android:id="@+id/selectMiracle_select01_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:gravity="center_vertical"
-                android:text="@string/selectChallenge_select01"
+                android:text="@string/selectMiracle_select01"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/selectChallenge_select01_iv"
+                app:layout_constraintStart_toEndOf="@+id/selectMiracle_select01_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/selectChallenge_select02_layout"
+            android:id="@+id/selectMiracle_select02_layout"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="65dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="65dp"
-            android:background="@drawable/bg_selectchallenge_menu"
+            android:background="@{viewModel.miracle.equals(@string/miracle_N) ? @drawable/bg_selectmiracle_menuclick : @drawable/bg_selectmiracle_menu}"
+            android:clickable="true"
             android:elevation="10dp"
+            android:focusable="true"
+            android:onClick="@{() -> viewModel.miracleNight()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectChallenge_select01_layout">
+            app:layout_constraintTop_toBottomOf="@id/selectMiracle_select01_layout">
 
             <ImageView
-                android:id="@+id/selectChallenge_select02_iv"
+                android:id="@+id/selectMiracle_select02_iv"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="9dp"
-                android:src="@drawable/icn_emoji_angry_selected"
+                android:src="@drawable/icn_moon"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/selectChallenge_select02_tv"
+                app:layout_constraintEnd_toStartOf="@id/selectMiracle_select02_tv"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/selectChallenge_select02_tv"
+                android:id="@+id/selectMiracle_select02_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:gravity="center_vertical"
-                android:text="@string/selectChallenge_select02"
+                android:text="@string/selectMiracle_select02"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/selectChallenge_select02_iv"
+                app:layout_constraintStart_toEndOf="@+id/selectMiracle_select02_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/selectChallenge_select03_layout"
+            android:id="@+id/selectMiracle_select03_layout"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="65dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="65dp"
-            android:background="@drawable/bg_selectchallenge_menu"
+            android:background="@{viewModel.miracle.equals(@string/miracle_G) ? @drawable/bg_selectmiracle_menuclick : @drawable/bg_selectmiracle_menu}"
+            android:clickable="true"
             android:elevation="10dp"
+            android:focusable="true"
+            android:onClick="@{() -> viewModel.varietyRoutine()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectChallenge_select02_layout">
+            app:layout_constraintTop_toBottomOf="@id/selectMiracle_select02_layout">
 
             <ImageView
-                android:id="@+id/selectChallenge_select03_iv"
+                android:id="@+id/selectMiracle_select03_iv"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="9dp"
-                android:src="@drawable/icn_emoji_angry_selected"
+                android:src="@drawable/icn_check"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/selectChallenge_select03_tv"
+                app:layout_constraintEnd_toStartOf="@id/selectMiracle_select03_tv"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/selectChallenge_select03_tv"
+                android:id="@+id/selectMiracle_select03_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:gravity="center_vertical"
-                android:text="@string/selectChallenge_select03"
+                android:text="@string/selectMiracle_select03"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/selectChallenge_select03_iv"
+                app:layout_constraintStart_toEndOf="@+id/selectMiracle_select03_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/selectChallenge_next_btn"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:id="@+id/selectMiracle_next_btn"
+            android:clickable="@{viewModel.isNext? true : false}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="28dp"
-            android:backgroundTint="@color/select_unActive"
-            android:src="@drawable/icn_back"
+            android:backgroundTint="@{viewModel.isNext ? @color/select_Active : @color/select_unActive}"
+            android:src="@drawable/icn_next"
+            app:borderWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectChallenge_select03_layout" />
+            app:layout_constraintTop_toBottomOf="@id/selectMiracle_select03_layout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

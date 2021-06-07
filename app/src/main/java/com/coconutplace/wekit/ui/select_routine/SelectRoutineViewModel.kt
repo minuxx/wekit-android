@@ -1,41 +1,46 @@
-package com.coconutplace.wekit.ui.select_interest
+package com.coconutplace.wekit.ui.select_routine
 
 import android.util.Log
-import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.Interest
-import com.coconutplace.wekit.data.entities.Notice
-import com.coconutplace.wekit.data.entities.PhotoPack
-import com.coconutplace.wekit.data.remote.gallery.listeners.GalleryListener
-import com.coconutplace.wekit.data.remote.home.listeners.HomeListener
 import com.coconutplace.wekit.data.remote.interest.listeners.InterestListener
-import com.coconutplace.wekit.data.remote.notice.NoticeListener
-import com.coconutplace.wekit.data.repository.gallery.GalleryRepository
-import com.coconutplace.wekit.data.repository.home.HomeRepository
 import com.coconutplace.wekit.data.repository.interest.InterestRepository
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
-import com.coconutplace.wekit.utils.SharedPreferencesManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class SelectInterestViewModel(private val repository: InterestRepository) : ViewModel() {
+class SelectRoutineViewModel(private val repository: InterestRepository) : ViewModel() {
+
+    private lateinit var routineList : ArrayList<Int>
+    private lateinit var miracle : String
 
     var interestListener: InterestListener? = null
 
-    private fun getInterest(): Interest = Interest(miracle = "M",  routine= "클린한 식단") // temp interest set
+    // view로부터 데이터를 전달받음
+    fun getInterest(miracle : String, routineList : ArrayList<Int>) : Interest {
+        this.routineList = routineList
+        this.miracle = miracle
+        return Interest(miracle, routineList)
+    }
 
+    // 서버에서 인덱스 1부터 시작하므로 커스텀
+    private fun addIndex(routineList: ArrayList<Int>){
+        for(i in 0 until routineList.size) {
+            routineList[i] = routineList[i].inc()
+            Log.e("routineListIndex",this.routineList[i].toString()+" ")
+        }
+    }
 
     fun submitInterest() { // 관심사 post
         Coroutines.main {
             try {
-                val interestResponse = repository.postInterest(getInterest())
+                addIndex(this.routineList)
+                val interestResponse = repository.postInterest(getInterest(miracle,routineList))
 
                 if(interestResponse.isSuccess){
                     Log.e("postInterestSuccess",interestResponse.message)
                 } else {
+                    Log.e("postInterestFail",interestResponse.message.toString())
                     interestListener?.onInterestFailure(interestResponse.code, interestResponse.message)
                 }
             } catch (e: ApiException) {

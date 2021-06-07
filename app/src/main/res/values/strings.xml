@@ -72,15 +72,18 @@
     <string name="tutorial_cd_tutorial_img">tutorial image</string>
 
     <!--select-->
-    <string name="selectChallenge_intro01">잠시만요, 두가지 질문이 있어요.</string>
-    <string name="selectChallenge_intro02">도전하고 싶은\n 미라클 챌린지를 알려주세요</string>
-    <string name="selectChallenge_intro03">관심 루틴을 알려주세요</string>
-    <string name="selectChallenge_intro04">선택하신 루틴을 기반으로\n 딱 알맞는 챌린지를 추천드릴게요.</string>
-    <string name="selectChallenge_select01">미라클 모닝에 도전할래요</string>
-    <string name="selectChallenge_select02">미라클 나잇에 도전할래요</string>
-    <string name="selectChallenge_select03">다양한 루틴에 도전할래요</string>
+    <string name="selectMiracle_intro01">잠시만요, 두가지 질문이 있어요.</string>
+    <string name="selectMiracle_intro02">도전하고 싶은\n 미라클 챌린지를 알려주세요</string>
+    <string name="selectRoutine_intro01">관심 루틴을 알려주세요</string>
+    <string name="selectRoutine_intro02">선택하신 루틴을 기반으로\n 딱 알맞는 챌린지를 추천해드릴게요.</string>
+    <string name="selectMiracle_select01">미라클 모닝에 도전할래요</string>
+    <string name="selectMiracle_select02">미라클 나잇에 도전할래요</string>
+    <string name="selectMiracle_select03">다양한 루틴에 도전할래요</string>
+    <string name="miracle_M">M</string>
+    <string name="miracle_N">N</string>
+    <string name="miracle_G">G</string>
 
-    <string name="selectInterest_btn">완료</string>
+    <string name="selectRoutine_btn">완료</string>
 
     <!--chat-->
     <string name="chat_chatting">채팅</string>
