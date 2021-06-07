@@ -3,6 +3,7 @@ package com.coconutplace.wekit.ui.member_gallery
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.coconutplace.wekit.data.entities.PhotoPack
 import com.coconutplace.wekit.data.remote.gallery.listeners.GalleryListener
 import com.coconutplace.wekit.data.repository.gallery.GalleryRepository
@@ -49,7 +50,7 @@ class MemberGalleryViewModel(private val repository: GalleryRepository) : ViewMo
         if(isEnd){
             return
         }
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try {
                 val galleryResponse = repository.getGallery(mUserIdx,mRoomIdx,currentPage)
                 currentPage++
@@ -65,10 +66,10 @@ class MemberGalleryViewModel(private val repository: GalleryRepository) : ViewMo
                             isEnd = true
                             break
                         }
-                        Log.e(CHECK_TAG, "date : ${date.key}")
+                        //Log.e(CHECK_TAG, "date : ${date.key}")
                         val urls = ArrayList<String>()
                         for (url in date.value) {
-                            Log.e(CHECK_TAG, "getMemberGallery url : $url")
+                            //Log.e(CHECK_TAG, "getMemberGallery url : $url")
                             urls.add(url)
                         }
                         galleryListener?.addPhotoPack(PhotoPack(date = date.key,urls = urls))

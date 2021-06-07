@@ -186,9 +186,6 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
             actionTypeDialog.callFunction(this)
         }
         binding.chatNavExitBtn.setOnClickListener{
-//            val exitDialog = ChatExitDialog(this)
-//            exitDialog.callFunction(this)
-
             val exitDialog = WekitV2Dialog(this, FLAG_LEAVE_CHANNEL)
             exitDialog.listener = this
             exitDialog.show(getString(R.string.chat_dialog_exit_title))
@@ -382,8 +379,6 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
             }
             else if(resultCode== RES_CODE_AUTH_FAILURE){
                 Log.e(ERROR_TAG,"writeDiary 에서 imgUrl을 가져오지 못했습니다.")
-                //val message:String = data?.getStringExtra("message")!!
-                //makeSnackBar(message)
                 makePopup("다이어리에서 사진을 불러오지 못했습니다")
             }
         }
@@ -439,17 +434,19 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
     }
 
     override fun getBackActionTypeDialog(type: Int) {
-        if(type==1){ //신고하기
-            val reportDialog = ChatReportDialog(this)
-            reportDialog.callFunction(this)
-        }
-        else if(type==2){ //추방하기
-            if(chatViewModel.hostFlag){
-                val expelDialog = ChatExpelDialog(this,chatViewModel.getNickName())
-                expelDialog.callFunction(this, chatViewModel.getMemberInfoList())
+        when(type){
+            1 ->{
+                val reportDialog = ChatReportDialog(this)
+                reportDialog.callFunction(this)
             }
-            else{
-                makePopup("방장만 추방을 할 수 있습니다.")
+            2 ->{
+                if(chatViewModel.hostFlag){
+                    val expelDialog = ChatExpelDialog(this,chatViewModel.getNickName())
+                    expelDialog.callFunction(this, chatViewModel.getMemberInfoList())
+                }
+                else{
+                    makePopup("방장만 추방을 할 수 있습니다.")
+                }
             }
         }
     }
@@ -489,23 +486,17 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         CoroutineScope(Dispatchers.Default).launch {
             runCatching {
                 try {
-                    Log.e(CHECK_TAG, "progress 1")
                     val url = URL(ImgUrl)
                     val conn: URLConnection = url.openConnection()
                     conn.connect()
-                    Log.e(CHECK_TAG, "progress 2")
                     val bis = BufferedInputStream(conn.getInputStream())
-                    Log.e(CHECK_TAG, "progress 3")
                     val imgBitmap = BitmapFactory.decodeStream(bis)
-                    Log.e(CHECK_TAG, "progress 4")
                     bis.close()
 
                     val fileName =
                         SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date()) + ".jpg"
                     val file = getFileFromBitmap(imgBitmap!!, fileName)
-
                     Log.e(CHECK_TAG, "파일이름:$fileName")
-
                     chatViewModel.sendAuthFile(file!!, fileName)
 
                 } catch (e: Exception) {
@@ -513,7 +504,6 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
                 }
             }
         }
-
     }
     private fun getFileFromBitmap(imgBitmap:Bitmap,fileName:String):File?{
         val storage: File = cacheDir

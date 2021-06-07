@@ -16,9 +16,8 @@ import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PhotoListAdapter(context: Context) : BaseAdapter() {
+class PhotoListAdapter: BaseAdapter() {
 
-    private val mContext = context
     private val mUrls = ArrayList<String>()
     private var mItemClickListener:PhotoPackListAdapter.OnItemClickListener?= null
 

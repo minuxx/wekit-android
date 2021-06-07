@@ -51,10 +51,7 @@ class BadgeActivity: AppCompatActivity() {
 
     private fun setupViewModel(){
         mViewModel.liveExistBadgeList.observe(this, {
-
             myBadgeAdapter.clear()
-            Log.e(CHECK_TAG,"myBadges observed, size : ${it.size}")
-
             if(it.size==0){
                 mBinding.badgeNoBadgeLayout.visibility = View.VISIBLE
             }
@@ -74,8 +71,6 @@ class BadgeActivity: AppCompatActivity() {
         mViewModel.liveNonExistBadgeList.observe(this,{
 
             challengeBadgeAdapter.clear()
-
-            Log.e(CHECK_TAG,"challengeBadges observed, size : ${it.size}")
             for(badge in it){
                 challengeBadgeAdapter.addItem(badge)
             }

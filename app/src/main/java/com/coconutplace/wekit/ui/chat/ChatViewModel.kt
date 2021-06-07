@@ -97,24 +97,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         return sharedPreferencesManager.getNickname()
     }
 
-//    fun getPushNotificationOn(): Boolean{
-//        return _pushNotificationOn!!
-//    }
-
-//    private fun setNickname(nickname:String){
-//        SendBird.updateCurrentUserInfo(nickname,null,
-//            UserInfoUpdateHandler { e ->
-//                if (e != null) {
-//                    // Error!
-//                    Log.e(ERROR_TAG,"닉네임 세팅실패")
-//                    return@UserInfoUpdateHandler
-//                }
-//                else{
-//                    Log.e(CHECK_TAG,"닉네임 세팅완료")
-//                }
-//            })
-//    }
-
     fun setPushFlag(on:Boolean){
         sharedPreferencesManager.savePushNotificationFlag(on)
     }
@@ -196,16 +178,12 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
             } catch (e: Exception) {
                 Log.e(ERROR_TAG,"getRoomInfo error $e")
-                //chatListener?.makeSnackBar("서버와의 통신에 실패하였습니다")
-                //chatListener?.makePopup("서버와의 통신에 실패하였습니다")
                 _showDialog.postValue(Event("서버와의 통신에 실패하였습니다"))
-
             }
         }
     }
 
     fun init(url: String, roomIdx:Int) {
-        Log.e(CHECK_TAG,"현재 방의 sendbird url : $url, roomIdx : $roomIdx")
         _channelUrl = url
         _roomIdx = roomIdx
 
@@ -220,7 +198,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         })
         isInitialized.postValue(true)
         _nickname = sharedPreferencesManager.getNickname()
-        //setNickname(mNickname!!)
     }
 
     private fun addRecentMsg(msg: BaseMessage){
@@ -266,19 +243,15 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         _showDialog.postValue(Event("네트워크가 원활하지 않습니다."))
                     }
                     900020 -> {
-                        //chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
                         _showDialog.postValue(Event("채팅방에 속해있지 않습니다"))
                     }
                     900100 -> {
-                        //chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
                         _showDialog.postValue(Event("채팅방에서 추방당하셨습니다"))
                     }
                     900041 -> {
-                        //chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
                         _showDialog.postValue(Event("채팅방이 삭제되어 대화가 금지되었습니다"))
                     }
                 }
-                //Toast.makeText(this, "message send fail", Toast.LENGTH_SHORT).show();
                 return@SendUserMessageHandler
             }
             else{
@@ -460,15 +433,12 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 Log.e(ERROR_TAG,"send Auth file error ${e.code} : ${e.message}")
                 when(e.code) {
                     900020 -> {
-                        //chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
                         _showDialog.postValue(Event("채팅방에 속해있지 않습니다"))
                     }
                     900100 -> {
-                        //chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
                         _showDialog.postValue(Event("채팅방에서 추방당하였습니다"))
                     }
                     900041 -> {
-                        //chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
                         _showDialog.postValue(Event("채팅방이 삭제되어 대화가 금지되었습니다"))
                     }
                 }
@@ -506,15 +476,12 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                             chatListener?.onExitSuccess()
                         }
                     }
-                    //chatListener?.onExitSuccess()
                 } else {
                     Log.e(ERROR_TAG, "api leaveChannel failed message:${leaveChannelResponse.message}")
-                    //chatListener?.makeSnackBar(leaveChannelResponse.message)
                     _showDialog.postValue(Event(leaveChannelResponse.message))
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"api leaveChannel Error $e")
-                //chatListener?.makeSnackBar("퇴장에 실패하였습니다")
                 _showDialog.postValue(Event("퇴장에 실패하였습니다"))
             }
         }
@@ -528,24 +495,20 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 val reportChannelResponse = repository.reportChannel(param)
                 if(reportChannelResponse.isSuccess){
                     Log.e(CHECK_TAG, "api reportChannel success")
-                    //chatListener?.makeSnackBar("정상적으로 신고가 접수되었습니다")
                     _showDialog.postValue(Event("정상적으로 신고가 접수되었습니다"))
                 }
                 else{
                     Log.e(ERROR_TAG, "api reportChannel failed message:${reportChannelResponse.message}")
-                    //chatListener?.makeSnackBar(reportChannelResponse.message)
                     _showDialog.postValue(Event(reportChannelResponse.message))
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"api reportChannel Error $e")
-                //chatListener?.makeSnackBar("신고에 실패하였습니다")
                 _showDialog.postValue(Event("신고에 실패하였습니다"))
             }
         }
     }
 
     fun expelMember(banMember: String, reason: String){
-
         var banUserIdx = 0
         var banUserId:String? = ""
         for(member in _memberInfoList){
@@ -558,7 +521,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
         if(banUserIdx==0){
             Log.e(ERROR_TAG,"추방하려는 유저를 찾을 수 없습니다.")
-            //chatListener?.makeSnackBar("추방하려는 유저를 찾을 수 없습니다.")
             _showDialog.postValue(Event("추방하려는 유저를 찾을 수 없습니다"))
             return
         }
@@ -589,8 +551,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                                         Log.e(ERROR_TAG,"ban User Fail : $e2")
                                         // Handle error.
                                     } else {
-                                        //chatListener?.makeSnackBar("정상적으로 추방되었습니다")
-                                        //chatListener?.makePopup("정상적으로 추방되었습니다")
                                         Log.e(CHECK_TAG, "ban User Success")
                                         _showDialog.postValue(Event("정상적으로 추방되었습니다"))
                                     }
@@ -599,21 +559,16 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                             else{
                                 Log.e(ERROR_TAG,"Not Operator of channel")
                             }
-
                         }
-
                     }
                     getRoomInfo()
                 }
                 else{
                     Log.e(ERROR_TAG, "api expelMember failed message:${expelMemberResponse.message}")
-                    //chatListener?.makeSnackBar(expelMemberResponse.message)
-                    //chatListener?.makePopup(expelMemberResponse.message)
                     _showDialog.postValue(Event(expelMemberResponse.message))
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"api expelMember Error $e")
-                //chatListener?.makeSnackBar("추방에 실패하였습니다")
                 _showDialog.postValue(Event("추방에 실패하였습니다"))
             }
         }
@@ -629,14 +584,11 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 }
                 else{
                     Log.e(CHECK_TAG,"challenge is not available now ${response.message}")
-                    //chatListener?.makeSnackBar(response.message)
-                    //chatListener?.makePopup(response.message)
                     _showDialog.postValue(Event(response.message))
                 }
 
             }catch (e: Exception){
                 Log.e(ERROR_TAG,"checkChallenge api error $e")
-                //chatListener?.makeSnackBar("챌린지 확인에 실패하였습니다")
                 _showDialog.postValue(Event("챌린지 확인에 실패햐였습니다"))
             }
         }
@@ -658,21 +610,17 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         chatListener?.onBadgeResponse(title,url,explain,backColor)
                     }
                     else{
-                        //chatListener?.makePopup("이제 챌린지가 시작됩니다")
                         _showDialog.postValue(Event("이제 챌린지가 시작됩니다"))
                     }
 
                 }
                 else{
                     Log.e(ERROR_TAG, "api startChallenge failed message:${startChallengeResponse.message}")
-                    //chatListener?.makeSnackBar(startChallengeResponse.message)
-                    //chatListener?.makePopup(startChallengeResponse.message)
                     _showDialog.postValue(Event(startChallengeResponse.message))
                 }
             }
             catch (e:Exception){
                 Log.e(ERROR_TAG,"api startChallenge Error $e")
-                //chatListener?.makeSnackBar("챌린지 시작에 실패하였습니다")
                 _showDialog.postValue(Event("챌린지 시작에 실패하였습니다"))
             }
         }

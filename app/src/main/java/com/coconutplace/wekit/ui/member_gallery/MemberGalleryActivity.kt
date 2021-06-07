@@ -63,7 +63,7 @@ class MemberGalleryActivity :AppCompatActivity(),GalleryListener {
 
     private fun setupPhotoPackListAdapter(){
         mBinding.galleryRecyclerview.layoutManager = LinearLayoutManager(this)
-        galleryListAdapter = PhotoPackListAdapter(this)
+        galleryListAdapter = PhotoPackListAdapter()
         mBinding.galleryRecyclerview.adapter = galleryListAdapter
 
         galleryListAdapter.setItemClickListener(object: PhotoPackListAdapter.OnItemClickListener{

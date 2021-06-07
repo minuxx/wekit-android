@@ -12,9 +12,8 @@ import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.PhotoPack
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 
-class PhotoPackListAdapter(context: Context) : RecyclerView.Adapter<PhotoPackListAdapter.GalleryViewHolder>(){
+class PhotoPackListAdapter : RecyclerView.Adapter<PhotoPackListAdapter.GalleryViewHolder>(){
 
-    private val mContext = context
     private val photoPackList = ArrayList<PhotoPack>()
     private var mItemClickListener: OnItemClickListener? = null
 
@@ -27,7 +26,7 @@ class PhotoPackListAdapter(context: Context) : RecyclerView.Adapter<PhotoPackLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
-        val view = LayoutInflater.from(mContext).inflate(R.layout.item_gallery,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_gallery,parent,false)
         return GalleryViewHolder(view)
     }
 
@@ -73,10 +72,9 @@ class PhotoPackListAdapter(context: Context) : RecyclerView.Adapter<PhotoPackLis
             Log.e(CHECK_TAG,"PhotoPack onBind")
             val formattedDate = photoPack.date.replace('-','.')
             dateTextView.text = formattedDate
-            val gridListAdapter = PhotoListAdapter(mContext)
+            val gridListAdapter = PhotoListAdapter()
             gridListAdapter.addItem(photoPack,listener)
             photoGridView.adapter = gridListAdapter
-
         }
     }
 

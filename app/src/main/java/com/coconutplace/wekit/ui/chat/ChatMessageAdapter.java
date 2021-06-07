@@ -33,7 +33,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_FILE_MESSAGE_IMAGE_OTHER = 23;
     private static final int VIEW_TYPE_ADMIN_MESSAGE = 30;
 
-
     OnItemClickListener mItemClickListener;
     private ArrayList<BaseMessage> mMessageList;
 
@@ -175,7 +174,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void addLast(BaseMessage msg){
-        //mMessageList.add(msg);
         mMessageList.add(0,msg);
         //notifyItemInserted(mMessageList.size()-1);
     }
@@ -192,6 +190,4 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         return dateFormat.format(millisFirst).equals(dateFormat.format(millisSecond));
     }
-
-
 }
