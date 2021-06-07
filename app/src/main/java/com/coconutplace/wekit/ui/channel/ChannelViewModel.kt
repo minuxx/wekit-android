@@ -169,7 +169,11 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                     myRoomCount = myChannelResponse.result!!.chatList!!.size
                     if(myRoomCount>0){
                         val myFirstRoom = myChannelResponse.result!!.chatList!![0]
-                        _myChannelSetEvent.postValue(Event(Unit))
+                        _myChannelSetEvent.let {
+                            if(it.value == null){
+                                it.postValue(Event(Unit))
+                            }
+                        }
 
                         liveMyChatRoomName.postValue(myFirstRoom.roomName) //방 이름
                         liveMyChatMemberCount.postValue("${myFirstRoom.currentNum}/${myFirstRoom.maxLimit}") //현재 인원/최대 인원

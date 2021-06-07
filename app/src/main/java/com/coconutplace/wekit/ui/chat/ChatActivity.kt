@@ -300,7 +300,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         })
 
         chatViewModel.showDialog.observe(this,{ event ->
-            event.getContextIfNotHandled()?.let {
+            event.getContentIfNotHandled()?.let {
                 makePopup(it)
             }
         })

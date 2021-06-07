@@ -1,15 +1,18 @@
 package com.coconutplace.wekit.utils
 
-class Event<out T>(private val content: T) {
-    var hasBeenHandled = false
-        private set //allow external read but not write
+open class Event<out T>(private val content: T) {
 
-    fun getContextIfNotHandled(): T? {
-        return if(hasBeenHandled){
+    var hasBeenHandled = false
+        private set // Allow external read but not write
+
+    fun getContentIfNotHandled(): T? {
+        return if (hasBeenHandled) {
             null
-        }else{
+        } else {
             hasBeenHandled = true
             content
         }
     }
+
+    fun peekContent(): T = content
 }

@@ -1,5 +1,6 @@
 package com.coconutplace.wekit.ui.chat.viewholder
 
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
