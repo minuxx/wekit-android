@@ -1,6 +1,5 @@
 package com.coconutplace.wekit.ui.write_diary
 
-import android.R.attr.bitmap
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.databinding.ObservableArrayList
@@ -14,19 +13,16 @@ import com.coconutplace.wekit.di.TEST_URL
 import com.coconutplace.wekit.di.getBaseUrl
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
-import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FIREBASE_STORAGE_URL
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 class WriteDiaryViewModel(
     private val repository: DiaryRepository,

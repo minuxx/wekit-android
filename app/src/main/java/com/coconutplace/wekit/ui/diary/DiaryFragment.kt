@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Diary
 import com.coconutplace.wekit.data.remote.diary.listeners.DiaryListener
@@ -23,6 +24,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -31,7 +34,7 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     private var _binding: FragmentDiaryBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DiaryViewModel by viewModel()
-    private lateinit var mDiaryAdapter: DiaryAdapter
+    private lateinit var adapter: DiaryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +47,8 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
 
         viewModel.diaryListener = this
 
-        initRecyclerView()
         setCalendar()
+        initRecyclerView()
 
         viewModel.getWrittenDates(getCurrentDate(CalendarDay.today()).substring(0, 7))
 
@@ -56,7 +59,9 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
 
     override fun onStart() {
         super.onStart()
-        viewModel.getDiaries(getCurrentDate(binding.diaryCalendarView.selectedDate!!))
+//        viewModel.getDiaries(getCurrentDate(binding.diaryCalendarView.selectedDate!!))
+        adapter.refresh()
+
         viewModel.getWrittenDates(getCurrentDate(binding.diaryCalendarView.selectedDate!!).substring(0, 7))
         binding.diaryWriteBtn.isClickable = true
 
@@ -88,11 +93,18 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     }
 
     private fun initRecyclerView(){
-        mDiaryAdapter = DiaryAdapter{
+        adapter = DiaryAdapter{
             startReadDiaryActivity(it.diaryIdx!!)
         }
 
-        binding.diaryRecyclerview.adapter = mDiaryAdapter
+        binding.diaryRecyclerview.adapter = adapter
+        viewModel.date = getCurrentDate(binding.diaryCalendarView.selectedDate!!)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.diaryFlow.collectLatest{ pagingData ->
+                adapter.submitData(pagingData)
+            }
+        }
     }
 
     private fun startReadDiaryActivity(diaryIdx: Int){
@@ -139,7 +151,9 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         widget.addDecorator(SelectedDayDecorator(context, date))
 
         if(!isFutureDay()) {
-            viewModel.getDiaries(getCurrentDate(date))
+            viewModel.date = getCurrentDate(date)
+            adapter.refresh()
+//            viewModel.getDiaries(getCurrentDate(date))
         }
 
         viewModel.previousDay = date
@@ -172,6 +186,10 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         return getIgnoredTimeDays(lastDay) - getIgnoredTimeDays(beginDay) > 0
     }
 
+    private fun getDiaries(date: String){
+
+    }
+
     private fun getIgnoredTimeDays(time: Long): Long{
         return Calendar.getInstance().apply {
             timeInMillis = time
@@ -190,7 +208,7 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
     override fun onGetDiarySuccess(diaries: ArrayList<Diary>) {
         binding.diaryLoading.hide()
 
-        mDiaryAdapter.addItems(diaries)
+//        mDiaryAdapter.addItems(diaries)
     }
 
     override fun onGetDiaryFailure(code: Int, message: String) {

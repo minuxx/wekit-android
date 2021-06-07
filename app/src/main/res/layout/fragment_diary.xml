@@ -234,7 +234,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/diary_line_view"
-                bind:setDiaries="@{viewModel.diaries}"
                 tools:listitem="@layout/item_diary" />
 
             <ProgressBar

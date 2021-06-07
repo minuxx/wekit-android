@@ -31,8 +31,8 @@ object BindingUtils {
     @BindingAdapter("setDiaries")
     @JvmStatic
     fun setDiaries(recyclerView: RecyclerView, items: ObservableArrayList<Diary>) {
-        (recyclerView.adapter as DiaryAdapter).items = items
-        recyclerView.adapter?.notifyDataSetChanged()
+//        (recyclerView.adapter as DiaryAdapter).items = items
+//        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     @BindingAdapter("urlImage")

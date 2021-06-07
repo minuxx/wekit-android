@@ -10,7 +10,7 @@ import com.coconutplace.wekit.data.repository.BaseRepository
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-class DiaryRepository(private val diaryService: DiaryService) : BaseRepository() {
+class DiaryRepository(val diaryService: DiaryService) : BaseRepository() {
     private val executor: Executor = Executors.newFixedThreadPool(5)
 
     suspend fun getDiaries(date: String, page: Int): DiaryResponse {
