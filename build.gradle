@@ -13,7 +13,7 @@ buildscript {
         navigation_version = "2.3.3"
         lottie_version = "3.4.0"
         groupie_version = "2.9.0"
-        paging_version = "2.1.2"
+        paging_version = "3.0.0"
         KAKAO_SDK_PLUS_VERSION = "1.21.0"
     }
     repositories {

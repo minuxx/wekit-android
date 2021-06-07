@@ -81,6 +81,7 @@ class OpensourceAdapter(val context: Context): RecyclerView.Adapter<OpensourceAd
                     if (prePos != -1) {
                         notifyItemChanged(prePos)
                     }
+
                     notifyItemChanged(pos)
                 }
             }

@@ -25,7 +25,6 @@ import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.ITEM_TYPE_ADD_PHOTO
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.REQUEST_SELECT_PICTURE
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.REQUEST_TAKE_PICTURE
-import com.coconutplace.wekit.utils.snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -34,12 +33,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ChoicePhotoActivity : BaseActivity() {
     private lateinit var binding: ActivityChoicePhotoBinding
     private val viewModel: ChoiceViewModel by viewModel()
-    private lateinit var mAdapter: ChoicePhotoAdapter
+    private lateinit var adapter: ChoicePhotoAdapter
     private var mFlag: Int = 0
     var mImageFile: File? = null
 
@@ -80,38 +80,43 @@ class ChoicePhotoActivity : BaseActivity() {
         val gridLayoutManager = GridLayoutManager(applicationContext, 3)
         gridLayoutManager.orientation = LinearLayoutManager.VERTICAL
 
-        mAdapter = ChoicePhotoAdapter(applicationContext, itemClick = {
+        adapter = ChoicePhotoAdapter(applicationContext, itemClick = {
             if (it == 0) {
-                if (mAdapter.itemCount > 5) {
+                if (adapter.itemCount > 5) {
                     showDialog(getString(R.string.choice_photo_count_limit))
                 } else {
                     if (mFlag == FLAG_CERTIFY_DIARY) {
-                        launchCameraActivity() // 인증 다이어리(사진)을 보낼 때는 카메라로 찍은 사지만 가능
+                        launchCameraActivity() // 인증 다이어리(사진)을 보낼 때는 카메라로 찍은 사진만 가능
                     } else if (mFlag == FLAG_WRITE_DIARY) {
                         pickImageFromGallery() // 일반 다이어리(사진)을 생성할 때는 갤러리, 카메라 모두 가능
                     }
                 }
             } else {
-                mAdapter.removeItem(it)
+                adapter.removeItem(it)
             }
         })
 
         binding.choicePhotoRecyclerview.layoutManager = gridLayoutManager
         binding.choicePhotoRecyclerview.addItemDecoration(GridSpacingItemDecoration(3, 1, false))
-        binding.choicePhotoRecyclerview.adapter = mAdapter
+        binding.choicePhotoRecyclerview.adapter = adapter
+
+        adapter.items = viewModel.photos
 
         intent!!.getStringExtra("photo-items")?.let{
             val gson = Gson()
             val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
             val photos: ArrayList<Photo> = gson.fromJson(it, arrayPhotoType)
-            viewModel.addPhotos(photos)
+
+//            viewModel.addPhotos(photos)
+            adapter.addItems(photos)
         }
 
         if(viewModel.getPhotoCount() == 0){
             val addPhotoItem = Photo(null, null, null)
             addPhotoItem.type = ITEM_TYPE_ADD_PHOTO
 
-            viewModel.addPhoto(addPhotoItem)
+//            viewModel.addPhoto(addPhotoItem)
+            adapter.addItem(addPhotoItem)
         }
     }
 
@@ -166,12 +171,14 @@ class ChoicePhotoActivity : BaseActivity() {
                     }
 
                 }
+
                 UCrop.REQUEST_CROP -> {
                     UCrop.getOutput(data!!)?.let {
 //                        Log.d("ChoicePhotoDebug://", it.toString())
                         val item = Photo(null, null, it.toString())
-                        viewModel.addPhoto(item)
-//                        mAdapter.addItem(item)
+
+//                        viewModel.addPhoto(item)
+                        adapter.addItem(item)
                         return
                     }
 
@@ -186,9 +193,12 @@ class ChoicePhotoActivity : BaseActivity() {
     private fun startCropActivity(uri: Uri) {
         val mDestinationUri = Uri.fromFile(File(cacheDir, "${UUID.randomUUID()}.jpg"))
 
-        val uCrop = UCrop.of(uri, mDestinationUri).withAspectRatio(1f, 1f)
+        val uCrop = UCrop.of(uri, mDestinationUri).withAspectRatio(1f, 1f).withMaxResultSize(1080, 1080)
         val options: UCrop.Options = UCrop.Options()
 
+        options.setShowCropFrame(false)
+        options.setShowCropGrid(false)
+        options.setHideBottomControls(true)
         options.setActiveControlsWidgetColor(getColor(R.color.primary))
         options.setFreeStyleCropEnabled(false)
         uCrop.withOptions(options)
@@ -199,7 +209,7 @@ class ChoicePhotoActivity : BaseActivity() {
     private fun savePhotos(){
         val gson = Gson()
         val arrayPhotoType = object : TypeToken<ArrayList<Photo>>() {}.type
-        val itemsJson : String = gson.toJson(viewModel.getPhotos(), arrayPhotoType)
+        val itemsJson : String = gson.toJson(adapter.items, arrayPhotoType)
 
         val data = Intent()
         data.putExtra("photo-items", itemsJson)

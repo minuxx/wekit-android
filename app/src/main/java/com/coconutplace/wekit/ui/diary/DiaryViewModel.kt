@@ -1,9 +1,6 @@
 package com.coconutplace.wekit.ui.diary
 
-import androidx.databinding.Observable
 import androidx.databinding.ObservableArrayList
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.coconutplace.wekit.data.entities.Diary
@@ -30,9 +27,8 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
 //    private var pagedListObservable: Observable<PagedList<Diary>> = PagingData(tourDataSourceFactory,config).buildObservable()
 
 
-
     fun getDiaries(date: String){
-        diaryListener?.onDiaryStarted()
+        diaryListener?.onGetDiaryStarted()
 
         Coroutines.main {
             try {
@@ -41,16 +37,16 @@ class DiaryViewModel(private val repository: DiaryRepository) : ViewModel()  {
                 if(diaryResponse.isSuccess){
                     diaryResponse.result?.let {
 //                        diaryList = it.diaryList
-                        diaryListener?.onDiarySuccess(it.diaryList!!)
+                        diaryListener?.onGetDiarySuccess(it.diaryList!!)
                         return@main
                     }
                 }else{
-                    diaryListener?.onDiaryFailure(diaryResponse.code, diaryResponse.message)
+                    diaryListener?.onGetDiaryFailure(diaryResponse.code, diaryResponse.message)
                 }
             } catch (e: ApiException) {
-                diaryListener?.onDiaryFailure(404, e.message!!)
+                diaryListener?.onGetDiaryFailure(404, e.message!!)
             } catch (e: Exception){
-                diaryListener?.onDiaryFailure(404, e.message!!)
+                diaryListener?.onGetDiaryFailure(404, e.message!!)
             }
         }
     }

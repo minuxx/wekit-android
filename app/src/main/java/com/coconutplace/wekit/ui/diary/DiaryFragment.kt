@@ -59,6 +59,8 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         viewModel.getDiaries(getCurrentDate(binding.diaryCalendarView.selectedDate!!))
         viewModel.getWrittenDates(getCurrentDate(binding.diaryCalendarView.selectedDate!!).substring(0, 7))
         binding.diaryWriteBtn.isClickable = true
+
+        binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, binding.diaryCalendarView.selectedDate!!))
     }
 
     override fun onClick(v: View?) {
@@ -181,17 +183,17 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         }.timeInMillis
     }
 
-    override fun onDiaryStarted() {
+    override fun onGetDiaryStarted() {
         binding.diaryLoading.show()
     }
 
-    override fun onDiarySuccess(diaries: ArrayList<Diary>) {
+    override fun onGetDiarySuccess(diaries: ArrayList<Diary>) {
         binding.diaryLoading.hide()
 
         mDiaryAdapter.addItems(diaries)
     }
 
-    override fun onDiaryFailure(code: Int, message: String) {
+    override fun onGetDiaryFailure(code: Int, message: String) {
         binding.diaryLoading.hide()
 
         when(code){
@@ -209,8 +211,12 @@ class DiaryFragment : BaseFragment(), DiaryListener, OnDateSelectedListener,
         binding.diaryLoading.hide()
 
         binding.diaryCalendarView.addDecorators(WrittenDatesDecorator(context, viewModel.writtenDates))
-        if(binding.diaryCalendarView.selectedDate == CalendarDay.today()){
-            binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, CalendarDay.today()))
+//        if(binding.diaryCalendarView.selectedDate == CalendarDay.today()){
+//            binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, CalendarDay.today()))
+//        }
+
+        binding.diaryCalendarView.selectedDate?.let{
+            binding.diaryCalendarView.addDecorators(SelectedDayDecorator(context, it))
         }
     }
 

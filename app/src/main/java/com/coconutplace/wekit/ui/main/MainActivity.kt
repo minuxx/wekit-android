@@ -31,16 +31,12 @@ import kotlin.concurrent.schedule
 
 
 class MainActivity : BaseActivity(), MainListener{
-    private val tabNames = listOf("투데이", "혜택존", "랭킹")
-    private val unselectedTabIcons = listOf(R.drawable.icn_home_normal, R.drawable.icn_chat_normal, R.drawable.icn_diary_normal)
-    private val selectedTabIcons = listOf(R.drawable.icn_home_selected, R.drawable.icn_chat_selected, R.drawable.icn_diary_selected)
     private val viewModel: MainViewModel by viewModel()
     private var mFlag = 0;
     private var doubleBackToExitPressedOnce = false
     private lateinit var viewPager: ViewPager2
-    //private lateinit var pagerAdapter:MainPagerAdapter
-    private lateinit var channelFragment: ChannelFragment
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var channelFragment: ChannelFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,23 +60,8 @@ class MainActivity : BaseActivity(), MainListener{
         viewModel.getVersion()
     }
 
-//    private fun initNavigation() {
-//        bottomNavigationView = findViewById(R.id.main_bottom_nav)
-//        bottomNavigationView.itemIconTintList = null
-//
-//        viewPager = findViewById(R.id.main_viewpager)
-//        viewPager.isUserInputEnabled = false
-//
-//        channelFragment = ChannelFragment()
-//        pagerAdapter = PagerAdapter(supportFragmentManager,lifecycle)
-//
-//        viewPager.adapter = pagerAdapter
-//
-//        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(it) }
-//    }
-
     private fun initNavigation() {
-        bottomNavigationView = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        bottomNavigationView = findViewById(R.id.main_bottom_nav)
         bottomNavigationView.itemIconTintList = null
 
         viewPager = findViewById(R.id.main_viewpager)
@@ -96,8 +77,10 @@ class MainActivity : BaseActivity(), MainListener{
 
         bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(viewPager, it) }
     }
+
     private fun navSelector(viewPager: ViewPager2, item: MenuItem) : Boolean{
         val checked = item.setChecked(true)
+
         when(checked.itemId){
             R.id.homeFragment -> {
                 viewPager.currentItem = 0
@@ -112,40 +95,9 @@ class MainActivity : BaseActivity(), MainListener{
                 return true
             }
         }
+
         return false
     }
-
-//    private fun navSelector(item: MenuItem) : Boolean{
-//        val checked = item.setChecked(true)
-//        when(checked.itemId){
-//            R.id.homeFragment -> {
-//                viewPager.currentItem = 0
-//                return true
-//            }
-//            R.id.channelFragment -> {
-//                viewPager.currentItem = 1
-//                return true
-//            }
-//            R.id.diaryFragment ->{
-//                viewPager.currentItem = 2
-//                return true
-//            }
-//        }
-//
-//        return false
-//    }
-
-//    private inner class PagerAdapter(fm: FragmentManager, lc: Lifecycle): FragmentStateAdapter(fm, lc) {
-//        override fun getItemCount() = 3
-//        override fun createFragment(position: Int): Fragment {
-//            return when (position) {
-//                0 -> HomeFragment()
-//                1 -> channelFragment // 2021.05.23 Ethan # channelFragment를 전역변수로 두고 다른 함수에서도 효율적인것 같아 이렇게했습니다.
-//                2 -> DiaryFragment()
-//                else -> error("no such position: $position")
-//            }
-//        }
-//    }
 
     private inner class PageChangeCallback: ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -254,3 +206,50 @@ class MainActivity : BaseActivity(), MainListener{
         }
     }
 }
+
+//    private fun initNavigation() {
+//        bottomNavigationView = findViewById(R.id.main_bottom_nav)
+//        bottomNavigationView.itemIconTintList = null
+//
+//        viewPager = findViewById(R.id.main_viewpager)
+//        viewPager.isUserInputEnabled = false
+//
+//        channelFragment = ChannelFragment()
+//        pagerAdapter = PagerAdapter(supportFragmentManager,lifecycle)
+//
+//        viewPager.adapter = pagerAdapter
+//
+//        bottomNavigationView.setOnNavigationItemSelectedListener { navSelector(it) }
+//    }
+
+//    private fun navSelector(item: MenuItem) : Boolean{
+//        val checked = item.setChecked(true)
+//        when(checked.itemId){
+//            R.id.homeFragment -> {
+//                viewPager.currentItem = 0
+//                return true
+//            }
+//            R.id.channelFragment -> {
+//                viewPager.currentItem = 1
+//                return true
+//            }
+//            R.id.diaryFragment ->{
+//                viewPager.currentItem = 2
+//                return true
+//            }
+//        }
+//
+//        return false
+//    }
+
+//    private inner class PagerAdapter(fm: FragmentManager, lc: Lifecycle): FragmentStateAdapter(fm, lc) {
+//        override fun getItemCount() = 3
+//        override fun createFragment(position: Int): Fragment {
+//            return when (position) {
+//                0 -> HomeFragment()
+//                1 -> channelFragment // 2021.05.23 Ethan # channelFragment를 전역변수로 두고 다른 함수에서도 효율적인것 같아 이렇게했습니다.
+//                2 -> DiaryFragment()
+//                else -> error("no such position: $position")
+//            }
+//        }
+//    }
