@@ -112,7 +112,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((AdminMessageHolder)holder).onBind((AdminMessage)message,mItemClickListener,isNewDay);
 
         }
-        //holder.onBind(mMessageList.get(position),mItemClickListener);
     }
 
     @Override
@@ -175,7 +174,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addLast(BaseMessage msg){
         mMessageList.add(0,msg);
-        //notifyItemInserted(mMessageList.size()-1);
     }
 
     public void addFirst(List<BaseMessage> msgList){
