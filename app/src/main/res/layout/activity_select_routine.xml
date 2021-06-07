@@ -102,6 +102,7 @@
             android:background="@drawable/bg_select_routine_btn_unactive"
             android:elevation="30dp"
             android:text="@string/selectRoutine_btn"
+            android:textColor="@color/white"
             android:onClick="@{() -> viewModel.submitInterest()}"
             android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"

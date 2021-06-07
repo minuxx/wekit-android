@@ -204,16 +204,18 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/selectMiracle_next_btn"
-            android:clickable="@{viewModel.isNext? true : false}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="28dp"
             android:backgroundTint="@{viewModel.isNext ? @color/select_Active : @color/select_unActive}"
+            android:clickable="@{viewModel.isNext? true : false}"
             android:src="@drawable/icn_next"
             app:borderWidth="0dp"
+            app:fabCustomSize="52dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectMiracle_select03_layout" />
+            app:layout_constraintTop_toBottomOf="@id/selectMiracle_select03_layout"
+            app:tint="@color/white" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
