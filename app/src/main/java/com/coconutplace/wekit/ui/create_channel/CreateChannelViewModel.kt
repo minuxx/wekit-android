@@ -71,7 +71,6 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
                 }else{
                     "2주방"
                 }
-                //count //arg1 인증횟수
                 var tag = "" //태그
 
                 val tagSize = tagStringList.size
@@ -80,10 +79,8 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
                 }
                 if(tagSize>0)
                     tag+=tagStringList[tagSize-1].substring(1)
-
-
-                Log.e(CHECK_TAG," 중간점검-> \n roomName : $roomName, chatExplain : $chatExplain, chatRoomImg : $chatRoomImg, chatUrl : $chatUrl,\n"
-                        + "maxLimit : $maxLimit, roomType : $roomType, roomTerm : $roomTerm, count : $count, 최종 TAG : $tag")
+//                Log.e(CHECK_TAG," 중간점검-> \n roomName : $roomName, chatExplain : $chatExplain, chatRoomImg : $chatRoomImg, chatUrl : $chatUrl,\n"
+//                        + "maxLimit : $maxLimit, roomType : $roomType, roomTerm : $roomTerm, count : $count, 최종 TAG : $tag")
 
                 val tempChannelInfo = CreateChannelInfo(roomName!!,chatExplain!!,chatRoomImg,chatUrl,maxLimit,roomType,roomTerm,count,tag)
 
@@ -135,10 +132,10 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
             })
     }
 
-    fun showTagList(){
-        Log.e(CHECK_TAG,"tempButton Clicked, size : "+tagStringList.size)
-        for(i in 0 until tagStringList.size){
-            Log.e(CHECK_TAG,"text : ${tagStringList[i]}")
-        }
-    }
+//    fun showTagList(){
+//        Log.e(CHECK_TAG,"tempButton Clicked, size : "+tagStringList.size)
+//        for(i in 0 until tagStringList.size){
+//            Log.e(CHECK_TAG,"text : ${tagStringList[i]}")
+//        }
+//    }
 }

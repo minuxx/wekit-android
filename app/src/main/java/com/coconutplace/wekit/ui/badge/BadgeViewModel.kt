@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.coconutplace.wekit.data.remote.badge.BadgeInfo
 import com.coconutplace.wekit.data.repository.badge.BadgeRepository
 import com.coconutplace.wekit.utils.SharedPreferencesManager
@@ -32,7 +33,7 @@ class BadgeViewModel(private val repository: BadgeRepository,private val sharedP
     }
 
     fun getBadge(){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try{
                 val response = repository.getBadge()
                 if(response.isSuccess){

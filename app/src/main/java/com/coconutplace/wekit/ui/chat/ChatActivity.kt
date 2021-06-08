@@ -73,7 +73,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         setupView()
         setupChatListAdapter()
 
-        setupDrawer()
+        setupDrawer() //채팅방 맴버가 보이는 drawer 세팅
         setupMemberListAdapter()
 
         setupViewModel()
@@ -83,17 +83,16 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
     override fun onResume() {
         super.onResume()
 
-        if (binding.chatDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+        if (binding.chatDrawerLayout.isDrawerOpen(GravityCompat.END)) { //drawer가 열려있을 때 슬라이드로 열기 풀기
             displayMenu()
             binding.chatDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
-        else{
+        else{ //drawer가 닫혀있을 때 슬라이드로 열기막기
             binding.chatDrawerLayout.setDrawerLockMode((DrawerLayout.LOCK_MODE_LOCKED_CLOSED))
         }
-
     }
 
-    private fun displayMenu(){
+    private fun displayMenu(){ //drawer맴버 어댑터 세팅하기
         memberListAdapter.clear()
         binding.chatNavListView.adapter = memberListAdapter
 
@@ -169,7 +168,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         }
     }
 
-    private fun setupDrawer(){
+    private fun setupDrawer(){ //drawer세팅하기
         binding.chatDrawerLayout.addDrawerListener(object:DrawerListener{
             override fun onDrawerOpened(drawerView: View) {
                 binding.chatDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -186,9 +185,6 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
             actionTypeDialog.callFunction(this)
         }
         binding.chatNavExitBtn.setOnClickListener{
-//            val exitDialog = ChatExitDialog(this)
-//            exitDialog.callFunction(this)
-
             val exitDialog = WekitV2Dialog(this, FLAG_LEAVE_CHANNEL)
             exitDialog.listener = this
             exitDialog.show(getString(R.string.chat_dialog_exit_title))
@@ -201,7 +197,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
 
         binding.chatNavBellBtn.setOnClickListener {
             if(chatViewModel.getPushFlag()){
-                PushUtil.setPushNotification(false,
+                PushUtil.setPushNotification(false, //푸시알림 ON 하기
                     SetPushTriggerOptionHandler { e ->
                         if(e!=null){
                             Log.e(ERROR_TAG,"push notification OFF setting error $e")
@@ -212,7 +208,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
                     })
             }
             else{
-                PushUtil.setPushNotification(true,
+                PushUtil.setPushNotification(true, //푸시알림 OFF 하기
                     SetPushTriggerOptionHandler { e ->
                         if(e!=null){
                             Log.e(ERROR_TAG,"push notification ON setting error $e")
@@ -225,7 +221,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         }
     }
 
-    private fun setupChatListAdapter(){
+    private fun setupChatListAdapter(){ //채팅 메세지별 클릭 이벤트 등록
         messageAdapter.setItemClickListener(object : ChatMessageAdapter.OnItemClickListener {
             override fun onUserMessageItemClick(message: UserMessage?) {
                 Log.e(CHECK_TAG,"USER message 클릭함")
@@ -249,7 +245,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         })
     }
 
-    private fun setupMemberListAdapter(){
+    private fun setupMemberListAdapter(){ //drawer의 멤버리스트 클릭 이벤트 등록
         memberListAdapter = ChatMemberListAdapter()
 
         memberListAdapter.setItemClickListener(object: ChatMemberListAdapter.OnItemClickListener{
@@ -277,7 +273,6 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         })
 
         chatViewModel.liveMemberListInfo.observe(this,{
-
             memberListAdapter.clear()
             binding.chatNavListView.adapter = memberListAdapter
 
@@ -306,6 +301,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         })
     }
 
+    //채팅 이미지 클릭시 확대
     private fun onImageMessageClicked(message : FileMessage){
         val intent = Intent(this,PhotoViewerActivity::class.java)
         intent.putExtra("url", message.url)
@@ -313,12 +309,14 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         startActivity(intent)
     }
 
+    //채팅 프로필 클릭시 확대
     private fun onProfileClicked(profileUrl: String){
         val intent = Intent(this,PhotoViewerActivity::class.java)
         intent.putExtra("url", profileUrl)
         startActivity(intent)
     }
 
+    //사진 보내기 전에 갤러리열기
     private fun requestMedia() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         intent.type = "image/*"
@@ -332,6 +330,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         }
     }
 
+    //채팅방 내에서 배지를 받을때(첫 인증사진 전송 등)
     override fun onBadgeResponse(badgeTitle:String,badgeUrl:String,badgeExplain:String, backgroundColor:String){
         runOnUiThread {
             val badgeDialog = ChatBadgeDialog(this)
@@ -342,7 +341,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
     @Suppress("UNCHECKED_CAST")
     override fun onActivityResult(requestCode:Int, resultCode:Int, data:Intent?){
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQ_CODE_SELECT_IMAGE){
+        if(requestCode == REQ_CODE_SELECT_IMAGE){ //일반 사진 보내기 위해 갤러리 갔다 왔을 때
             if(resultCode==Activity.RESULT_OK){
                 SendBird.setAutoBackgroundDetection(true)
                 val uri:Uri = data!!.data!!
@@ -350,7 +349,7 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
                 chatViewModel.sendFile(uri,this)
             }
         }
-        else if(requestCode == REQ_CODE_AUTH_IMAGE){
+        else if(requestCode == REQ_CODE_AUTH_IMAGE){ //인증사진 보내기 위해 Diary갔다 왔을 때
             if(resultCode== RES_CODE_AUTH_SUCCESS){
                 //writeDiaryActivity에서 받은것들 sendbird 채팅방에 보내야함
                 Log.e(CHECK_TAG,"writeDiary에서 imgUrl을 받아왔습니다.")
@@ -382,14 +381,12 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
             }
             else if(resultCode== RES_CODE_AUTH_FAILURE){
                 Log.e(ERROR_TAG,"writeDiary 에서 imgUrl을 가져오지 못했습니다.")
-                //val message:String = data?.getStringExtra("message")!!
-                //makeSnackBar(message)
                 makePopup("다이어리에서 사진을 불러오지 못했습니다")
             }
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed() { //채팅방내에서 back button 눌렀을때 drawer열려있으면 닫기
         if (binding.chatDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             binding.chatDrawerLayout.closeDrawer(GravityCompat.END)
         } else {
@@ -397,15 +394,15 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         }
     }
 
-    override fun onExitSuccess() {
+    override fun onExitSuccess() { //채팅방 나가기 성공시
         finish()
     }
 
-    override fun onSendMessageSuccess() {
+    override fun onSendMessageSuccess() { //채팅방에서 메세지 전송 성공시 스크롤 아래로 이동
         binding.chatRecyclerview.scrollToPosition(0)
     }
 
-    override fun showStartChallengeButton(isHost: Boolean) {
+    override fun showStartChallengeButton(isHost: Boolean) { //챌린지 시작전 방장에게만 보이는 챌린지 시작버튼
         runOnUiThread{
             if(isHost){
                 binding.chatNavStartChallengeBtn.visibility = View.VISIBLE
@@ -416,17 +413,20 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         }
     }
 
+    //스크롤 위로 올려서 이전 메세지 추가
     override fun addOldMsg(msgList: List<BaseMessage>) {
         messageAdapter.addFirst(msgList)
         messageAdapter.notifyDataSetChanged()
     }
 
+    //새롭게 도착한 메세지 추가
     override fun addRecentMessage(msg: BaseMessage) {
         messageAdapter.addLast(msg)
         messageAdapter.notifyDataSetChanged()
         binding.chatRecyclerview.scrollToPosition(0)
     }
 
+    //사진을 전송할때 인증사진/일반사진 구분하였을때
     override fun getBackImgTypeDialog(type: Int) {
         if(type==1){ //인증 사진 보내기
             Log.e(CHECK_TAG,"인증사진 보내기 시작")
@@ -439,40 +439,41 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
     }
 
     override fun getBackActionTypeDialog(type: Int) {
-        if(type==1){ //신고하기
-            val reportDialog = ChatReportDialog(this)
-            reportDialog.callFunction(this)
-        }
-        else if(type==2){ //추방하기
-            if(chatViewModel.hostFlag){
-                val expelDialog = ChatExpelDialog(this,chatViewModel.getNickName())
-                expelDialog.callFunction(this, chatViewModel.getMemberInfoList())
+        when(type){
+            1 ->{ //방 신고하기 선택시
+                val reportDialog = ChatReportDialog(this)
+                reportDialog.callFunction(this)
             }
-            else{
-                makePopup("방장만 추방을 할 수 있습니다.")
+            2 ->{ //맴버 추방하기 선택시
+                if(chatViewModel.isChallengeable){
+                    val expelDialog = ChatExpelDialog(this,chatViewModel.getNickName())
+                    expelDialog.callFunction(this, chatViewModel.getMemberInfoList())
+                }
+                else{
+                    makePopup("방장만 추방을 할 수 있습니다.")
+                }
             }
         }
     }
 
+    //추방할 맴버 선택했을 때
     override fun getBackExpelDialog(member:String, reason:String) {
         chatViewModel.expelMember(member,reason)
     }
 
+    //방 신고 사유 선택했을 때
     override fun getBackReportDialog(reason:String) {
         chatViewModel.reportChannel(reason)
     }
 
+    //방 나가기 선택했을 때
     override fun getBackExitDialog(exitFlag: Boolean) {
         if(exitFlag){
             chatViewModel.exitChannel()
         }
     }
 
-    override fun startDiary() {
-        startWriteDiaryActivity()
-    }
-
-    private fun startWriteDiaryActivity(){
+    override fun startDiary() { //인증사진보내기를 선택하였을 때
         val intent = Intent(this, WriteDiaryActivity::class.java)
         val date = CalendarDay.today()
         val month = if (date.month < 10) {"0" + date.month} else { date.month.toString() }
@@ -484,28 +485,21 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
         startActivityForResult(intent,REQ_CODE_AUTH_IMAGE)
     }
 
-    private fun sendFileWithUrl(ImgUrl:String){
+    private fun sendFileWithUrl(ImgUrl:String){//SendBird에 사진 전송할 때
         chatViewModel.isLoading.postValue(true)
         CoroutineScope(Dispatchers.Default).launch {
             runCatching {
                 try {
-                    Log.e(CHECK_TAG, "progress 1")
                     val url = URL(ImgUrl)
                     val conn: URLConnection = url.openConnection()
                     conn.connect()
-                    Log.e(CHECK_TAG, "progress 2")
                     val bis = BufferedInputStream(conn.getInputStream())
-                    Log.e(CHECK_TAG, "progress 3")
                     val imgBitmap = BitmapFactory.decodeStream(bis)
-                    Log.e(CHECK_TAG, "progress 4")
                     bis.close()
 
-                    val fileName =
-                        SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date()) + ".jpg"
+                    val fileName = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date()) + ".jpg"
                     val file = getFileFromBitmap(imgBitmap!!, fileName)
-
                     Log.e(CHECK_TAG, "파일이름:$fileName")
-
                     chatViewModel.sendAuthFile(file!!, fileName)
 
                 } catch (e: Exception) {
@@ -513,8 +507,9 @@ class ChatActivity : BaseActivity(),ChatListener, DialogListener,WekitV2Dialog.W
                 }
             }
         }
-
     }
+
+    //사진을 전송할 때 파일 만들기
     private fun getFileFromBitmap(imgBitmap:Bitmap,fileName:String):File?{
         val storage: File = cacheDir
 

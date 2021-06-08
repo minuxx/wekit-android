@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.coconutplace.wekit.data.entities.ChannelFilter
 import com.coconutplace.wekit.data.entities.ChatExtentions
 import com.coconutplace.wekit.data.entities.ChatRoom
@@ -20,6 +21,7 @@ import com.sendbird.android.SendBird
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class ChannelViewModel(private val repository: ChannelRepository, private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel() {
@@ -102,7 +104,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
             Log.e(CHECK_TAG,"myRoomUrl is not null -> direct enterRoom, $myRoomUrl")
         }
         else{
-            CoroutineScope(Dispatchers.IO).launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 try{
                     val myChannelResponse = repository.getMyChannel()
                     if(myChannelResponse.isSuccess){
@@ -161,7 +163,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
         roomList.clear()
 
         //내가 속한 채팅방 리스트 받기
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try{
                 myChannelResponse = repository.getMyChannel()
                 if(myChannelResponse.isSuccess){
@@ -211,7 +213,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
         }
 
         //채팅방 리스트 받기
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try{
                 val channelListResponse = repository.getRecentChannelList(pageForRoomList)
                 if(channelListResponse.isSuccess){
@@ -241,7 +243,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
     //'최근 채팅방'의 다음 페이지 받기
     private fun loadNextRecentRoomList(){
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try{
                 val response = repository.getRecentChannelList(pageForRoomList)
                 if(response.isSuccess){
@@ -272,7 +274,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     private fun refreshAllChannelList(){
         pageForRoomList = 1
         roomList.clear()
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try{
                 val response = repository.getAllChannelList(pageForRoomList)
                 if(response.isSuccess){
@@ -301,7 +303,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
     //'모든 채팅방'의 다음 페이지 받기
     private fun loadNextAllRoomList(){
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try{
                 val response = repository.getAllChannelList(pageForRoomList)
                 if(response.isSuccess){
@@ -333,7 +335,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
     private fun refreshFilteredChannelList(){
         pageForRoomList = 1
         roomList.clear()
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val roomTerm= if(_filter!!.isTwoWeek){ 0 }
                     else{ 1 }
@@ -369,7 +371,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
 
     //'다음 채팅방'의 다음 페이지 받기
     private fun loadNextFilteredRoomList(){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val roomTerm= if(_filter!!.isTwoWeek){ 0 }
                 else{ 1 }
@@ -411,7 +413,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
         if(keyword==null||keyword==""){
             return
         }
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try {
                 val response = repository.getSearchChannelList(keyword,pageForRoomList)
                 if(response.isSuccess){
@@ -452,7 +454,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
         if(keyword.isEmpty()){
             return
         }
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try {
                 val response = repository.getSearchChannelList(keyword,pageForRoomList)
                 if(response.isSuccess){
@@ -572,7 +574,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
             Log.e(CHECK_TAG,"number of our server chatRoom : $myChannelSize")
             for(i in 0 until myChannelSize){
 
-                CoroutineScope(Dispatchers.IO).launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     try {
                         Log.e(CHECK_TAG,"roomIdx : ${myList!![i].roomIdx}")
                         val param = ChatExtentions(myList[i].roomIdx, null, null)

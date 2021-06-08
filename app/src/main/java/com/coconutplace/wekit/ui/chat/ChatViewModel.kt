@@ -39,17 +39,17 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
     private var chatListener:ChatListener? = null
 
-    private var _channel: GroupChannel? = null
-    private var _channelUrl: String? = null
-    private var _roomIdx:Int = 0
-    private var _messageList: ArrayList<BaseMessage> = ArrayList()
-    private var _isMessageLoading = false
-    private val _memberInfoList:ArrayList<UserInfo> = ArrayList()
-    private var _operatorUserIndex:Int = 0
+    private var _channel: GroupChannel? = null //현재 채팅방의 채널 객체 데이터
+    private var _channelUrl: String? = null //현재 채팅방의 채널URL
+    private var _roomIdx:Int = 0 //WEKIT서버의 채팅방 인덱스 번호
+    private var _messageList: ArrayList<BaseMessage> = ArrayList() //채팅방의 메세지 정보
+    private var _isMessageLoading = false //메세지 전송중인지 flag
+    private val _memberInfoList:ArrayList<UserInfo> = ArrayList() //채팅방 멤버 리스트
+    private var _operatorUserIndex:Int = 0  //WEKIT서버에서 알려주는 방장 유저 인덱스(SendBird서버의 operator는 모든 사람이 operator임!)
     private var _nickname:String? = null
     private var _pushNotificationOn: Boolean? = null
 
-    var hostFlag = false
+    var isChallengeable = false //챌린지 시작 가능한지
 
     private var _showDialog = MutableLiveData<Event<String>>()
     val showDialog: LiveData<Event<String>>
@@ -85,7 +85,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         return _roomIdx
     }
 
-    fun setChatListener(chatListener: ChatListener){
+    fun setChatListener(chatListener: ChatListener){ //Activity에 이벤트 전달 인터페이스
         this.chatListener = chatListener
     }
 
@@ -97,24 +97,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         return sharedPreferencesManager.getNickname()
     }
 
-//    fun getPushNotificationOn(): Boolean{
-//        return _pushNotificationOn!!
-//    }
-
-//    private fun setNickname(nickname:String){
-//        SendBird.updateCurrentUserInfo(nickname,null,
-//            UserInfoUpdateHandler { e ->
-//                if (e != null) {
-//                    // Error!
-//                    Log.e(ERROR_TAG,"닉네임 세팅실패")
-//                    return@UserInfoUpdateHandler
-//                }
-//                else{
-//                    Log.e(CHECK_TAG,"닉네임 세팅완료")
-//                }
-//            })
-//    }
-
     fun setPushFlag(on:Boolean){
         sharedPreferencesManager.savePushNotificationFlag(on)
     }
@@ -123,7 +105,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         return sharedPreferencesManager.getPushNotificationFLag()
     }
 
-    fun getRoomInfo() {
+    fun getRoomInfo() { //drawer열 때 방 정보 불러오기
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val roomInfoResponse = repository.getRoomInfo(_roomIdx)
@@ -160,7 +142,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                             Log.e(CHECK_TAG,"member id : ${member.id}")
                         }
                         liveMemberListInfo.postValue(_memberInfoList)
-                        hostFlag = isHostFlag
+                        isChallengeable = isHostFlag
                     }
                     Log.e(CHECK_TAG,"$_nickname =?= ${liveOperator.value}")
 
@@ -196,16 +178,12 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
             } catch (e: Exception) {
                 Log.e(ERROR_TAG,"getRoomInfo error $e")
-                //chatListener?.makeSnackBar("서버와의 통신에 실패하였습니다")
-                //chatListener?.makePopup("서버와의 통신에 실패하였습니다")
                 _showDialog.postValue(Event("서버와의 통신에 실패하였습니다"))
-
             }
         }
     }
 
-    fun init(url: String, roomIdx:Int) {
-        Log.e(CHECK_TAG,"현재 방의 sendbird url : $url, roomIdx : $roomIdx")
+    fun init(url: String, roomIdx:Int) { //channelURL로 채널 정보 받기, roomIdx 세팅하기
         _channelUrl = url
         _roomIdx = roomIdx
 
@@ -220,20 +198,19 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         })
         isInitialized.postValue(true)
         _nickname = sharedPreferencesManager.getNickname()
-        //setNickname(mNickname!!)
     }
 
-    private fun addRecentMsg(msg: BaseMessage){
+    private fun addRecentMsg(msg: BaseMessage){ //최근 메세지 추가하기
         _messageList.add(0,msg)
         chatListener?.addRecentMessage(msg)
     }
 
-    private fun addOldMsg(msgList: List<BaseMessage>){
+    private fun addOldMsg(msgList: List<BaseMessage>){ //이전 메세지 추가하기
         _messageList.addAll(msgList)
         chatListener?.addOldMsg(msgList)
     }
 
-    fun addSendBirdHandler() {
+    fun addSendBirdHandler() { //센드버드 핸들러 등록(메세지)
         SendBird.addChannelHandler(channelHandlerId, object : ChannelHandler() {
             override fun onMessageReceived(baseChannel: BaseChannel, baseMessage: BaseMessage) {
                 if (baseChannel.url == _channelUrl) {
@@ -255,7 +232,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         })
     }
 
-    fun sendMsg(msg: String?) {
+    fun sendMsg(msg: String?) { //채팅방에 텍스트 메세지 보내기
         _channel!!.sendUserMessage(msg, SendUserMessageHandler { userMessage, e ->
             if (e != null) {
                 // Error!
@@ -266,34 +243,30 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         _showDialog.postValue(Event("네트워크가 원활하지 않습니다."))
                     }
                     900020 -> {
-                        //chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
                         _showDialog.postValue(Event("채팅방에 속해있지 않습니다"))
                     }
                     900100 -> {
-                        //chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
                         _showDialog.postValue(Event("채팅방에서 추방당하셨습니다"))
                     }
                     900041 -> {
-                        //chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
                         _showDialog.postValue(Event("채팅방이 삭제되어 대화가 금지되었습니다"))
                     }
                 }
-                //Toast.makeText(this, "message send fail", Toast.LENGTH_SHORT).show();
                 return@SendUserMessageHandler
             }
             else{
-                addRecentMsg(userMessage)
+                addRecentMsg(userMessage) //텍스트 보내기 성공시 list에 추가
             }
         })
     }
 
     fun refresh() {
         when {
-            _messageList.size!=0 -> {
+            _messageList.size!=0 -> { //viewModel에 messageList가 이미 있을 때 어댑터에 추가
                 //liveMessageList.postValue(mMessageList)
                 chatListener?.addOldMsg(_messageList)
             }
-            _channel == null -> {
+            _channel == null -> { //체널 정보가 없을 때 url로 채널 객체 받아와서 메세지 20개 받기
                 GroupChannel.getChannel(_channelUrl, GroupChannelGetHandler { groupChannel, e ->
                     if (e != null) {
                         // Error!
@@ -307,7 +280,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                     }
                 })
             }
-            else -> {
+            else -> { //체널 정보가 있을 때 메세지 20개 받기
                 _channel!!.refresh(GroupChannelRefreshHandler { e ->
                     if (e != null) {
                         // Error!
@@ -323,6 +296,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         }
     }
 
+    //최근 메세지 limit개 만큼 받기
     private fun loadLatestMessages(limit: Int, handler: GetMessagesHandler?) {
         Log.e(CHECK_TAG,"loadLatestMessages")
         if (_channel == null) {
@@ -348,6 +322,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         )
     }
 
+    //현재 가지고 있는 메시지중 가장 이전 메세지를 기준으로 이전 메세지 limit개 받기
     fun loadPreviousMessages(limit: Int, handler: GetMessagesHandler?) {
         Log.e(CHECK_TAG,"loadPreviousMessages")
 
@@ -359,7 +334,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         Log.e(CHECK_TAG,"mMessageList.size : ${_messageList.size}")
         if (_messageList.size > 0) {
             oldestMessageCreatedAt = _messageList[_messageList.size - 1].createdAt
-            Log.e(CHECK_TAG,"mMessageList.size>0 true")
         }
         _isMessageLoading = true
         _channel!!.getPreviousMessagesByTimestamp(oldestMessageCreatedAt, false, limit, true,
@@ -376,8 +350,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         )
     }
 
+    //채팅방에 파일 보내기
     fun sendFile(uri:Uri, context:Context){
-
         if(_channel==null){
             return
         }
@@ -420,15 +394,12 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         _showDialog.postValue(Event("네트워크가 원활하지 않습니다"))
                     }
                     900020 -> {
-                        //chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
                         _showDialog.postValue(Event("채팅방에 속해있지 않습니다"))
                     }
                     900100 -> {
-                        //chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
                         _showDialog.postValue(Event("채팅방에서 추방당하였습니다"))
                     }
                     900041 -> {
-                        //chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
                         _showDialog.postValue(Event("채팅방이 삭제되어 대화가 금지되었습니다"))
                     }
                 }
@@ -437,11 +408,11 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
             else{
                 isLoading.postValue(false)
                 addRecentMsg((fileMessage))
-                //Log.e(CHECK_TAG,"thumbnail url : ${fileMessage.thumbnails.size} : "+fileMessage.thumbnails[0].url)
             }
         })
     }
 
+    //인증 사진 보내기
     fun sendAuthFile(file:File,name:String){
 
         Log.e(CHECK_TAG,"start sending auth img for sendbird chatroom")
@@ -460,15 +431,12 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 Log.e(ERROR_TAG,"send Auth file error ${e.code} : ${e.message}")
                 when(e.code) {
                     900020 -> {
-                        //chatListener?.makeSnackBar("채팅방에 속해있지 않습니다")
                         _showDialog.postValue(Event("채팅방에 속해있지 않습니다"))
                     }
                     900100 -> {
-                        //chatListener?.makeSnackBar("채팅방에서 추방당하였습니다")
                         _showDialog.postValue(Event("채팅방에서 추방당하였습니다"))
                     }
                     900041 -> {
-                        //chatListener?.makeSnackBar("채팅방이 삭제되어 대화가 금지되었습니다.")
                         _showDialog.postValue(Event("채팅방이 삭제되어 대화가 금지되었습니다"))
                     }
                 }
@@ -483,6 +451,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
         })
     }
 
+    //채팅방 나가기(WEKIT서버에서 나가기 성공 시 -> SendBird서버에서 나가기)
     fun exitChannel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -506,20 +475,18 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                             chatListener?.onExitSuccess()
                         }
                     }
-                    //chatListener?.onExitSuccess()
                 } else {
                     Log.e(ERROR_TAG, "api leaveChannel failed message:${leaveChannelResponse.message}")
-                    //chatListener?.makeSnackBar(leaveChannelResponse.message)
                     _showDialog.postValue(Event(leaveChannelResponse.message))
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"api leaveChannel Error $e")
-                //chatListener?.makeSnackBar("퇴장에 실패하였습니다")
                 _showDialog.postValue(Event("퇴장에 실패하였습니다"))
             }
         }
     }
 
+    //방 신고하기
     fun reportChannel(reason:String){
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -528,24 +495,21 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 val reportChannelResponse = repository.reportChannel(param)
                 if(reportChannelResponse.isSuccess){
                     Log.e(CHECK_TAG, "api reportChannel success")
-                    //chatListener?.makeSnackBar("정상적으로 신고가 접수되었습니다")
                     _showDialog.postValue(Event("정상적으로 신고가 접수되었습니다"))
                 }
                 else{
                     Log.e(ERROR_TAG, "api reportChannel failed message:${reportChannelResponse.message}")
-                    //chatListener?.makeSnackBar(reportChannelResponse.message)
                     _showDialog.postValue(Event(reportChannelResponse.message))
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"api reportChannel Error $e")
-                //chatListener?.makeSnackBar("신고에 실패하였습니다")
                 _showDialog.postValue(Event("신고에 실패하였습니다"))
             }
         }
     }
 
+    //채팅방에서 맴버 추방하기
     fun expelMember(banMember: String, reason: String){
-
         var banUserIdx = 0
         var banUserId:String? = ""
         for(member in _memberInfoList){
@@ -558,7 +522,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
 
         if(banUserIdx==0){
             Log.e(ERROR_TAG,"추방하려는 유저를 찾을 수 없습니다.")
-            //chatListener?.makeSnackBar("추방하려는 유저를 찾을 수 없습니다.")
             _showDialog.postValue(Event("추방하려는 유저를 찾을 수 없습니다"))
             return
         }
@@ -579,9 +542,8 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         if (e1 != null) {
                             Log.e(ERROR_TAG,"$id 가 SendBird channel operator가 되는데에 실패하였습니다:$e1")
                         } else {
-                            Log.e(CHECK_TAG,"$id 가 SendBird channel operator가 되었습니다.")
-
-                            Log.e(CHECK_TAG,"MyRole : "+_channel!!.myRole.toString()+"=?="+Member.Role.OPERATOR)
+                            //Log.e(CHECK_TAG,"$id 가 SendBird channel operator가 되었습니다.")
+                            //Log.e(CHECK_TAG,"MyRole : "+_channel!!.myRole.toString()+"=?="+Member.Role.OPERATOR)
 
                             if (_channel!!.myRole == Member.Role.OPERATOR) {
                                 _channel!!.banUserWithUserId(banUserId, "-", Int.MAX_VALUE) { e2 ->
@@ -589,8 +551,6 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                                         Log.e(ERROR_TAG,"ban User Fail : $e2")
                                         // Handle error.
                                     } else {
-                                        //chatListener?.makeSnackBar("정상적으로 추방되었습니다")
-                                        //chatListener?.makePopup("정상적으로 추방되었습니다")
                                         Log.e(CHECK_TAG, "ban User Success")
                                         _showDialog.postValue(Event("정상적으로 추방되었습니다"))
                                     }
@@ -599,26 +559,22 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                             else{
                                 Log.e(ERROR_TAG,"Not Operator of channel")
                             }
-
                         }
-
                     }
                     getRoomInfo()
                 }
                 else{
                     Log.e(ERROR_TAG, "api expelMember failed message:${expelMemberResponse.message}")
-                    //chatListener?.makeSnackBar(expelMemberResponse.message)
-                    //chatListener?.makePopup(expelMemberResponse.message)
                     _showDialog.postValue(Event(expelMemberResponse.message))
                 }
             }catch (e:Exception){
                 Log.e(ERROR_TAG,"api expelMember Error $e")
-                //chatListener?.makeSnackBar("추방에 실패하였습니다")
                 _showDialog.postValue(Event("추방에 실패하였습니다"))
             }
         }
     }
 
+    //챌린지 가능한지 확인하고 가능하면 인증사진 보내기
     fun checkChallenge(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -629,26 +585,24 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 }
                 else{
                     Log.e(CHECK_TAG,"challenge is not available now ${response.message}")
-                    //chatListener?.makeSnackBar(response.message)
-                    //chatListener?.makePopup(response.message)
                     _showDialog.postValue(Event(response.message))
                 }
 
             }catch (e: Exception){
                 Log.e(ERROR_TAG,"checkChallenge api error $e")
-                //chatListener?.makeSnackBar("챌린지 확인에 실패하였습니다")
                 _showDialog.postValue(Event("챌린지 확인에 실패햐였습니다"))
             }
         }
     }
 
+    //챌린지 시작하기
     fun startChallenge(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val param = ChatExtentions(_roomIdx,null,null)
                 val startChallengeResponse = repository.startChallenge(param)
                 if(startChallengeResponse.isSuccess){
-                    Log.e(CHECK_TAG, "api startChallenge success")
+                    //Log.e(CHECK_TAG, "api startChallenge success")
                     val result = startChallengeResponse.result
                     if(result!=null){
                         val title = result.badgeName!!
@@ -658,26 +612,23 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                         chatListener?.onBadgeResponse(title,url,explain,backColor)
                     }
                     else{
-                        //chatListener?.makePopup("이제 챌린지가 시작됩니다")
                         _showDialog.postValue(Event("이제 챌린지가 시작됩니다"))
                     }
 
                 }
                 else{
                     Log.e(ERROR_TAG, "api startChallenge failed message:${startChallengeResponse.message}")
-                    //chatListener?.makeSnackBar(startChallengeResponse.message)
-                    //chatListener?.makePopup(startChallengeResponse.message)
                     _showDialog.postValue(Event(startChallengeResponse.message))
                 }
             }
             catch (e:Exception){
                 Log.e(ERROR_TAG,"api startChallenge Error $e")
-                //chatListener?.makeSnackBar("챌린지 시작에 실패하였습니다")
                 _showDialog.postValue(Event("챌린지 시작에 실패하였습니다"))
             }
         }
     }
 
+    //디바이스 내 이미지 파일 Uri로부터 파일 정보 받아오기
     private fun getFileInfo(context: Context, uri: Uri?): Hashtable<String, Any?>? {
         val cursor = context.contentResolver.query(uri!!, null, null, null, null)
         try {
@@ -687,8 +638,7 @@ class ChatViewModel(private val repository: ChatRepository, private val sharedPr
                 context.applicationContext.filesDir,
                 "sendbird"
             )
-            val inputPFD =
-                context.contentResolver.openFileDescriptor(uri, "r")
+            val inputPFD = context.contentResolver.openFileDescriptor(uri, "r")
             var fd: FileDescriptor? = null
             if (inputPFD != null) {
                 fd = inputPFD.fileDescriptor

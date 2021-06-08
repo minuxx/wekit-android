@@ -286,9 +286,9 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
                 mChannelViewModel.refresh()
                 mBinding.channelExampleTagLayout.visibility = View.GONE
             }
-            override fun onSelectedTagDrag(position: Int, text: String?) { Log.e(CHECK_TAG,"SDFSDF")}
-            override fun onTagLongClick(position: Int, text: String?) { Log.e(CHECK_TAG,"SDFSDF")}
-            override fun onTagCrossClick(position: Int) {Log.e(CHECK_TAG,"SDFSDF") }
+            override fun onSelectedTagDrag(position: Int, text: String?) { }
+            override fun onTagLongClick(position: Int, text: String?) { }
+            override fun onTagCrossClick(position: Int) { }
         })
 
     }
