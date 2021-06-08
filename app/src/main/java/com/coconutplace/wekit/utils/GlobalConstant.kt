@@ -68,5 +68,8 @@ class GlobalConstant {
         const val FLAG_LOGOUT = 210
         const val FLAG_SIGNOUT = 211
         const val FLAG_LEAVE_CHANNEL = 301
+
+        //routine
+        const val MAX_ROUTINESIZE = 5
     }
 }

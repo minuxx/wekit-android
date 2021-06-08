@@ -19,7 +19,7 @@
         android:layout_height="132dp"
         android:layout_marginHorizontal="6.5dp"
         android:layout_marginVertical="5.5dp"
-        android:background="@drawable/bg_selectroutine_item"
+        android:background="@drawable/bg_interest_routine_item"
         android:clickable="true"
         android:focusable="true">
 

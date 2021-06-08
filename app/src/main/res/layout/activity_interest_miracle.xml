@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.select_miracle.SelectMiracleActivity">
+    tools:context=".ui.interest_miracle.InterestMiracleActivity">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.coconutplace.wekit.ui.select_miracle.SelectMiracleViewModel" />
+            type="com.coconutplace.wekit.ui.interest_miracle.InterestMiracleViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +44,7 @@
         <TextView
             android:id="@+id/selectMiracle_intro01_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="28dp"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/notosanskr_regular"
             android:gravity="center"
@@ -79,7 +79,7 @@
             android:layout_marginStart="65dp"
             android:layout_marginTop="54dp"
             android:layout_marginEnd="65dp"
-            android:background="@{viewModel.miracle.equals(@string/miracle_M) ? @drawable/bg_selectmiracle_menuclick : @drawable/bg_selectmiracle_menu}"
+            android:background="@{viewModel.miracle.equals(@string/miracle_M) ? @drawable/bg_interest_miracle_menuclick : @drawable/bg_interest_miracle_menu}"
             android:clickable="true"
             android:elevation="10dp"
             android:focusable="true"
@@ -103,7 +103,7 @@
             <TextView
                 android:id="@+id/selectMiracle_select01_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@string/selectMiracle_select01"
                 android:textColor="@color/black"
@@ -123,7 +123,7 @@
             android:layout_marginStart="65dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="65dp"
-            android:background="@{viewModel.miracle.equals(@string/miracle_N) ? @drawable/bg_selectmiracle_menuclick : @drawable/bg_selectmiracle_menu}"
+            android:background="@{viewModel.miracle.equals(@string/miracle_N) ? @drawable/bg_interest_miracle_menuclick : @drawable/bg_interest_miracle_menu}"
             android:clickable="true"
             android:elevation="10dp"
             android:focusable="true"
@@ -147,7 +147,7 @@
             <TextView
                 android:id="@+id/selectMiracle_select02_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@string/selectMiracle_select02"
                 android:textColor="@color/black"
@@ -166,7 +166,7 @@
             android:layout_marginStart="65dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="65dp"
-            android:background="@{viewModel.miracle.equals(@string/miracle_G) ? @drawable/bg_selectmiracle_menuclick : @drawable/bg_selectmiracle_menu}"
+            android:background="@{viewModel.miracle.equals(@string/miracle_G) ? @drawable/bg_interest_miracle_menuclick : @drawable/bg_interest_miracle_menu}"
             android:clickable="true"
             android:elevation="10dp"
             android:focusable="true"
@@ -190,7 +190,7 @@
             <TextView
                 android:id="@+id/selectMiracle_select03_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@string/selectMiracle_select03"
                 android:textColor="@color/black"
@@ -206,15 +206,16 @@
             android:id="@+id/selectMiracle_next_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            app:layout_constraintVertical_bias="0.7"
             android:layout_marginEnd="28dp"
             android:backgroundTint="@{viewModel.isNext ? @color/select_Active : @color/select_unActive}"
             android:clickable="@{viewModel.isNext? true : false}"
             android:src="@drawable/icn_next"
             app:borderWidth="0dp"
             app:fabCustomSize="52dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectMiracle_select03_layout"
+            app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
 
 

@@ -1,9 +1,9 @@
-package com.coconutplace.wekit.ui.select_miracle
+package com.coconutplace.wekit.ui.interest_miracle
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SelectMiracleViewModel() : ViewModel() {
+class InterestMiracleViewModel() : ViewModel() {
 
     companion object {
         const val MIRACLE_INIT = "INIT"

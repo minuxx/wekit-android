@@ -8,10 +8,13 @@
 
         <variable
             name="viewModel"
-            type="com.coconutplace.wekit.ui.select_routine.SelectRoutineViewModel" />
+            type="com.coconutplace.wekit.ui.interest_routine.InterestRoutineViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/routine_layout"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -99,15 +102,27 @@
             android:layout_width="240dp"
             android:layout_height="52dp"
             android:layout_marginBottom="63dp"
-            android:background="@drawable/bg_select_routine_btn_unactive"
             android:elevation="30dp"
+            android:background="@drawable/bg_interest_routine_btn_unactive"
             android:text="@string/selectRoutine_btn"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:onClick="@{() -> viewModel.submitInterest()}"
             android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/routine_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:indeterminateTint="@color/network_progress"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

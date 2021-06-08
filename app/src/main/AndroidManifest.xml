@@ -27,7 +27,7 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name=".ui.select_miracle.SelectMiracleActivity">
+        <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -97,7 +97,9 @@
             android:theme="@style/WhiteTheme" />
         <activity android:name=".ui.badge.BadgeActivity" />
         <activity
-            android:name=".ui.select_routine.SelectRoutineActivity"/>
+            android:name=".ui.interest_miracle.InterestMiracleActivity"/>
+        <activity
+            android:name=".ui.interest_routine.InterestRoutineActivity"/>
     </application>
 
 </manifest>

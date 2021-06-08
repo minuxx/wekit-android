@@ -1,4 +1,4 @@
-package com.coconutplace.wekit.ui.select_routine
+package com.coconutplace.wekit.ui.interest_routine
 
 import android.content.Context
 import android.util.Log
@@ -11,15 +11,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.InnerInterest
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.MAX_ROUTINESIZE
 
-class SelectRoutineAdapter(context: Context) :
-    RecyclerView.Adapter<SelectRoutineAdapter.InterestViewHolder>() {
+class InterestRoutineAdapter(context: Context) :
+    RecyclerView.Adapter<InterestRoutineAdapter.InterestViewHolder>() {
 
-    companion object {
-
-        const val routineMaxSize = 5 // 루틴 최대 선택 가능 개수
-
-    }
 
 
     private val mContext = context
@@ -27,6 +23,7 @@ class SelectRoutineAdapter(context: Context) :
     private var mItemClickListener: OnItemClickListener? = null
 
     var selectedList = ArrayList<Int>()
+    var isMax : Boolean = false
 
     interface OnItemClickListener {
         fun onClick(position: Int)
@@ -170,19 +167,22 @@ class SelectRoutineAdapter(context: Context) :
         }
 
         private fun checkItem(position: Int) {
-            Log.e("selectedListSize", selectedList.size.toString())
             if (selectedList.contains(position)) { // 클릭한 아이템이 이미 클릭한것이라면
                 selectedList.remove(position)
-                interestLayout.setBackgroundResource(R.drawable.bg_selectroutine_item)
+                isMax = false
+                interestLayout.setBackgroundResource(R.drawable.bg_interest_routine_item)
             } else {
-                if (selectedList.size >= routineMaxSize) { // 새로운 아이템을 클릭했으나 size가 가득 찬 경우
+                if (selectedList.size >= MAX_ROUTINESIZE) { // 새로운 아이템을 클릭했으나 size가 가득 찬 경우
+                    isMax = true
                     return
                 } else {
                     selectedList.add(position)
-                    interestLayout.setBackgroundResource(R.drawable.bg_selectroutine_itemclick)
+                    interestLayout.setBackgroundResource(R.drawable.bg_interest_routine_itemclick)
                 }
 
             }
+
+            Log.e("selectedListSize", selectedList.size.toString())
         }
 
         private fun checkList(arrayList: ArrayList<Int>) {
