@@ -4,14 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Auth
 import com.coconutplace.wekit.data.remote.auth.listeners.LoginListener
 import com.coconutplace.wekit.databinding.ActivityLoginBinding
 import com.coconutplace.wekit.ui.BaseActivity
-import com.coconutplace.wekit.ui.channel.BackPressListener
 import com.coconutplace.wekit.ui.main.MainActivity
 import com.coconutplace.wekit.ui.signup.SignUpActivity
 import com.coconutplace.wekit.utils.*
@@ -27,8 +25,7 @@ class LoginActivity : BaseActivity(), LoginListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.activity_login, null, false)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 

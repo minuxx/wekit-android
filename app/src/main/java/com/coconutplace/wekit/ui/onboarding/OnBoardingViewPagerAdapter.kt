@@ -16,15 +16,15 @@ FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> OnBoardingFragment.newInstance(
-                R.drawable.img_tutorial_01
+                R.drawable.onboarding_life
             )
 
             1 -> OnBoardingFragment.newInstance(
-                R.drawable.img_tutorial_02
+                R.drawable.onboarding_solidarity
             )
 
             2 -> OnBoardingFragment.newInstance(
-                R.drawable.img_tutorial_03
+                R.drawable.onboarding_plan
             )
             else -> null
         }!!
@@ -35,6 +35,6 @@ FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
     }
 
     companion object {
-        private const val NUM_ITEMS = 4
+        private const val NUM_ITEMS = 3
     }
 }

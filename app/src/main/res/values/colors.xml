@@ -61,7 +61,8 @@
     <color name="onboarding_next">#7d6ce9</color>
     <color name="onboarding_skip">#b9b9b9</color>
     <color name="onboarding_start">#ffffff</color>
-    <color name="onboarding_indicator">#a399ff</color>
+    <color name="onboarding_selected_indicator">#a399ff</color>
+    <color name="onboarding_unselected_indicator">#eaeaea</color>
 
     <!--home-->
     <color name="home_greeting">#000</color>

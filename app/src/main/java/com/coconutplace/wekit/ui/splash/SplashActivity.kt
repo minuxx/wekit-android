@@ -10,6 +10,7 @@ import com.coconutplace.wekit.data.remote.auth.listeners.SplashListener
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.ui.main.MainActivity
+import com.coconutplace.wekit.ui.onboarding.OnBoardingActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_NETWORK_ERROR
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_SERVER_CHECK
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_VERSION_UPDATE
@@ -46,6 +47,16 @@ class SplashActivity : BaseActivity(), SplashListener{
         finish()
     }
 
+    private fun startOnBoardingActivity(){
+        val intent = Intent(this@SplashActivity, OnBoardingActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+        startActivity(intent)
+        finish()
+    }
+
     override fun onStarted() {
 
     }
@@ -66,7 +77,8 @@ class SplashActivity : BaseActivity(), SplashListener{
     }
 
     override fun onAutoLoginFailure(code: Int, message: String) {
-        startLoginActivity()
+//        startLoginActivity()
+        startOnBoardingActivity()
     }
 
 

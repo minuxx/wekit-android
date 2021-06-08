@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.coconutplace.wekit.databinding.FragmentTutorialBinding
+import com.coconutplace.wekit.R
+import kotlinx.android.synthetic.main.fragment_onboarding.view.*
 
 class OnBoardingFragment : Fragment() {
-    private lateinit var binding: FragmentTutorialBinding
-    private lateinit var title: String
     private var imageResource = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,10 +20,10 @@ class OnBoardingFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentTutorialBinding.inflate(inflater, container, false)
-        binding.tutorialOnboarding.setImageResource(imageResource)
+        val view = inflater.inflate(R.layout.fragment_onboarding, container, false)
+        view.onboarding_onboarding_iv.setImageResource(imageResource)
 
-        return binding.root
+        return view
     }
 
     companion object {

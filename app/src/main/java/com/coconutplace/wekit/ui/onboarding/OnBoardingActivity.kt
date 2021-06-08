@@ -3,80 +3,84 @@ package com.coconutplace.wekit.ui.onboarding
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.databinding.ActivityTutorialBinding
 import com.coconutplace.wekit.ui.BaseActivity
+import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.ui.main.MainActivity
+import com.coconutplace.wekit.ui.splash.SplashViewModel
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_TUTORIAL_SIGNUP
+import kotlinx.android.synthetic.main.activity_onboarding.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OnBoardingActivity : BaseActivity() {
-    private lateinit var binding: ActivityTutorialBinding
-    private lateinit var mViewPager: ViewPager
-    private var mFlag: Int = FLAG_TUTORIAL_SIGNUP
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_tutorial)
-        binding = ActivityTutorialBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_onboarding)
 
         initViewPager()
-        binding.tutorialNextBtn.setOnClickListener(this)
-
-        if (intent.hasExtra("flag")) {
-            mFlag = intent.getIntExtra("flag", FLAG_TUTORIAL_SIGNUP)
-        }
+        onboarding_back_btn.setOnClickListener(this)
+        onboarding_skip_tv.setOnClickListener(this)
+        onboarding_next_tv.setOnClickListener(this)
+        onboarding_start_btn.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         super.onClick(v)
 
         when (v) {
-            binding.tutorialNextBtn -> {
-                if (getItem(1) > mViewPager.childCount) {
-                    if (mFlag == FLAG_TUTORIAL_SIGNUP) {
-                        startMainActivity()
-                    } else {
-                        finish()
-                    }
+            onboarding_skip_tv -> startLoginActivity()
+            onboarding_next_tv -> {
+                if (getItem(1) > onboarding_viewpager.childCount) {
+                    startLoginActivity()
                 } else {
-                    mViewPager.setCurrentItem(getItem(1), true)
+                    onboarding_viewpager.setCurrentItem(getItem(1), true)
                 }
             }
+            onboarding_back_btn -> {
+                if(getItem(1) > 1){
+                    onboarding_viewpager.setCurrentItem(getItem(-1), true)
+                }
+            }
+            onboarding_start_btn -> startLoginActivity()
         }
     }
 
-    private fun startMainActivity() {
-        binding.tutorialNextBtn.isClickable = false
-
-        val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    private fun startLoginActivity(){
+        val intent = Intent(this@OnBoardingActivity, LoginActivity::class.java)
 
         startActivity(intent)
         finish()
     }
 
     private fun initViewPager() {
-        mViewPager = binding.tutorialViewpager
-        mViewPager.adapter = OnBoardingViewPagerAdapter(supportFragmentManager, this)
-        mViewPager.offscreenPageLimit = 1
+        onboarding_viewpager.adapter = OnBoardingViewPagerAdapter(supportFragmentManager, this)
+        onboarding_viewpager.offscreenPageLimit = 1
 
-        mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        onboarding_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> binding.tutorialStepTv.text = getText(R.string.tutorial_step_01)
-                    1 -> binding.tutorialStepTv.text = getText(R.string.tutorial_step_02)
-                    2 -> {
-                        binding.tutorialStepTv.text = getText(R.string.tutorial_step_03)
-                        binding.tutorialNextBtn.text = getText(R.string.tutorial_next)
+                    0 -> {
+                        onboarding_back_btn.visibility = View.INVISIBLE
+                        onboarding_title_tv.text = getText(R.string.onboarding_title_01)
+                        onboarding_subtitle_tv.text = getText(R.string.onboarding_subtitle_01)
+                        handlingVisibilityOfViews(false)
                     }
-                    3 -> {
-                        binding.tutorialStepTv.text = getText(R.string.tutorial_step_04)
-                        binding.tutorialNextBtn.text = getText(R.string.tutorial_start)
+                    1 -> {
+                        onboarding_back_btn.visibility = View.VISIBLE
+                        onboarding_title_tv.text = getText(R.string.onboarding_title_02)
+                        onboarding_subtitle_tv.text = getText(R.string.onboarding_subtitle_02)
+                        handlingVisibilityOfViews(false)
+                    }
+                    2 -> {
+                        onboarding_back_btn.visibility = View.VISIBLE
+                        onboarding_title_tv.text = getText(R.string.onboarding_title_03)
+                        onboarding_subtitle_tv.text = getText(R.string.onboarding_subtitle_03)
+                        handlingVisibilityOfViews(true)
                     }
                 }
             }
@@ -86,7 +90,21 @@ class OnBoardingActivity : BaseActivity() {
         })
     }
 
+    private fun handlingVisibilityOfViews(isLastPage : Boolean){
+        if(isLastPage){
+            onboarding_skip_tv.visibility = View.GONE
+            onboarding_next_tv.visibility = View.GONE
+            onboarding_indicator.visibility = View.GONE
+            onboarding_start_btn.visibility = View.VISIBLE
+        }else{
+            onboarding_skip_tv.visibility = View.VISIBLE
+            onboarding_next_tv.visibility = View.VISIBLE
+            onboarding_indicator.visibility = View.VISIBLE
+            onboarding_start_btn.visibility = View.GONE
+        }
+    }
+
     private fun getItem(i: Int): Int {
-        return mViewPager.currentItem + i
+        return onboarding_viewpager.currentItem + i
     }
 }
