@@ -55,6 +55,14 @@
     <color name="tutorial_selected_indicator">#fff</color>
     <color name="tutorial_unselected_indicator">#66ffffff</color>
 
+    <!--onboarding-->
+    <color name="onboarding_title">#000000</color>
+    <color name="onboarding_subtitle">#a5a5a5</color>
+    <color name="onboarding_next">#7d6ce9</color>
+    <color name="onboarding_skip">#b9b9b9</color>
+    <color name="onboarding_start">#ffffff</color>
+    <color name="onboarding_indicator">#a399ff</color>
+
     <!--home-->
     <color name="home_greeting">#000</color>
     <color name="home_certification_title">#2f2f2f</color>

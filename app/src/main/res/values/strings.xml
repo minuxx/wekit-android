@@ -71,6 +71,18 @@
     <string name="tutorial_start">START</string>
     <string name="tutorial_cd_tutorial_img">tutorial image</string>
 
+    <!--onboarding-->
+    <string name="onboarding_title_01">주도적인 삶을 위한\n라이프 리추얼</string>
+    <string name="onboarding_subtitle_01">매일 나를 돌보고 더 나은 삶을 꾸려보세요.\n하루가 다르게 성장하는 스스로를 만나보세요.</string>
+    <string name="onboarding_title_02">느슨한 연대가 주는\n응원과 동기부여</string>
+    <string name="onboarding_subtitle_02">미라클 챌린지에 참여하고 멤버들과 함께 성장하세요.\n달성 상황을 공유하고 소통하는 재미를 느껴보세요.</string>
+    <string name="onboarding_title_03">주어진 하루를 제대로 쓰는\n꾸준한 습관 일상</string>
+    <string name="onboarding_subtitle_03">나에게 맞는 루틴을 찾아 사이 시간을 채워보세요.\n간단한 루틴으로 생산적이고, 성공적인 하루를 완성하세요.</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_start">시작하기</string>
+    <string name="onboarding_cd_onboarding_img">tutorial image</string>
+
     <!--chat-->
     <string name="chat_chatting">채팅</string>
     <string name="chat_send_message_hint">메시지를 입력해 주세요</string>
