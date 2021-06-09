@@ -8,6 +8,7 @@ import com.coconutplace.wekit.data.remote.channel.ChannelService
 import com.coconutplace.wekit.data.remote.chat.ChatService
 import com.coconutplace.wekit.data.remote.gallery.GalleryService
 import com.coconutplace.wekit.data.remote.home.HomeService
+import com.coconutplace.wekit.data.remote.interest.InterestService
 import com.coconutplace.wekit.data.remote.notice.NoticeService
 import com.coconutplace.wekit.utils.SharedPreferencesManager
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.X_ACCESS_TOKEN
@@ -83,6 +84,9 @@ val networkModule: Module = module {
     fun provideBadgeService(retrofit: Retrofit): BadgeService =
         retrofit.create(BadgeService::class.java)
 
+    fun provideInterestService(retrofit: Retrofit): InterestService =
+        retrofit.create(InterestService::class.java)
+
     single { provideHeaderInterceptor(get()) }
     single { provideHttpLoggingInterceptor() }
     single { provideOkHttpClient(get(), get()) }
@@ -96,4 +100,5 @@ val networkModule: Module = module {
     single { provideNoticeService(get()) }
     single { provideGalleryService(get()) }
     single { provideBadgeService(get()) }
+    single { provideInterestService(get())}
 }

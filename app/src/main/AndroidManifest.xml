@@ -4,40 +4,32 @@
     package="com.coconutplace.wekit">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="com.coconutplace.wekit.fileprovider.READ"/>
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
-<!--    <uses-feature android:name="android.hardware.camera" android:required="false" />-->
-<!--    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />-->
-<!--    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />-->
-
-
+    <uses-permission android:name="com.coconutplace.wekit.fileprovider.READ" />
 
     <application
-        android:name="com.coconutplace.wekit.ApplicationClass"
+        android:name=".ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_wekit"
-        android:roundIcon="@mipmap/ic_launcher_wekit_round"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_wekit_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.WEKIT"
         android:hardwareAccelerated="false"
+        android:usesCleartextTraffic="true"
         tools:targetApi="q">
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icn_wekit_push_logo" />
-
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name="com.coconutplace.wekit.ui.splash.SplashActivity"
-            android:theme="@style/ThemeSplash">
-
+        <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,6 +43,10 @@
 
         <activity android:name="com.coconutplace.wekit.ui.poll.PollActivity"/>
 
+        <activity android:name=".ui.miracle.MiracleActivity"/>
+
+        <activity android:name=".ui.interest_routine.InterestRoutineActivity"/>
+
         <activity android:name="com.coconutplace.wekit.ui.tutorial.TutorialActivity" android:theme="@style/ThemeSplash"/>
 
         <activity android:name="com.coconutplace.wekit.ui.onboarding.OnBoardingActivity"/>
@@ -62,14 +58,15 @@
 
         <activity android:name="com.coconutplace.wekit.ui.create_channel.CreateChannelActivity"
             android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <activity android:name="com.coconutplace.wekit.ui.enter_channel.EnterChannelActivity"
-            android:theme="@style/Transparent"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.write_diary.WriteDiaryActivity" android:windowSoftInputMode="stateHidden|adjustPan"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.choice_photo.ChoicePhotoActivity"/>
+        <activity
+            android:name=".ui.enter_channel.EnterChannelActivity"
+            android:theme="@style/Transparent" />
+        <activity
+            android:name=".ui.write_diary.WriteDiaryActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.choice_photo.ChoicePhotoActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -78,35 +75,37 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.set.SetActivity"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.profile.ProfileActivity" android:windowSoftInputMode="stateHidden|adjustPan"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.body_graph.BodyGraphActivity"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.input_body.InputBodyActivity" android:windowSoftInputMode="stateHidden|adjustPan"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.certify_email.CertifyEmailActivity" android:windowSoftInputMode="stateHidden|adjustResize"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.edit_password.EditPasswordActivity" android:windowSoftInputMode="stateHidden|adjustPan"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.notice.NoticeActivity"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.rule.RuleActivity"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.opensource.OpensourceActivity"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.photo_viewer.PhotoViewerActivity" android:theme="@style/WhiteTheme"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.member_gallery.MemberGalleryActivity"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.channel_filter.ChannelFilterActivity" android:theme="@style/WhiteTheme"/>
-
-        <activity android:name="com.coconutplace.wekit.ui.badge.BadgeActivity"/>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.set.SetActivity" />
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.body_graph.BodyGraphActivity" />
+        <activity
+            android:name=".ui.input_body.InputBodyActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.certify_email.CertifyEmailActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.edit_password.EditPasswordActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.notice.NoticeActivity" />
+        <activity android:name=".ui.rule.RuleActivity" />
+        <activity android:name=".ui.opensource.OpensourceActivity" />
+        <activity
+            android:name=".ui.photo_viewer.PhotoViewerActivity"
+            android:theme="@style/WhiteTheme" />
+        <activity android:name=".ui.member_gallery.MemberGalleryActivity" />
+        <activity
+            android:name=".ui.channel_filter.ChannelFilterActivity"
+            android:theme="@style/WhiteTheme" />
+        <activity android:name=".ui.badge.BadgeActivity" />
     </application>
+
 </manifest>
