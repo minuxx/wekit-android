@@ -27,7 +27,7 @@ class MiracleActivity : BaseActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        initListener()
+//        initListener()
 
         binding.miracleMorningCv.setOnClickListener(this)
         binding.miracleNightCv.setOnClickListener(this)
@@ -43,7 +43,7 @@ class MiracleActivity : BaseActivity() {
             binding.miracleMorningCv -> setInterest(MIRACLE_MORNING)
             binding.miracleNightCv -> setInterest(MIRACLE_NIGHT)
             binding.miracleRoutineCv -> setInterest(MIRACLE_ROUTINE)
-            binding.miracleNextBtn ->
+//            binding.miracleNextBtn ->
         }
     }
 
@@ -85,13 +85,4 @@ class MiracleActivity : BaseActivity() {
         startActivity(intent)
     }
 
-    private fun initListener() {
-       binding.selectMiracleNextBtn.setOnClickListener {
-
-       }
-
-        binding.selectMiracleBackBtn.setOnClickListener {
-            finish()
-        }
-    }
 }
