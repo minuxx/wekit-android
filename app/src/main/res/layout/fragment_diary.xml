@@ -234,7 +234,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/diary_line_view"
-                tools:listitem="@layout/item_diary" />
+                tools:listitem="@layout/item_diary"/>
 
             <ProgressBar
                 android:id="@+id/diary_loading"

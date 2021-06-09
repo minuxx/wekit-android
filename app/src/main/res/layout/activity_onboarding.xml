@@ -101,9 +101,13 @@
             android:text="@string/onboarding_skip"
             android:textColor="@color/onboarding_skip"
             android:textSize="16sp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="33dp"
             app:layout_goneMarginBottom="70dp"
             android:layout_marginStart="30dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/onboarding_subtitle_tv"/>
 
@@ -116,8 +120,12 @@
             android:text="@string/onboarding_next"
             android:textColor="@color/onboarding_next"
             android:textSize="16sp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="33dp"
             android:layout_marginEnd="30dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="0dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             app:layout_goneMarginBottom="70dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/onboarding_subtitle_tv"/>
