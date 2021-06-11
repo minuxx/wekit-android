@@ -32,6 +32,7 @@ class MiracleActivity : BaseActivity() {
         binding.miracleMorningCv.setOnClickListener(this)
         binding.miracleNightCv.setOnClickListener(this)
         binding.miracleRoutineCv.setOnClickListener(this)
+
         binding.miracleNextBtn.setOnClickListener(this)
 
         observeInterest()
