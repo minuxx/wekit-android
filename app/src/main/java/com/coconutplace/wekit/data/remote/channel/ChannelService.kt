@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ChannelService {
-    @POST("/chat/room")
+    @POST("/chat/room-test")
     suspend fun createChannel(@Body createChannelInfo: CreateChannelInfo) : Response<ChannelResponse>
 
     @GET("/chat/recent-list?")

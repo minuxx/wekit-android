@@ -52,26 +52,30 @@ class CreateChannelActivity: BaseActivity(), CreateChannelListener {
             finish()
         }
 
+
         mBinding.createChannelTwoWeekBtn.setOnClickListener{
-            mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
-            mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
-            mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
-            mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
-            mCreateChannelViewModel.durationLong = false
+            mCreateChannelViewModel.isMorningOrNight.postValue("morning")
+//            mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
+//            mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
+//            mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
+//            mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
+//            mCreateChannelViewModel.durationLong = false
         }
         mBinding.createChannelFourWeekBtn.setOnClickListener{
+            mCreateChannelViewModel.isMorningOrNight.postValue("night")
 //            mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
 //            mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
 //            mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
 //            mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
 //            mCreateChannelViewModel.durationLong = true
-            makePopup("추후 업데이트 예정입니다.")
+            //makePopup("추후 업데이트 예정입니다.")
         }
+
 
         //방 만들기 완료 버튼
         mBinding.createChannelCompleteBtn.setOnClickListener{
 
-            val count = mBinding.createChannelAuthCountSpinner.selectedItem.toString().substring(0,1).toInt()
+            val authTime = mBinding.createChannelTargetTimeSpinner.selectedItem.toString()
             val limit = mBinding.createChannelMaxMemberSpinner.selectedItem.toString().substring(0,1).toInt()
 
             val nameSize = mBinding.createChannelNameEt.text.toString().length
@@ -90,7 +94,7 @@ class CreateChannelActivity: BaseActivity(), CreateChannelListener {
             }
             mBinding.createChannelCompleteBtn.isClickable = false
 
-            mCreateChannelViewModel.createGroupChannel(count,limit)
+            mCreateChannelViewModel.createGroupChannel(authTime,limit)
         }
 
         //태그 추가하기
@@ -150,19 +154,23 @@ class CreateChannelActivity: BaseActivity(), CreateChannelListener {
         })
 
         //스피너
-        val authSpinnerAdapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.create_channel_auth_count_array,
-            R.layout.spinner_create_channel_selected
-        )
-        authSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
-        mBinding.createChannelAuthCountSpinner.adapter = authSpinnerAdapter
+
+//        val timeSpinnerAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
+//            this,
+//            R.array.create_channel_miracle_morning_array,
+//            R.layout.spinner_create_channel_selected
+//        )
+//        //val timeSpinnerAdapter = ArrayAdapter<String>(this,R.layout.spinner_create_channel_selected)
+//        timeSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
+//        mBinding.createChannelTargetTimeSpinner.adapter = timeSpinnerAdapter
+
 
         val countSpinnerAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.create_channel_member_count_array,
             R.layout.spinner_create_channel_selected
         )
+        //val countSpinnerAdapter = ArrayAdapter<String>(this,R.layout.spinner_create_channel_selected)
         countSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
         mBinding.createChannelMaxMemberSpinner.adapter = countSpinnerAdapter
 
@@ -173,6 +181,27 @@ class CreateChannelActivity: BaseActivity(), CreateChannelListener {
 
     private fun setupViewModel(){
         mCreateChannelViewModel.createChannelListener = this
+
+        mCreateChannelViewModel.isMorningOrNight.observe(mBinding.lifecycleOwner!!,{
+            if(it=="morning"){
+                val timeSpinnerAdapter = ArrayAdapter.createFromResource(
+                    this,
+                    R.array.create_channel_miracle_morning_array,
+                    R.layout.spinner_create_channel_selected
+                )
+                timeSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
+                mBinding.createChannelTargetTimeSpinner.adapter = timeSpinnerAdapter
+            }
+            else{
+                val timeSpinnerAdapter = ArrayAdapter.createFromResource(
+                    this,
+                    R.array.create_channel_miracle_night_array,
+                    R.layout.spinner_create_channel_selected
+                )
+                timeSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
+                mBinding.createChannelTargetTimeSpinner.adapter = timeSpinnerAdapter
+            }
+        })
     }
 
     private fun makePopup(str: String) {

@@ -14,6 +14,22 @@
         <item>6명</item>
     </string-array>
 
+    <string-array name="create_channel_miracle_morning_array">
+        <item>AM 4</item>
+        <item>AM 5</item>
+        <item>AM 6</item>
+        <item>AM 7</item>
+        <item>AM 8</item>
+    </string-array>
+
+    <string-array name="create_channel_miracle_night_array">
+        <item>PM 7</item>
+        <item>PM 8</item>
+        <item>PM 9</item>
+        <item>PM 10</item>
+        <item>PM 11</item>
+    </string-array>
+
     <string-array name="chat_dialog_expel_reason_array">
         <item>낚시/도배</item>
         <item>욕설 및 비방</item>

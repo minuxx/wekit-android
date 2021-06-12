@@ -1,8 +1,11 @@
 package com.coconutplace.wekit.utils
 
 import android.net.Uri
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.RecyclerView
@@ -144,4 +147,32 @@ object BindingUtils {
                 .into(this)
         }
     }
+
+    //create channel
+    @BindingAdapter("isMorning")
+    @JvmStatic
+    fun Button.isMorning(value: String){
+        if(value == "morning"){
+            background = ContextCompat.getDrawable(context,R.drawable.bg_create_channel_white_button)
+            setTextColor(ContextCompat.getColor(context,R.color.dark_gray))
+        }
+        else{
+            background = ContextCompat.getDrawable(context,R.drawable.bg_create_channel_transparent_button)
+            setTextColor(ContextCompat.getColor(context,R.color.white))
+        }
+    }
+
+    @BindingAdapter("isNight")
+    @JvmStatic
+    fun Button.isNight(value: String){
+        if(value == "night"){
+            background = ContextCompat.getDrawable(context,R.drawable.bg_create_channel_white_button)
+            setTextColor(ContextCompat.getColor(context,R.color.dark_gray))
+        }
+        else{
+            background = ContextCompat.getDrawable(context,R.drawable.bg_create_channel_transparent_button)
+            setTextColor(ContextCompat.getColor(context,R.color.white))
+        }
+    }
+
 }
