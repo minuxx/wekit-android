@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.InnerInterest
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.MAX_ROUTINESIZE
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.MAX_ROUTINE
 
 class InterestRoutineAdapter(context: Context) :
     RecyclerView.Adapter<InterestRoutineAdapter.InterestViewHolder>() {
@@ -172,7 +172,7 @@ class InterestRoutineAdapter(context: Context) :
                 isMax = false
                 interestLayout.setBackgroundResource(R.drawable.bg_interest_routine_item)
             } else {
-                if (selectedList.size >= MAX_ROUTINESIZE) { // 새로운 아이템을 클릭했으나 size가 가득 찬 경우
+                if (selectedList.size >= MAX_ROUTINE) { // 새로운 아이템을 클릭했으나 size가 가득 찬 경우
                     isMax = true
                     return
                 } else {

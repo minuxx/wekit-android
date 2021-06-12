@@ -17,7 +17,6 @@ import com.coconutplace.wekit.databinding.ActivityInterestRoutineBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.tutorial.TutorialActivity
 import com.coconutplace.wekit.utils.GlobalConstant
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.MAX_ROUTINESIZE
 import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.show
 import kotlinx.android.synthetic.main.activity_interest_routine.*
