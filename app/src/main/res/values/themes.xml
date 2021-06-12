@@ -60,4 +60,9 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="createChannelSpinner" parent = "@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
 </resources>

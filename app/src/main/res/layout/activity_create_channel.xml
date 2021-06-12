@@ -168,28 +168,30 @@
 
             <Button
                 android:id="@+id/create_channel_two_week_btn"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/create_channel_duration_text"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="12dp"
+                isMorning = "@{mCreateChatViewModel.isMorningOrNight}"
                 android:background="@drawable/bg_create_channel_white_button"
-                android:text="@string/create_channel_two_week_challenge"
+                android:text="@string/create_channel_miracle_morning"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"
                 android:fontFamily="@font/notosanskr_regular"/>
 
             <Button
                 android:id="@+id/create_channel_four_week_btn"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 app:layout_constraintLeft_toRightOf="@id/create_channel_two_week_btn"
                 app:layout_constraintTop_toBottomOf="@+id/create_channel_duration_text"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
+                isNight = "@{mCreateChatViewModel.isMorningOrNight}"
                 android:background="@drawable/bg_create_channel_transparent_button"
-                android:text="@string/create_channel_four_week_challenge"
+                android:text="@string/create_channel_miracle_night"
                 android:textSize="12sp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/notosanskr_regular"/>
@@ -213,19 +215,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
-                        android:text="@string/create_channel_auth_count"
+                        android:text="@string/create_channel_miracle_time"
                         android:textSize="12sp"
                         android:textColor="@color/white"
                         android:fontFamily="@font/notosanskr_regular"/>
 
                     <Spinner
-                        android:id="@+id/create_channel_auth_count_spinner"
-                        android:entries="@array/create_channel_auth_count_array"
+                        android:id="@+id/create_channel_target_time_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginStart="30dp"
-                        android:layout_marginEnd="10dp"
-                        android:popupBackground="@color/white" />
+                        android:layout_marginEnd="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -249,9 +249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
-                        android:popupBackground="@color/white" />
-
+                        android:layout_marginEnd="30dp" />
                 </LinearLayout>
             </LinearLayout>
 

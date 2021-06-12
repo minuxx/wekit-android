@@ -8,8 +8,10 @@ data class CreateChannelInfo ( //채팅방 만들때만 쓰이는 데이터 형�
     @SerializedName(value = "chatRoomImg") val chatRoomImg:String,
     @SerializedName(value = "chatUrl") val chatUrl:String,
     @SerializedName(value = "maxLimit") val maxLimit:Int,
-    @SerializedName(value = "roomType") val roomType:String,
-    @SerializedName(value = "roomTerm") val roomTerm:String,
-    @SerializedName(value = "certificationCount") val certificationCount:Int,
+//    @SerializedName(value = "roomType") val roomType:String,
+//    @SerializedName(value = "roomTerm") val roomTerm:String,
+//    @SerializedName(value = "certificationCount") val certificationCount:Int,
+    @SerializedName(value="miracle") val miracle:String,
+    @SerializedName(value = "authenticTime") val authenticTime:String,
     @SerializedName(value = "tag") val tag:String
 )

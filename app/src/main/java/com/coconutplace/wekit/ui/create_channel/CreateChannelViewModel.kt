@@ -3,6 +3,8 @@ package com.coconutplace.wekit.ui.create_channel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.CreateChannelInfo
 import com.coconutplace.wekit.data.remote.channel.listeners.CreateChannelListener
 import com.coconutplace.wekit.data.repository.channel.ChannelRepository
@@ -20,7 +22,7 @@ import java.util.*
 class CreateChannelViewModel(private val repository: ChannelRepository) : ViewModel(){
     var createChannelListener:CreateChannelListener?= null
     val tagStringList: MutableList<String> = arrayListOf()
-    var durationLong = false// false 면 2주, true 면 1달
+    //var durationLong = false// false 면 2주, true 면 1달
     var createFlag = false
 
     val name: MutableLiveData<String> by lazy{
@@ -35,7 +37,13 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
         }
     }
 
-    fun createGroupChannel(count:Int, maxLimit:Int) {
+    val isMorningOrNight : MutableLiveData<String> by lazy {
+        MutableLiveData<String>().apply {
+            value = "morning"
+        }
+    }
+
+    fun createGroupChannel(authTime: String, maxLimit:Int) {
         val channelName = name.value
         val operator: MutableList<String> = ArrayList()
         val me = SendBird.getCurrentUser().userId
@@ -65,12 +73,35 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
                 val chatRoomImg = "https://firebasestorage.googleapis.com/v0/b/wekit-a56e6.appspot.com/o/my-chat-img.jpg?alt=media&token=8c87007d-3639-4818-9576-7e727380ec1d" //방 이미지
                 val chatUrl = groupChannel.url //방Url
                 //maxLimit //arg0 최대인원
-                val roomType="식단" //방 종류
-                val roomTerm = if(durationLong){ //방 종류
-                    "한달방"
+                val miracleType = if(isMorningOrNight.value == "morning"){
+                    "M"
                 }else{
-                    "2주방"
+                    "N"
                 }
+                val authenticSession = authTime.split(" ")
+                var authenticTime: String? = null
+                when(authenticSession[0]){
+                    "AM" -> {
+                        val hour = authenticSession[1].toInt()
+                        if (hour < 10) {
+                            authenticTime = "0$hour:00"
+                        } else if (hour < 13) {
+                            authenticTime = "$hour:00"
+                        }
+                    }
+                    "PM" -> {
+                        val hour = authenticSession[1].toInt()+12
+                        authenticTime = "$hour:00"
+                    }
+                }
+
+
+//                val roomType="식단" //방 종류
+//                val roomTerm = if(true){ //방 종류 TODO
+//                    "한달방"
+//                }else{
+//                    "2주방"
+//                }
                 var tag = "" //태그
 
                 val tagSize = tagStringList.size
@@ -82,11 +113,15 @@ class CreateChannelViewModel(private val repository: ChannelRepository) : ViewMo
 //                Log.e(CHECK_TAG," 중간점검-> \n roomName : $roomName, chatExplain : $chatExplain, chatRoomImg : $chatRoomImg, chatUrl : $chatUrl,\n"
 //                        + "maxLimit : $maxLimit, roomType : $roomType, roomTerm : $roomTerm, count : $count, 최종 TAG : $tag")
 
-                val tempChannelInfo = CreateChannelInfo(roomName!!,chatExplain!!,chatRoomImg,chatUrl,maxLimit,roomType,roomTerm,count,tag)
+                val tempChannelInfo = CreateChannelInfo(roomName!!,chatExplain!!,chatRoomImg,chatUrl,maxLimit,
+                    miracle = miracleType,
+                    authenticTime = authenticTime!!,
+                    tag)
 
-                CoroutineScope(Dispatchers.IO).launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     try {
                         val response = repository.createChannel(tempChannelInfo)
+                        Log.e(CHECK_TAG,"create channel response : $response")
                         if(response.isSuccess){
                             Log.e(CHECK_TAG,"create success")
                             if(response.result!=null){
