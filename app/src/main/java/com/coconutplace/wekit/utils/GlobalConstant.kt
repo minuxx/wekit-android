@@ -68,5 +68,24 @@ class GlobalConstant {
         const val FLAG_LOGOUT = 210
         const val FLAG_SIGNOUT = 211
         const val FLAG_LEAVE_CHANNEL = 301
+
+        //miracle
+        const val MIRACLE_EMPTY = "E"
+        const val MIRACLE_MORNING = "M"
+        const val MIRACLE_NIGHT = "N"
+        const val MIRACLE_ROUTINE = "G"
+
+        //routine
+        const val MAX_ROUTINE = 5
+        const val ROUTINE_WATER = 1
+        const val ROUTINE_MENU = 2
+        const val ROUTINE_EXERCISE = 3
+        const val ROUTINE_READING = 4
+        const val ROUTINE_LANGUAGE = 5
+        const val ROUTINE_TEST = 6
+        const val ROUTINE_DIET = 7
+        const val ROUTINE_REMIND = 8
+        const val ROUTINE_WRITING = 9
+        const val ROUTINE_PLAN = 10
     }
 }

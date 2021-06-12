@@ -40,6 +40,7 @@ import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_LUNCH
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.text.SimpleDateFormat
@@ -268,19 +269,19 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                     imageView.adjustViewBounds = true
 //                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
-//                    Glide.with(this)
-//                        .load(viewModel.getPhotoUri(i))
-//                        .into(imageView)
-
-//                    var bitmap: Bitmap? = null
-//
-                    drawTextToBitmap(viewModel.getPhotoUri(i)!!)?.let{
+                    if(viewModel.flag == FLAG_WRITE_DIARY){
                         Glide.with(this)
-                            .asBitmap()
-                            .load(it)
-                            .into(imageView)
+                        .load(viewModel.getPhotoUri(i))
+                        .into(imageView)
+                    }else if(viewModel.flag == FLAG_CERTIFY_DIARY){
+                        drawTextToBitmap(viewModel.getPhotoUri(i)!!)?.let{
+                            Glide.with(this)
+                                .asBitmap()
+                                .load(it)
+                                .into(imageView)
 
-                        viewModel.saveBitmap(i, it)
+                            viewModel.saveBitmap(i, it)
+                        }
                     }
 
                     addView(view)

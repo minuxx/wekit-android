@@ -11,7 +11,7 @@ import com.coconutplace.wekit.data.remote.auth.listeners.SignUpListener
 import com.coconutplace.wekit.databinding.ActivityCertifyEmailBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.edit_password.EditPasswordActivity
-import com.coconutplace.wekit.ui.poll.PollActivity
+import com.coconutplace.wekit.ui.miracle.MiracleActivity
 import com.coconutplace.wekit.ui.signup.SignUpViewModel
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_EMAIL
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_NUMBER
@@ -112,10 +112,10 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
 
     }
 
-    private fun startPollActivity(){
+    private fun startInterestActivity(){
         SharedPreferencesManager(this).removeUser()
 
-        val intent = Intent(this, PollActivity::class.java)
+        val intent = Intent(this, MiracleActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -218,12 +218,10 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
 
     override fun onSignUpSuccess(message: String) {
         binding.certifyEmailLoading.hide()
-
-        startPollActivity()
+        startInterestActivity()
     }
 
     override fun onSignUpFailure(code: Int, message: String) {
         binding.certifyEmailLoading.hide()
-
     }
 }

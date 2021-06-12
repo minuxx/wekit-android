@@ -83,6 +83,28 @@
     <string name="onboarding_start">시작하기</string>
     <string name="onboarding_cd_onboarding_img">tutorial image</string>
 
+    <!--miracle-->
+    <string name="miracle_subtitle">잠시만요, 두가지 질문이 있어요.</string>
+    <string name="miracle_title">도전하고 싶은\n 미라클 챌린지를 알려주세요</string>
+
+    <string name="miracle_morning">미라클 모닝에 도전할래요</string>
+    <string name="miracle_night">미라클 나잇에 도전할래요</string>
+    <string name="miracle_routine">다양한 루틴에 도전할래요</string>
+
+    <string name="selectRoutine_intro01">관심 루틴을\n 1개 이상 선택해주세요.</string>
+    <string name="selectRoutine_intro02">선택하신 루틴을 기반으로\n 딱 알맞는 챌린지를 추천해드릴게요.</string>
+    <string name="selectRoutine_error">관심 루틴을 선택해주세요</string>
+    <string name="selectRoutine_error02">루틴선택은 5개까지 가능합니다</string>
+    <string name="miracle_M">M</string>
+    <string name="miracle_N">N</string>
+    <string name="miracle_G">G</string>
+
+    <string name="selectRoutine_btn">완료</string>
+    <string name="miracle_cd_morning_icon">morning icon</string>
+    <string name="miracle_cd_night_icon">night icon</string>
+    <string name="miracle_cd_routine_icon">routine icon</string>
+    <string name="miracle_cd_floating_icon">floating icon</string>
+
     <!--chat-->
     <string name="chat_chatting">채팅</string>
     <string name="chat_send_message_hint">메시지를 입력해 주세요</string>
