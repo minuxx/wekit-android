@@ -39,7 +39,7 @@ internal class OthersImgMessageViewHolder(itemView: View) : RecyclerView.ViewHol
         }
 
         val profileUrl:String? = message.sender.profileUrl
-        Log.e(SharedPreferencesManager.CHECK_TAG,"profileUrl : $profileUrl")
+        //Log.e(SharedPreferencesManager.CHECK_TAG,"profileUrl : $profileUrl")
         if(profileUrl==null||profileUrl==""){
             profileImg.setImageResource(R.drawable.character_sm_basic)
         }
