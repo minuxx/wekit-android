@@ -75,7 +75,7 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<ChannelRecycler
             String name = mChannel.getRoomName();
             String explain = mChannel.getChatDescription();
             String term="";
-            if(mChannel.getRoomTerm()==""){}
+            if(mChannel.getRoomTerm().equals("")){}
             else if(mChannel.getRoomTerm().equals("2주방")){
                 term = "2주 도전방";
             }

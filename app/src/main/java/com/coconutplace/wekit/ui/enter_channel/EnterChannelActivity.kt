@@ -26,8 +26,8 @@ class EnterChannelActivity : AppCompatActivity(), EnterChannelListener {
         roomInfo = intent.getSerializableExtra("roomInfo") as ChatRoom
         mEnterChannelViewModel.enterFlag = intent.getBooleanExtra("enterFlag",false)
 
-        roomInfo.maxLimit
-        roomInfo.currentNum
+        //roomInfo.maxLimit
+        //roomInfo.currentNum
         if(roomInfo.maxLimit!!<=roomInfo.currentNum!!){
             mEnterChannelViewModel.fullMemberFlag = true
         }

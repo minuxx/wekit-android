@@ -212,7 +212,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
             }
         }
 
-        //채팅방 리스트 받기
+        //속하지 않은 채팅방 리스트 받기
         viewModelScope.launch(Dispatchers.IO){
             try{
                 val channelListResponse = repository.getRecentChannelList(pageForRoomList)

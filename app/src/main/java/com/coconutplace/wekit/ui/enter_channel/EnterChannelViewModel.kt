@@ -3,6 +3,7 @@ package com.coconutplace.wekit.ui.enter_channel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.coconutplace.wekit.data.entities.ChatRoom
 import com.coconutplace.wekit.data.remote.channel.listeners.EnterChannelListener
 import com.coconutplace.wekit.data.repository.channel.ChannelRepository
@@ -10,15 +11,14 @@ import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.CHECK_TAG
 import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
 import com.sendbird.android.GroupChannel
 import com.sendbird.android.SendBird
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EnterChannelViewModel(private val repository: ChannelRepository) : ViewModel() {
 
     var enterChannelListener: EnterChannelListener?= null
-    private lateinit var channelUrl:String
-    private var roomIndex:Int = 0
+    private lateinit var curRoomInfo: ChatRoom
+
     var enterFlag:Boolean = false
     var fullMemberFlag:Boolean = false
 
@@ -34,7 +34,7 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
         }
     }
 
-    val duration: MutableLiveData<String> by lazy{
+    val authenticTime: MutableLiveData<String> by lazy{
         MutableLiveData<String>().apply{
             postValue("")
         }
@@ -44,7 +44,7 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
             postValue("")
         }
     }
-    val authCount: MutableLiveData<String> by lazy{
+    val miracleType: MutableLiveData<String> by lazy{
         MutableLiveData<String>().apply{
             postValue("")
         }
@@ -56,25 +56,25 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
 
     fun setRoomInfo(roomInfo: ChatRoom){
 
-        channelUrl = roomInfo.chatUrl!!
-        roomIndex = roomInfo.roomIdx
+        curRoomInfo = roomInfo
 
-        when (roomInfo.roomTerm) {
-            "2주방" -> {
-                duration.postValue("[2주 챌린지]")
-            }
-            "한달방" -> {
-                duration.postValue("[4주 챌린지]")
-            }
-            else -> {
-                duration.postValue("")
-            }
+        val authSession = roomInfo.authenticTime!!.substring(0,2).toInt()
+        val authTime = if(authSession<=12){
+            "[AM $authSession 인증방]"
+        } else{
+            "[PM ${authSession-12} 인증방]"
         }
+        authenticTime.postValue(authTime)
+
 
         name.postValue(roomInfo.roomName)
         explain.postValue(roomInfo.chatDescription)
         currentMember.postValue("현재 ${roomInfo.maxLimit}명 중 ${roomInfo.currentNum}명 참여")
-        authCount.postValue("하루 ${roomInfo.certificationCount}끼 인증")
+        when(roomInfo.miracle){
+            "M" -> miracleType.postValue("미라클 모닝")
+            "N" -> miracleType.postValue("미라클 나잇")
+        }
+
         if(roomInfo.isStart=="Y"){
             isStarted.postValue("진행 중")
         }
@@ -92,10 +92,9 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
             enterChannelListener?.makeSnackBar("이미 방이 최대인원입니다")
             return
         }
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch(Dispatchers.IO){
             try{
-                val chatRoom = ChatRoom(roomIndex,null,null,null,null,null,null,null,null,null,null)
-                val enterChannelResponse = repository.enterChannel(chatRoom)
+                val enterChannelResponse = repository.enterChannel(curRoomInfo)
                 if(enterChannelResponse.isSuccess){
                     Log.e(CHECK_TAG,"enter success")
                     //enterChannelListener?.callChatActivity(channelUrl,roomIndex)
@@ -114,7 +113,7 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
     }
 
     private fun enterSendBirdChannel(){
-        GroupChannel.getChannel(channelUrl, GroupChannel.GroupChannelGetHandler { groupChannel, e ->
+        GroupChannel.getChannel(curRoomInfo.chatUrl, GroupChannel.GroupChannelGetHandler { groupChannel, e ->
             if (e != null) {
                 // Error!
                 enterChannelListener?.makeSnackBar("존재하지 않는 링크입니다")
@@ -132,7 +131,7 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
             }
             if (isMember) {
                 Log.e(CHECK_TAG,"already member, enter success")
-                enterChannelListener?.callChatActivity(channelUrl,roomIndex)
+                enterChannelListener?.callChatActivity(curRoomInfo.chatUrl!!,curRoomInfo.roomIdx)
             }
             else {
                 Log.e(CHECK_TAG, "is not member")
@@ -144,7 +143,7 @@ class EnterChannelViewModel(private val repository: ChannelRepository) : ViewMod
                         }
                     }
                     else{
-                        enterChannelListener?.callChatActivity(channelUrl,roomIndex)
+                        enterChannelListener?.callChatActivity(curRoomInfo.chatUrl!!,curRoomInfo.roomIdx)
                     }
                 }
             }
