@@ -218,7 +218,6 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
 
     override fun onSignUpSuccess(message: String) {
         binding.certifyEmailLoading.hide()
-        startInterestActivity()
     }
 
     override fun onSignUpFailure(code: Int, message: String) {
