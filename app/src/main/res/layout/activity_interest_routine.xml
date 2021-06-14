@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.coconutplace.wekit.ui.interest_routine.InterestRoutineViewModel" />
+            type="com.coconutplace.wekit.ui.routine.InterestRoutineViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

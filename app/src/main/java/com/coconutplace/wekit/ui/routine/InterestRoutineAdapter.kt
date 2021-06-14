@@ -1,4 +1,4 @@
-package com.coconutplace.wekit.ui.interest_routine
+package com.coconutplace.wekit.ui.routine
 
 import android.content.Context
 import android.util.Log

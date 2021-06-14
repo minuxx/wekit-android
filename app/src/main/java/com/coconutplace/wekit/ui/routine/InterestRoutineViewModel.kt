@@ -1,7 +1,6 @@
-package com.coconutplace.wekit.ui.interest_routine
+package com.coconutplace.wekit.ui.routine
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.Interest
 import com.coconutplace.wekit.data.remote.interest.listeners.InterestListener

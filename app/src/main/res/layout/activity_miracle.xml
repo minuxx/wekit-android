@@ -73,6 +73,7 @@
             app:layout_constraintTop_toBottomOf="@id/miracle_title_tv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/miracle_morning_cl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center">
@@ -119,6 +120,7 @@
             app:layout_constraintTop_toBottomOf="@id/miracle_morning_cv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/miracle_night_cl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center">
@@ -165,6 +167,7 @@
             app:layout_constraintTop_toBottomOf="@id/miracle_night_cv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/miracle_routine_cl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center">

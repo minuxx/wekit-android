@@ -19,7 +19,7 @@ import com.coconutplace.wekit.ui.notice.NoticeViewModel
 import com.coconutplace.wekit.ui.poll.PollViewModel
 import com.coconutplace.wekit.ui.profile.ProfileViewModel
 import com.coconutplace.wekit.ui.miracle.MiracleViewModel
-import com.coconutplace.wekit.ui.interest_routine.InterestRoutineViewModel
+import com.coconutplace.wekit.ui.routine.InterestRoutineViewModel
 import com.coconutplace.wekit.ui.set.SetViewModel
 import com.coconutplace.wekit.ui.signup.SignUpViewModel
 import com.coconutplace.wekit.ui.splash.SplashViewModel

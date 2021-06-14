@@ -28,12 +28,12 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name=".ui.splash.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".ui.splash.SplashActivity" android:theme="@style/ThemeSplash">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
 
         <activity android:name="com.coconutplace.wekit.ui.login.LoginActivity"/>
@@ -42,9 +42,15 @@
 
         <activity android:name="com.coconutplace.wekit.ui.poll.PollActivity"/>
 
-        <activity android:name=".ui.miracle.MiracleActivity"/>
+        <activity android:name=".ui.miracle.MiracleActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name=".ui.interest_routine.InterestRoutineActivity"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.routine.InterestRoutineActivity"/>
 
         <activity android:name="com.coconutplace.wekit.ui.tutorial.TutorialActivity" android:theme="@style/ThemeSplash"/>
 

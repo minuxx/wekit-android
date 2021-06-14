@@ -1,4 +1,4 @@
-package com.coconutplace.wekit.ui.interest_routine
+package com.coconutplace.wekit.ui.routine
 
 import android.content.Intent
 import android.os.Bundle
