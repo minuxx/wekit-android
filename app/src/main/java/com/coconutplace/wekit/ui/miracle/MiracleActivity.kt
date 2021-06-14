@@ -44,7 +44,7 @@ class MiracleActivity : BaseActivity() {
             binding.miracleMorningCv -> setInterest(MIRACLE_MORNING)
             binding.miracleNightCv -> setInterest(MIRACLE_NIGHT)
             binding.miracleRoutineCv -> setInterest(MIRACLE_ROUTINE)
-//            binding.miracleNextBtn ->
+            binding.miracleNextBtn -> startRoutineActivity()
         }
     }
 
@@ -82,8 +82,7 @@ class MiracleActivity : BaseActivity() {
         }
 
         val intent = Intent(this@MiracleActivity, InterestRoutineActivity::class.java)
-        intent.putExtra("miracle", interest)
+        intent.putExtra("interest", interest)
         startActivity(intent)
     }
-
 }
