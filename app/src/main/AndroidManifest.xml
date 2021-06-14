@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_wekit_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WEKIT"
-        android:hardwareAccelerated="false"
         android:usesCleartextTraffic="true"
         tools:targetApi="q">
 

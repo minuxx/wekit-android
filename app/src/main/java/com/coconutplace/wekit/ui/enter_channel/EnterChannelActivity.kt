@@ -3,6 +3,7 @@ package com.coconutplace.wekit.ui.enter_channel
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.coconutplace.wekit.R
@@ -23,10 +24,10 @@ class EnterChannelActivity : AppCompatActivity(), EnterChannelListener {
         super.onCreate(savedInstanceState)
 
         roomInfo = intent.getSerializableExtra("roomInfo") as ChatRoom
-
         mEnterChannelViewModel.enterFlag = intent.getBooleanExtra("enterFlag",false)
-        roomInfo.maxLimit
-        roomInfo.currentNum
+
+        //roomInfo.maxLimit
+        //roomInfo.currentNum
         if(roomInfo.maxLimit!!<=roomInfo.currentNum!!){
             mEnterChannelViewModel.fullMemberFlag = true
         }
@@ -41,6 +42,9 @@ class EnterChannelActivity : AppCompatActivity(), EnterChannelListener {
         mBinding.lifecycleOwner = this
         mBinding.mEnterChannelViewModel = mEnterChannelViewModel
 
+        if(!mEnterChannelViewModel.enterFlag){
+           mBinding.enterChannelEntranceBtn.visibility = View.INVISIBLE
+        }
         mBinding.enterChannelBackBtn.setOnClickListener{
             finish()
         }

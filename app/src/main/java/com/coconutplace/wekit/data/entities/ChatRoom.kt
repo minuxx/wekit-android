@@ -15,5 +15,7 @@ data class ChatRoom( //채팅방 정보
     @SerializedName(value = "maxLimit") val maxLimit: Int?,
     @SerializedName(value = "tagList") val tagList: ArrayList<String>?,
     @SerializedName(value = "roomTerm") val roomTerm: String?,
-    @SerializedName(value = "isStart") val isStart: String?
+    @SerializedName(value = "isStart") val isStart: String?,
+    @SerializedName(value = "miracle") val miracle:String?,
+    @SerializedName(value = "authenticTime") val authenticTime: String?
 ):Serializable

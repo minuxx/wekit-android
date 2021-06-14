@@ -7,9 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import co.lujun.androidtagview.TagView.OnTagClickListener
 import com.coconutplace.wekit.R
@@ -55,20 +53,9 @@ class CreateChannelActivity: BaseActivity(), CreateChannelListener {
 
         mBinding.createChannelTwoWeekBtn.setOnClickListener{
             mCreateChannelViewModel.isMorningOrNight.postValue("morning")
-//            mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
-//            mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
-//            mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
-//            mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
-//            mCreateChannelViewModel.durationLong = false
         }
         mBinding.createChannelFourWeekBtn.setOnClickListener{
             mCreateChannelViewModel.isMorningOrNight.postValue("night")
-//            mBinding.createChannelTwoWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_transparent_button)
-//            mBinding.createChannelTwoWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.white))
-//            mBinding.createChannelFourWeekBtn.background = ContextCompat.getDrawable(this,R.drawable.bg_create_channel_white_button)
-//            mBinding.createChannelFourWeekBtn.setTextColor(ContextCompat.getColor(this,R.color.dark_gray))
-//            mCreateChannelViewModel.durationLong = true
-            //makePopup("추후 업데이트 예정입니다.")
         }
 
 
@@ -152,18 +139,6 @@ class CreateChannelActivity: BaseActivity(), CreateChannelListener {
 
             override fun onTagCrossClick(position: Int) { }
         })
-
-        //스피너
-
-//        val timeSpinnerAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
-//            this,
-//            R.array.create_channel_miracle_morning_array,
-//            R.layout.spinner_create_channel_selected
-//        )
-//        //val timeSpinnerAdapter = ArrayAdapter<String>(this,R.layout.spinner_create_channel_selected)
-//        timeSpinnerAdapter.setDropDownViewResource(R.layout.spinner_create_channel_dropdown)
-//        mBinding.createChannelTargetTimeSpinner.adapter = timeSpinnerAdapter
-
 
         val countSpinnerAdapter = ArrayAdapter.createFromResource(
             this,
