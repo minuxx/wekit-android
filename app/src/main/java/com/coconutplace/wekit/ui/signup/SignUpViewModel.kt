@@ -88,7 +88,7 @@ class SignUpViewModel(private val repository: AuthRepository, private val shared
 
     fun getUser(): User = User(id = id.value.toString(), pw = pw.value.toString(), email= email.value.toString(),
                                        nickname = nickname.value.toString(), gender = if(gender.value == true) "M" else "F",
-                                       birthday = birthday.value.toString())
+                                       birthday = birthday.value.toString(), isRegister = if(nextFlag == FLAG_EDIT_PASSWORD) "N" else "Y")
 
     fun signUp() {
         if(receivedUser == null){

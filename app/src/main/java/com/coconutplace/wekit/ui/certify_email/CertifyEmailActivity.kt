@@ -112,7 +112,7 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
 
     }
 
-    private fun startInterestActivity(){
+    private fun startMiracleActivity(){
         SharedPreferencesManager(this).removeUser()
 
         val intent = Intent(this, MiracleActivity::class.java)
@@ -218,6 +218,8 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
 
     override fun onSignUpSuccess(message: String) {
         binding.certifyEmailLoading.hide()
+
+        startMiracleActivity()
     }
 
     override fun onSignUpFailure(code: Int, message: String) {
