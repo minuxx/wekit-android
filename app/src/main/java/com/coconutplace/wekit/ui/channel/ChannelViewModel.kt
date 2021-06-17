@@ -187,10 +187,10 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                         else if(myFirstRoom.roomTerm=="한달방"){
                             liveMyChatRoomDuration.postValue("한달 도전방")
                         }
-                        liveMyChatImgUrl.postValue(myFirstRoom.chatRoomImg)//내가 속한 채팅방 이미지 Url
+                        //liveMyChatImgUrl.postValue(myFirstRoom.chatRoomImg)//내가 속한 채팅방 이미지 Url
+                        liveMyChatImgUrl.postValue(myFirstRoom.miracle)
                         myRoomUrl = myFirstRoom.chatUrl
                         channelListener?.showCardView(true)
-
                     }
                     else{//속한 채팅방 없을 때
                         liveMyChatRoomExplain.postValue("")
