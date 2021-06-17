@@ -441,7 +441,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         activity?.runOnUiThread {
             if(hasChatRoom){
                 mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_channel_myroom_duration_text)
-                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.primary))
+                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.channel_myroom_cardview_bg))
 
             }
             else{
