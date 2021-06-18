@@ -57,7 +57,6 @@ class RoutineActivity : BaseActivity(), InterestListener {
         }
     }
 
-
     private fun setSubtitleTextColor() {
         val color = getColor(R.color.routine_done_active)
         val spannable = SpannableString(getString(R.string.routine_subtitle))
@@ -103,9 +102,12 @@ class RoutineActivity : BaseActivity(), InterestListener {
         adapter.addItems(viewModel.routines)
     }
 
-
     private fun onStartTutorialActivity() {
         val intent = Intent(this@RoutineActivity, TutorialActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
         intent.putExtra("flag", FLAG_TUTORIAL_SIGNUP)
         startActivity(intent)
         finish()

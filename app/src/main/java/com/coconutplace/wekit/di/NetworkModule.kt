@@ -83,7 +83,6 @@ val networkModule: Module = module {
     fun provideBadgeService(retrofit: Retrofit): BadgeService =
         retrofit.create(BadgeService::class.java)
 
-
     single { provideHeaderInterceptor(get()) }
     single { provideHttpLoggingInterceptor() }
     single { provideOkHttpClient(get(), get()) }

@@ -26,6 +26,7 @@
             android:paddingBottom="12dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/icn_back"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

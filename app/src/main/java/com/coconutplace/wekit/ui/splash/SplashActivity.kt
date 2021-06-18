@@ -3,7 +3,6 @@ package com.coconutplace.wekit.ui.splash
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import com.coconutplace.wekit.BuildConfig
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.Auth
@@ -11,6 +10,7 @@ import com.coconutplace.wekit.data.remote.auth.listeners.SplashListener
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.ui.main.MainActivity
+import com.coconutplace.wekit.ui.miracle.MiracleActivity
 import com.coconutplace.wekit.ui.onboarding.OnBoardingActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_NETWORK_ERROR
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_SERVER_CHECK
@@ -48,6 +48,13 @@ class SplashActivity : BaseActivity(), SplashListener{
         finish()
     }
 
+    private fun startMiracleActivity(){
+        val intent = Intent(this@SplashActivity, MiracleActivity::class.java)
+
+        startActivity(intent)
+        finish()
+    }
+
     private fun startOnBoardingActivity(){
         val intent = Intent(this@SplashActivity, OnBoardingActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -78,10 +85,11 @@ class SplashActivity : BaseActivity(), SplashListener{
     }
 
     override fun onAutoLoginFailure(code: Int, message: String) {
-//        startLoginActivity()
-        startOnBoardingActivity()
+        when(code){
+            304, 305 -> startMiracleActivity()
+            else -> startOnBoardingActivity()
+        }
     }
-
 
     override fun onGetVersionSuccess(auth: Auth) {
         val version = BuildConfig.VERSION_NAME
