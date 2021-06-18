@@ -123,10 +123,14 @@
     <color name="enter_channel_light_violet">#c9c0ff</color>
 
     <!--channel-->
-    <color name="channel_myroom_explain_text">#c9c0ff</color>
+    <color name="channel_myroom_explain_text">#7e7e7e</color>
     <color name="channel_myroom_cardview_bg">#f3f3f3</color>
     <color name="channel_myroom_cardview_no_room_text">#a2a3a6</color>
     <color name="channel_search_edittext_bg">#f2f3f7</color>
+    <color name="channel_member_count_bg">#f4f2ff</color>
+    <color name="channel_member_count_stroke">#a399ff</color>
+    <color name="channel_member_count">#836fff</color>
+    <color name="channel_authTime_text">#a399ff</color>
 
     <!--chat-->
     <color name="chat_send_message_hint">#7e7e7e</color>

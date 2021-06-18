@@ -307,17 +307,35 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         })
 
         mChannelViewModel.liveMyChatImgUrl.observe(mBinding.lifecycleOwner!!,{
-            if(it=="none"){
-                Log.e(CHECK_TAG,"myChatImg가 없습니다")
-                Glide.with(this).load(R.drawable.bg_transparent).into(mBinding.channelMyroomImg)
-                mBinding.channelMyroomNoRoomLayout.visibility = View.VISIBLE
+            when(it){
+                "M" -> {
+                    Glide.with(this).load(R.drawable.ic_challenge_sun).override(300).circleCrop().into(mBinding.channelMyroomImg)
+                    mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
+                }
+                "N" -> {
+                    Glide.with(this).load(R.drawable.ic_challenge_moon).override(300).circleCrop().into(mBinding.channelMyroomImg)
+                    mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
+                }
+                else -> {
+                    Log.e(CHECK_TAG,"myChatImg가 없습니다")
+                    Glide.with(this).load(R.drawable.bg_transparent).into(mBinding.channelMyroomImg)
+                    mBinding.channelMyroomNoRoomLayout.visibility = View.VISIBLE
+                }
             }
-            else{
-                Log.e(CHECK_TAG,"glide url : $it")
-                Glide.with(this).load(it).override(300).circleCrop().into(mBinding.channelMyroomImg)
-                mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
-            }
+
+
+//            if(it=="none"){
+//                Log.e(CHECK_TAG,"myChatImg가 없습니다")
+//                Glide.with(this).load(R.drawable.bg_transparent).into(mBinding.channelMyroomImg)
+//                mBinding.channelMyroomNoRoomLayout.visibility = View.VISIBLE
+//            }
+//            else{
+//                Log.e(CHECK_TAG,"glide url : $it")
+//                Glide.with(this).load(it).override(300).circleCrop().into(mBinding.channelMyroomImg)
+//                mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
+//            }
         })
+
 
         mChannelViewModel.dialogEvent.observe(mBinding.lifecycleOwner!!,{ event ->
             event.getContentIfNotHandled()?.let {
@@ -423,7 +441,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         activity?.runOnUiThread {
             if(hasChatRoom){
                 mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_channel_myroom_duration_text)
-                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.primary))
+                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.channel_myroom_cardview_bg))
 
             }
             else{
