@@ -2,6 +2,7 @@ package com.coconutplace.wekit.data.repository.auth
 
 import com.coconutplace.wekit.data.entities.Auth
 import com.coconutplace.wekit.data.entities.BodyInfo
+import com.coconutplace.wekit.data.entities.Interest
 import com.coconutplace.wekit.data.entities.User
 import com.coconutplace.wekit.data.remote.auth.AuthResponse
 import com.coconutplace.wekit.data.remote.auth.AuthService
@@ -54,5 +55,9 @@ class AuthRepository(private val authService: AuthService) : BaseRepository(){
 
     suspend fun certifyEmail(user: User): AuthResponse {
         return apiRequest { authService.certifyEmail(user) }
+    }
+
+    suspend fun submitInterest(interest: Interest): AuthResponse {
+        return apiRequest { authService.submitInterest(interest) }
     }
 }

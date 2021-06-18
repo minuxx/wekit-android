@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.coconutplace.wekit.R
-import com.coconutplace.wekit.data.remote.interest.listeners.InterestListener
+import com.coconutplace.wekit.data.remote.auth.listeners.InterestListener
 import com.coconutplace.wekit.databinding.ActivityRoutineBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.tutorial.TutorialActivity
@@ -41,8 +42,19 @@ class RoutineActivity : BaseActivity(), InterestListener {
             finish()
         }
 
+        binding.routineBackBtn.setOnClickListener(this)
+        binding.routineDoneBtn.setOnClickListener(this)
+        binding.routineDoneBtn.isClickable = false
+
         setSubtitleTextColor()
         initRecyclerview()
+    }
+
+    override fun onClick(v: View?) {
+        super.onClick(v)
+        when(v){
+            binding.routineBackBtn -> finish()
+        }
     }
 
 
@@ -80,7 +92,7 @@ class RoutineActivity : BaseActivity(), InterestListener {
                 viewModel.selectedRoutines.removeAt(viewModel.selectedRoutines.indexOf(routine.id))
                 view.setBackgroundResource(R.drawable.bg_routine_item_unselected)
 
-                if(viewModel.selectedRoutines.size == 0) {
+                if(viewModel.selectedRoutines.isEmpty()) {
                     binding.routineDoneBtn.setBackgroundResource(R.drawable.bg_routine_done_inactive)
                     binding.routineDoneBtn.isClickable = false
                 }
@@ -102,27 +114,25 @@ class RoutineActivity : BaseActivity(), InterestListener {
     override fun onInterestStarted() {
         binding.routineLoading.show()
 
+        binding.routineDoneBtn.isClickable = false
     }
 
     override fun onInterestSuccess() {
         binding.routineLoading.hide()
+
         onStartTutorialActivity()
     }
 
     override fun onInterestFailure(code: Int, message: String) {
         binding.routineLoading.hide()
 
-        binding.routineDoneBtn.isClickable = true
+        if(viewModel.selectedRoutines.isNotEmpty()){
+            binding.routineDoneBtn.isClickable = true
+        }
 
-//        if(adapter..isEmpty()) {
-//            showDialog(getString(R.string.routine_select_interest))
-//            return
-//        }
-//
         when(code) {
             303, 305, 306 -> showDialog(message)
             else -> showDialog(getString(R.string.network_error))
         }
-
     }
 }

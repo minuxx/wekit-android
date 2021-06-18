@@ -2,6 +2,7 @@ package com.coconutplace.wekit.data.remote.auth
 
 import com.coconutplace.wekit.data.entities.Auth
 import com.coconutplace.wekit.data.entities.BodyInfo
+import com.coconutplace.wekit.data.entities.Interest
 import com.coconutplace.wekit.data.entities.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -45,4 +46,7 @@ interface AuthService {
 
     @POST("users/email")
     suspend fun certifyEmail(@Body user: User) : Response<AuthResponse>
+
+    @POST("users/interest")
+    suspend fun submitInterest(@Body interest: Interest) : Response<AuthResponse>
 }

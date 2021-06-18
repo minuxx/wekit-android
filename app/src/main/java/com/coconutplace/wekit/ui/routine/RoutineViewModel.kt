@@ -3,14 +3,16 @@ package com.coconutplace.wekit.ui.routine
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.R
+import com.coconutplace.wekit.data.entities.Interest
 import com.coconutplace.wekit.data.entities.Routine
-import com.coconutplace.wekit.data.remote.interest.listeners.InterestListener
-import com.coconutplace.wekit.data.repository.interest.InterestRepository
+import com.coconutplace.wekit.data.remote.auth.listeners.InterestListener
+import com.coconutplace.wekit.data.repository.auth.AuthRepository
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.MIRACLE_EMPTY
 
-class RoutineViewModel(private val repository: InterestRepository) : ViewModel() {
+class RoutineViewModel(private val repository: AuthRepository) : ViewModel() {
     val routines : ArrayList<Routine> = ArrayList()
     val selectedRoutines : ArrayList<Int> = ArrayList()
     var miracle : String = MIRACLE_EMPTY
@@ -33,26 +35,41 @@ class RoutineViewModel(private val repository: InterestRepository) : ViewModel()
         routines.add(Routine(10, R.drawable.icn_plan,"하루 계획"))
     }
 
-    fun submitInterest() { // 관심사 post
+    private fun getInterest(): Interest = Interest(mircle = miracle, routineIdxList = selectedRoutines)
+
+    fun submitInterest() {
         interestListener?.onInterestStarted()
+
+        if(miracle == MIRACLE_EMPTY){
+            interestListener!!.onInterestFailure(303, "미라클 챌린지를 선택해주세요.")
+            return
+        }
+
+        if(selectedRoutines.isEmpty()){
+            interestListener!!.onInterestFailure(305, "관심 루틴을 선택해주세요.")
+            return
+        }
+
+        if(selectedRoutines.size > 5){
+            interestListener!!.onInterestFailure(306, "관심 루틴은 최대 5개 선택 가능해요.")
+            return
+        }
+
+        Log.d(DEBUG_TAG, "routines: $selectedRoutines")
 
         Coroutines.main {
             try {
-//                val interestResponse = repository.postInterest()
-//
-//                if(interestResponse.isSuccess){
-//                    interestListener?.onInterestSuccess()
-//                    Log.e("postInterestSuccess",interestResponse.message)
-//                } else {
-//                    Log.e("postInterestFail",interestResponse.message)
-//                    interestListener?.onInterestFailure(interestResponse.code, interestResponse.message)
-//                }
+                val interestResponse = repository.submitInterest(getInterest())
+
+                if(interestResponse.isSuccess){
+                    interestListener!!.onInterestSuccess()
+                } else {
+                    interestListener!!.onInterestFailure(interestResponse.code, interestResponse.message)
+                }
             } catch (e: ApiException) {
-                Log.e("postInterestFail",e.message.toString())
-                interestListener?.onInterestFailure(404, e.message!!)
+                interestListener!!.onInterestFailure(404, e.message!!)
             } catch (e: Exception) {
-                Log.e("postInterestFail",e.message.toString())
-                interestListener?.onInterestFailure(404, e.message!!)
+                interestListener!!.onInterestFailure(404, e.message!!)
             }
         }
     }
