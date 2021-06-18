@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.databinding.ActivityMiracleBinding
 import com.coconutplace.wekit.ui.BaseActivity
-import com.coconutplace.wekit.ui.routine.InterestRoutineActivity
+import com.coconutplace.wekit.ui.routine.RoutineActivity
 import com.coconutplace.wekit.ui.login.LoginActivity
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.MIRACLE_EMPTY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.MIRACLE_MORNING
@@ -77,11 +77,12 @@ class MiracleActivity : BaseActivity() {
         val interest = viewModel.interest.value.toString()
 
         if(interest == MIRACLE_EMPTY){
+            showDialog(getString(R.string.miracle_select))
             return
         }
 
-        val intent = Intent(this@MiracleActivity, InterestRoutineActivity::class.java)
-        intent.putExtra("interest", interest)
+        val intent = Intent(this@MiracleActivity, RoutineActivity::class.java)
+        intent.putExtra("miracle", interest)
         startActivity(intent)
     }
 

@@ -67,9 +67,9 @@
     <!-- custom button style -->
 
     <style name="buttonUnActive" parent="Widget.AppCompat.Button">
-        <item name="background">@color/select_unActive</item>
-        <item name="backgroundColor">@color/select_unActive</item>
-        <item name="backgroundTint">@color/select_unActive</item>
+        <item name="background">@color/routine_done_inactive</item>
+        <item name="backgroundColor">@color/routine_done_inactive</item>
+        <item name="backgroundTint">@color/routine_done_inactive</item>
     </style>
 
     <style name="buttonActive" parent="Widget.AppCompat.Button">

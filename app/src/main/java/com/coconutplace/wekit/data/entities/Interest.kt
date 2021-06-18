@@ -1,19 +1,7 @@
 package com.coconutplace.wekit.data.entities
 
-import android.media.Image
-import com.bumptech.glide.load.engine.Resource
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.MIRACLE_EMPTY
 import com.google.gson.annotations.SerializedName
 
-data class Interest(
-
-    @SerializedName(value = "miracle") val miracle: String,
-    @SerializedName(value = "routineIdxList") val routineIdxList: ArrayList<Int>
-
-)
-
-data class InnerInterest(
-
-    @SerializedName(value = "interestImg") val interestImg: Int,
-    @SerializedName(value = "interestText") val interestText: String
-
-)
+data class Interest(@SerializedName(value = "miracle") var mircle: String = MIRACLE_EMPTY,
+                    @SerializedName(value = "routineIdxList") val routineIdxList: ArrayList<Int> = ArrayList())

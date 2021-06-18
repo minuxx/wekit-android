@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.routine.InterestRoutineActivity"/>
+        <activity android:name=".ui.routine.RoutineActivity"/>
 
         <activity android:name="com.coconutplace.wekit.ui.tutorial.TutorialActivity" android:theme="@style/ThemeSplash"/>
 

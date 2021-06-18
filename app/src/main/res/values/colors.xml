@@ -26,13 +26,6 @@
     <color name="dialog_wekit_button_text">#7D6CE9</color>
     <color name="default_border">#f1f1f1</color>
     <color name="dialog_wekit_border">#f1f1f1</color>
-    
-    <!--select-->
-    <color name="select_Active">#7d6ce9</color>
-    <color name="select_unActive">#c4c4c4</color>
-    <color name="select_interest_item">#f1f1f1</color>
-    <color name="select_interest_border_click">#c3bafd</color>
-    <color name="select_interest_bg_click">#fcfbff</color>
 
     <!--login-->
     <color name="login_basic_text">#000</color>
@@ -53,6 +46,26 @@
 
     <!--poll-->
     <color name="poll_info">#2f2f2f</color>
+        
+    <!--miracle-->
+    <color name="miracle_title">#000000</color>
+    <color name="miracle_subtitle">#7e7e7e</color>
+    <color name="miracle_item">#000000</color>
+    <color name="miracle_item_border_selected">#c3bafd</color>
+
+    <!--routine-->
+    <color name="routine_title">#000000</color>
+    <color name="routine_subtitle">#7e7e7e</color>
+    <color name="routine_subtitle_highlight">#7d6ce9</color>
+    <color name="routine_item_border_unselected">#f1f1f1</color>
+    <color name="routine_item_border_selected">#c3bafd</color>
+    <color name="routine_item_text_unselected">#7e7e7e</color>
+    <color name="routine_item_text_selected">#2f2f2f</color>
+    <color name="routine_done_text">#fff</color>
+    <color name="routine_done_active">#7d6ce9</color>
+    <color name="routine_done_inactive">#c4c4c4</color>
+    <color name="routine_item_solid_selected">#fcfbff</color>
+    <color name="routine_item_solid_unselected">#fff</color>
 
     <!--tutorial-->
     <color name="tutorial_bg">#ada3ff</color>
