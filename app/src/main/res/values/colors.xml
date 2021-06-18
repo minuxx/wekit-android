@@ -29,6 +29,7 @@
 
     <!--login-->
     <color name="login_basic_text">#000</color>
+    <color name="login_title_text">#000</color>
     <color name="login_first_wekit">#7e7e7e</color>
     <color name="login_hint">#b9b9b9</color>
     <color name="login_info">#2f2f2f</color>

@@ -26,6 +26,9 @@
 
     <!--login-->
     <string name="login">로그인</string>
+    <string name="login_title_01">만나서 반가워요!</string>
+    <string name="login_title_02">로그인</string>
+    <string name="login_title_03">해 주세요</string>
     <string name="login_first_wekit">WEKIT에 처음이신가요?</string>
     <string name="login_signup"><u>회원가입</u></string>
     <string name="login_id">ID</string>
