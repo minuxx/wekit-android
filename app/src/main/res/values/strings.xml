@@ -164,14 +164,20 @@
 
     <!--home-->
     <string name="home_title">WEKIT</string>
-    <string name="home_greeting_default"><b>WEKIT</b>과\n오늘도 함께해요!</string>
-    <string name="home_greeting">\n오늘도 함께해요!</string>
+    <string name="home_greeting_nim">님,</string>
+    <string name="home_greeting_miracle">미라클 챌린지</string>
+    <string name="home_greeting_today_with">오늘도 함께해요!</string>
 
     <string name="home_certification_title">우리의 도전은 시작되었어!</string>
-    <string name="home_certification_sub_title">참여하고 계신 채팅방의 챌린지 진행 정도입니다.</string>
-    <string name="home_certification_words">새로운 다짐이 참 멋져보이는걸요?</string>
+    <string name="home_certification_sub_title">님이 인증에 성공하신 횟수입니다.</string>
+    <string name="home_check_certification">인증횟수를 확인해보세요</string>
+    <string name="home_certification_words">오늘도 100% 도전</string>
     <string name="home_certification_counts">0/0</string>
     <string name="home_certification_percentage">0%</string>
+
+    <string name="home_miracle_guide">미라클 가이드</string>
+    <string name="home_miracle_guide_explain">미라클 챌린저들의 이야기를 만나보세요.</string>
+    <string name="home_cd_miracle_story_banner">미라클 챌린저들의 이야기를 만나보세요.</string>
 
     <string name="home_target_weight_title">목표 몸무게 : </string>
     <string name="home_target_weight_sub_title">목표몸무게에 가까워지고 있나요? </string>

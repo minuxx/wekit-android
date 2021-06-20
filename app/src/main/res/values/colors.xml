@@ -87,6 +87,8 @@
 
     <!--home-->
     <color name="home_greeting">#000</color>
+    <color name="home_today_date">#7e7e7e</color>
+    <color name="home_greeting_miracle">#7d6ce9</color>
     <color name="home_certification_title">#2f2f2f</color>
     <color name="home_certification_sub_title">#7e7e7e</color>
     <color name="home_certification_words">#2f2f2f</color>
@@ -95,6 +97,9 @@
     <color name="home_certification_pb_fill">#7d6ce9</color>
     <color name="home_certification_percentage">#2f2f2f</color>
     <color name="home_certification_percentage_inactive">#7e7e7e</color>
+    <color name="home_miracle_guide">#000000</color>
+    <color name="home_miracle_guide_explain">#7e7e7e</color>
+    <color name="home_miracle_story">#fff</color>
 
     <color name="body_graph_line">#7d6ce9</color>
     <color name="home_chart_x">#7e7e7e</color>
