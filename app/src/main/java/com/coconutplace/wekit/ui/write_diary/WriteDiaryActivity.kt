@@ -72,7 +72,6 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         selectedDate = intent.getStringExtra("date")
         viewModel.setDate(selectedDate ?: "")
 
-        setNowTime()
         setMode()
     }
 
@@ -88,7 +87,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
             FLAG_WRITE_DIARY -> {
             }
             FLAG_READ_DIARY -> {
-                binding.writeDiaryTitleTv.text = "식단일기"
+                binding.writeDiaryTitleTv.text = getString(R.string.write_diary)
                 binding.writeDiaryEventBtn.visibility = GONE
                 binding.writeDiaryPickPhotoBtn.visibility = GONE
 //                binding.writeDiaryEditTv.visibility = VISIBLE
@@ -159,18 +158,16 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         }
     }
 
-    private fun setNowTime(){
-        val currentDateTime: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now().toString()
-        } else {
-            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(Calendar.getInstance().time)
-        }
+    private fun setWrittenTime(time: String){
+        val hour = time.substring(0, 2).toInt()
 
-        val hour = currentDateTime.substring(11, 13).toInt()
+        val writtenTime = (if(hour < 12) "오전 ${time.substring(0, 2)}시 " else "오후 ${time.substring(0, 2)}시 ") + time.substring(3) + "분"
 
-        val nowTime = (if(hour < 12) "오전 ${currentDateTime.substring(11, 13)}시 " else "오후 ${currentDateTime.substring(11, 13)}시 ") + currentDateTime.substring(14, 16) + "분"
+        binding.writeDiaryTimeLabelTv.visibility = VISIBLE
+        binding.writeDiaryTimeTv.visibility = VISIBLE
+        binding.writeDiaryTimeLineView.visibility = VISIBLE
 
-        binding.writeDiaryTimeTv.text = nowTime
+        binding.writeDiaryTimeTv.text = writtenTime
     }
 
     private fun setOnClickListenerAll() {
@@ -552,6 +549,8 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         pagerAdapter.notifyDataSetChanged()
 
         viewModel.satisfaction.postValue(diary.satisfaction)
+
+        setWrittenTime(diary.time!!)
 //        viewModel.timezone.postValue(diary.timezone)
 
         viewModel.memo.postValue(diary.memo)
@@ -564,7 +563,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiaryLoading.hide()
         when(code){
             303, 304, 305 -> finish()
-            else -> showDialog(getString(R.string.dialog_title_server_check))
+            else -> showDialog(getString(R.string.network_error))
         }
     }
 }

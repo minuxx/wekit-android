@@ -267,7 +267,6 @@
                 android:text="@string/home_miracle_guide"
                 android:textColor="@color/home_miracle_guide"
                 android:textSize="18sp"
-                app:drawableEndCompat="@drawable/icn_more_gray"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_challenge_progress_layout" />
 
