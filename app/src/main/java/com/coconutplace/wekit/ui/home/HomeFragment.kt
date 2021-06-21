@@ -118,10 +118,10 @@ class HomeFragment : BaseFragment(), HomeListener {
             binding.homeCertificationPb.max = totalDay
             binding.homeCertificationPb.progress = day
 
-            (binding.homePercentView.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if(ratio.toFloat() >= 0.90f) 0.90f else ratio.toFloat()
+            (binding.homePercentView.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if(ratio.toFloat() >= 0.88f) 0.88f else ratio.toFloat()
             binding.homePercentView.requestLayout()
 
-            (binding.homeCertificationPercentageTv.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if(ratio.toFloat() >= 0.90f) 0.10f else 1.0f - ratio.toFloat()
+            (binding.homeCertificationPercentageTv.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if(ratio.toFloat() >= 0.88f) 0.12f else 1.0f - ratio.toFloat()
             binding.homeCertificationPercentageTv.requestLayout()
 
             binding.homeCertificationPercentageTv.text = (ratio * 100).toInt().toString() + "%"
