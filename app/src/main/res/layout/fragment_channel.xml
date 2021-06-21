@@ -40,27 +40,27 @@
                     android:foreground="@drawable/icn_back" />
             </FrameLayout>
 
-<!--            <ImageView-->
-<!--                android:id="@+id/channel_logo_iv"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="24dp"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                android:layout_marginTop="40dp"-->
-<!--                android:contentDescription="@string/home_cd_text_logo"-->
-<!--                android:src="@drawable/wekit_text_logo"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-            <TextView
+            <ImageView
                 android:id="@+id/channel_logo_iv"
                 android:layout_width="wrap_content"
-                android:layout_height="23dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:text="채팅방 목록"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/notosanskr_regular"/>
+                android:layout_height="24dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:contentDescription="@string/home_cd_text_logo"
+                android:src="@drawable/wekit_text_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/channel_logo_iv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="23dp"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:text="채팅방 목록"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:fontFamily="@font/notosanskr_regular"/>-->
 
 
             <TextView
@@ -256,9 +256,7 @@
                         android:fontFamily="@font/notosanskr_bold"
                         android:text="@string/channel_my_chat_room"
                         android:textColor="@color/dark_gray"
-                        android:textSize="18sp"
-                        android:drawablePadding="9dp"
-                        app:drawableEndCompat="@drawable/ic_more" />
+                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/channel_reset_btn"
@@ -404,8 +402,8 @@
                                 android:visibility="invisible">
 
                                 <ImageView
-                                    android:layout_width="41dp"
-                                    android:layout_height="28dp"
+                                    android:layout_width="34dp"
+                                    android:layout_height="21dp"
                                     android:layout_marginTop="23dp"
                                     android:contentDescription="@string/channel_myroom_no_room_img"
                                     android:src="@drawable/icn_chat" />
@@ -417,17 +415,17 @@
                                     android:fontFamily="@font/notosanskr_bold"
                                     android:text="@string/channel_no_room_main"
                                     android:textColor="@color/channel_myroom_cardview_no_room_text"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:fontFamily="@font/notosanskr_regular"
-                                    android:gravity="center_horizontal"
-                                    android:text="@string/channel_no_room_sub"
-                                    android:textColor="@color/channel_myroom_cardview_no_room_text"
-                                    android:textSize="12sp" />
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginTop="6dp"-->
+<!--                                    android:fontFamily="@font/notosanskr_regular"-->
+<!--                                    android:gravity="center_horizontal"-->
+<!--                                    android:text="@string/channel_no_room_sub"-->
+<!--                                    android:textColor="@color/channel_myroom_cardview_no_room_text"-->
+<!--                                    android:textSize="12sp" />-->
                             </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
