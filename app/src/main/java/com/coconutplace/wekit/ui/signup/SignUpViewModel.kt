@@ -1,5 +1,6 @@
 package com.coconutplace.wekit.ui.signup
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.coconutplace.wekit.data.entities.User
@@ -9,6 +10,7 @@ import com.coconutplace.wekit.data.remote.auth.listeners.SignUpListener
 import com.coconutplace.wekit.data.repository.auth.AuthRepository
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
+import com.coconutplace.wekit.utils.GlobalConstant
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_EMAIL
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_EDIT_PASSWORD
 import com.coconutplace.wekit.utils.SharedPreferencesManager

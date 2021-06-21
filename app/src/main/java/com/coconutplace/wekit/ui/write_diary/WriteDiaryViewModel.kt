@@ -2,6 +2,7 @@ package com.coconutplace.wekit.ui.write_diary
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import com.coconutplace.wekit.di.TEST_URL
 import com.coconutplace.wekit.di.getBaseUrl
 import com.coconutplace.wekit.utils.ApiException
 import com.coconutplace.wekit.utils.Coroutines
+import com.coconutplace.wekit.utils.GlobalConstant.Companion.DEBUG_TAG
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FIREBASE_STORAGE_URL
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
@@ -39,11 +41,11 @@ class WriteDiaryViewModel(
     private var roomIdx: Int = 0
     var flag: Int = 0
 
-    val timezone: MutableLiveData<Int> by lazy {
-        MutableLiveData<Int>().apply {
-            postValue(0)
-        }
-    }
+//    val timezone: MutableLiveData<Int> by lazy {
+//        MutableLiveData<Int>().apply {
+//            postValue(0)
+//        }
+//    }
 
     val satisfaction: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>().apply {
@@ -108,14 +110,14 @@ class WriteDiaryViewModel(
 
     fun uploadToFirebase() {
         if (satisfaction.value!!.toInt() == 0) {
-            writeDiaryListener!!.onPostDiaryFailure(308, "음식만족도를 선택해주세요.")
+            writeDiaryListener!!.onPostDiaryFailure(308, "만족도를 선택해주세요.")
             return
         }
 
-        if (timezone.value!!.toInt() == 0) {
-            writeDiaryListener!!.onPostDiaryFailure(310, "식사시간대를 선택해주세요.")
-            return
-        }
+//        if (timezone.value!!.toInt() == 0) {
+//            writeDiaryListener!!.onPostDiaryFailure(310, "식사시간대를 선택해주세요.")
+//            return
+//        }
 
         if(photos.size <= 1){
             writeDiaryListener!!.onPostDiaryFailure(306, "사진을 선택해주세요.")
@@ -175,7 +177,6 @@ class WriteDiaryViewModel(
             roomIdx = roomIdx,
             diaryIdx = null,
             date = date,
-            timezone = timezone.value!!.toInt(),
             time = null,
             satisfaction = satisfaction.value!!.toInt(),
             imageList = imgUrlsFromFirebase,
@@ -188,7 +189,7 @@ class WriteDiaryViewModel(
                 val response = repository.postDiary(diary)
 
                 if (response.isSuccess) {
-                    if(response.result==null){
+                    if(response.result == null){
                         writeDiaryListener!!.onPostDiarySuccess(response.message)
                     }
                     else{

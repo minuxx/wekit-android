@@ -44,6 +44,7 @@ class CertifyEmailActivity : BaseActivity(), CertifyEmailListener, SignUpListene
             viewModel.receivedUser = it
             viewModel.nextFlag = FLAG_SIGNUP
             viewModel.email.postValue(it.email)
+            viewModel.id.postValue(it.id)
             binding.certifyEmailGuide01Tv.text= getString(R.string.certify_email_guide_signup)
             binding.certifyEmailEmailEt.setText(it.email)
         }

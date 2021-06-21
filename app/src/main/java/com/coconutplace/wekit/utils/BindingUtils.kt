@@ -89,6 +89,7 @@ object BindingUtils {
         text = convertedTime
     }
 
+
     @BindingAdapter("convertTimezone")
     @JvmStatic
     fun TextView.convertTimezone(timezone: Int) {

@@ -49,29 +49,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/signup_bg_character"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/img_bg_character_login"
-                android:layout_marginTop="27dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signup_title_tv"
-                android:contentDescription="@string/home_cd_bg_character"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/signup_bg_character"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/img_bg_character_login"-->
+<!--                android:layout_marginTop="27dp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/signup_title_tv"-->
+<!--                android:contentDescription="@string/home_cd_bg_character"/>-->
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/signup_character_lottie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/signup_bg_character"
-                app:layout_constraintBottom_toBottomOf="@+id/signup_bg_character"
-                android:layout_marginBottom="50dp"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/cat_food" />
+<!--            <com.airbnb.lottie.LottieAnimationView-->
+<!--                android:id="@+id/signup_character_lottie"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/signup_bg_character"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/signup_bg_character"-->
+<!--                android:layout_marginBottom="50dp"-->
+<!--                app:lottie_autoPlay="true"-->
+<!--                app:lottie_loop="true"-->
+<!--                app:lottie_rawRes="@raw/cat_food" />-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signup_id_et_layout"
@@ -83,7 +83,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signup_bg_character"
+                app:layout_constraintTop_toBottomOf="@+id/signup_title_tv"
                 style="@style/TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText

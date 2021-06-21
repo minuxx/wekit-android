@@ -155,6 +155,7 @@
     <color name="diary_line">#f1f1f1</color>
     <color name="diary_item_title">#000000</color>
     <color name="diary_item_time">#7e7e7e</color>
+    <color name="diary_memo">#7e7e7e</color>
     <color name="diary_today">#968AE4</color>
     <color name="diary_selected_day">#FFF</color>
     <color name="diary_written_day">#000000</color>

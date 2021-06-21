@@ -22,7 +22,6 @@ import com.coconutplace.wekit.data.remote.diary.listeners.WriteDiaryListener
 import com.coconutplace.wekit.databinding.ActivityWriteDiaryBinding
 import com.coconutplace.wekit.ui.BaseActivity
 import com.coconutplace.wekit.ui.choice_photo.ChoicePhotoActivity
-import com.coconutplace.wekit.utils.*
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_CERTIFY_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_READ_DIARY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.FLAG_WRITE_DIARY
@@ -32,15 +31,12 @@ import com.coconutplace.wekit.utils.GlobalConstant.Companion.SATISFACTION_ANGRY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.SATISFACTION_HAPPY
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.SATISFACTION_SAD
 import com.coconutplace.wekit.utils.GlobalConstant.Companion.SATISFACTION_SPEECHLESS
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_BLUNCH
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_BREAKFAST
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_DINNER
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_LINNER
-import com.coconutplace.wekit.utils.GlobalConstant.Companion.TIMEZONE_LUNCH
+import com.coconutplace.wekit.utils.hide
+import com.coconutplace.wekit.utils.hideKeyboard
+import com.coconutplace.wekit.utils.show
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.text.SimpleDateFormat
@@ -75,7 +71,8 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
         selectedDate = intent.getStringExtra("date")
         viewModel.setDate(selectedDate ?: "")
-        
+
+        setNowTime()
         setMode()
     }
 
@@ -160,6 +157,20 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
 
 //            binding.writeDiaryEditTv -> binding.writeDiaryRootLayout.snackbar(getString(R.string.guide_update))
         }
+    }
+
+    private fun setNowTime(){
+        val currentDateTime: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().toString()
+        } else {
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(Calendar.getInstance().time)
+        }
+
+        val hour = currentDateTime.substring(11, 13).toInt()
+
+        val nowTime = (if(hour < 12) "오전 ${currentDateTime.substring(11, 13)}시 " else "오후 ${currentDateTime.substring(11, 13)}시 ") + currentDateTime.substring(14, 16) + "분"
+
+        binding.writeDiaryTimeTv.text = nowTime
     }
 
     private fun setOnClickListenerAll() {
@@ -541,7 +552,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         pagerAdapter.notifyDataSetChanged()
 
         viewModel.satisfaction.postValue(diary.satisfaction)
-        viewModel.timezone.postValue(diary.timezone)
+//        viewModel.timezone.postValue(diary.timezone)
 
         viewModel.memo.postValue(diary.memo)
         if(diary.memo == "" && viewModel.flag == FLAG_READ_DIARY){

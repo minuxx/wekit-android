@@ -234,7 +234,6 @@ class SignUpActivity : BaseActivity(), CheckUserListener, WekitV1Dialog.WekitDia
     override fun onCheckUserSuccess(message: String) {
         binding.signupLoading.hide()
 
-
         startCertifyEmailActivity()
         finish()
     }
