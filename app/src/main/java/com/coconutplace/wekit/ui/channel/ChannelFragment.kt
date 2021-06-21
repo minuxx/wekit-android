@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.lujun.androidtagview.TagView
-import com.bumptech.glide.Glide
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.ChannelFilter
 import com.coconutplace.wekit.data.remote.channel.listeners.ChannelListener
@@ -33,10 +32,7 @@ import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
 import com.coconutplace.wekit.utils.hideKeyboard
 import com.coconutplace.wekit.utils.snackbar
 import com.github.mmin18.widget.RealtimeBlurView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.fragment_channel.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
@@ -49,9 +45,13 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 
     private var id:String? = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-        mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_channel,container,false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel, container, false)
         mBinding.lifecycleOwner = activity
         mBinding.mChannelViewModel = mChannelViewModel
         mChannelViewModel.setChannelListener(this)
@@ -60,10 +60,10 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         
         id = mChannelViewModel.getID()
         if(id==null||id==""){
-            Log.e(ERROR_TAG,"sharedpreference에 저장된 아이디가 없습니다.")
+            Log.e(ERROR_TAG, "sharedpreference에 저장된 아이디가 없습니다.")
         }
         else{
-            Log.e(CHECK_TAG,"ID : $id")
+            Log.e(CHECK_TAG, "ID : $id")
         }
 
         setupView()
@@ -78,10 +78,10 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         super.onResume()
         mBinding.channelBlurView.visibility = RealtimeBlurView.INVISIBLE
         when(mChannelViewModel.liveStatus.value){
-            1-> setRecentChannelView()
-            2-> setAllChannelView()
-            3-> setFilteredChannelView()
-            4-> setSearchChannelView()
+            1 -> setRecentChannelView()
+            2 -> setAllChannelView()
+            3 -> setFilteredChannelView()
+            4 -> setSearchChannelView()
         }
     }
 
@@ -102,7 +102,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mBinding.channelFullScrollview.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, _, _, _ ->
             val view: View = v.getChildAt(v.childCount - 1)
             val diff: Int = view.bottom - (v.height + v.scrollY)
-            if(diff==0){
+            if (diff == 0) {
                 Log.e(CHECK_TAG, "BOTTOM SCROLL")
                 mChannelViewModel.loadNextRoomList()
             }
@@ -121,9 +121,9 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
             if(mChannelViewModel.getMyRoomCount()>0){
                 mBinding.channelBlurView.visibility = RealtimeBlurView.VISIBLE
 
-                val intent = Intent(context,CreateChannelActivity::class.java)
-                intent.putExtra("createFlag",false)
-                startActivityForResult(intent,100)
+                val intent = Intent(context, CreateChannelActivity::class.java)
+                intent.putExtra("createFlag", false)
+                startActivityForResult(intent, 100)
 
                 return@setOnClickListener
             }
@@ -132,9 +132,9 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
             //mBinding.channelBlurView.setBlurRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10f,resources.displayMetrics))
             mBinding.channelBlurView.visibility = RealtimeBlurView.VISIBLE
 
-            val intent = Intent(context,CreateChannelActivity::class.java)
-            intent.putExtra("createFlag",true)
-            startActivityForResult(intent,100)
+            val intent = Intent(context, CreateChannelActivity::class.java)
+            intent.putExtra("createFlag", true)
+            startActivityForResult(intent, 100)
         }
 
         mBinding.channelResetBtn.setOnClickListener{
@@ -178,8 +178,8 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         }
 
         mBinding.channelFilterIc.setOnClickListener {
-            val intent = Intent(context,ChannelFilterActivity::class.java)
-            startActivityForResult(intent,101)
+            val intent = Intent(context, ChannelFilterActivity::class.java)
+            startActivityForResult(intent, 101)
         }
 
         addTagSample()
@@ -258,7 +258,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     private fun addTagSample(){
         val tagStringList: MutableList<String> = arrayListOf()
         val colors: MutableList<IntArray> = arrayListOf()
-        val primaryColor = ContextCompat.getColor(requireContext(),R.color.primary)
+        val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary)
         //int[] color = {TagBackgroundColor, TagBorderColor, TagTextColor, TagSelectedBackgroundColor}
         val color = intArrayOf(Color.TRANSPARENT, primaryColor, primaryColor, Color.TRANSPARENT)
 
@@ -277,48 +277,68 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         colors.add(color)
         tagStringList.add("#무염 식단")
 
-        mBinding.channelTagContainerLayout.setTags(tagStringList,colors)
+        mBinding.channelTagContainerLayout.setTags(tagStringList, colors)
 
-        mBinding.channelTagContainerLayout.setOnTagClickListener(object : TagView.OnTagClickListener {
+        mBinding.channelTagContainerLayout.setOnTagClickListener(object :
+            TagView.OnTagClickListener {
             override fun onTagClick(position: Int, text: String) {
                 mBinding.channelSearchEt.setText(text)
                 mChannelViewModel.setSearchKeyWord(text)
                 mChannelViewModel.refresh()
                 mBinding.channelExampleTagLayout.visibility = View.GONE
             }
-            override fun onSelectedTagDrag(position: Int, text: String?) { }
-            override fun onTagLongClick(position: Int, text: String?) { }
-            override fun onTagCrossClick(position: Int) { }
+
+            override fun onSelectedTagDrag(position: Int, text: String?) {}
+            override fun onTagLongClick(position: Int, text: String?) {}
+            override fun onTagCrossClick(position: Int) {}
         })
 
     }
 
     private fun setupViewModel(){
         mChannelViewModel.liveRoomList.observe(mBinding.lifecycleOwner!!, {
-            Log.e(CHECK_TAG,"current channel count : "+it.size)
+            Log.e(CHECK_TAG, "current channel count : " + it.size)
             adapter.setGroupChannelList(it)
 
             if (mSwipeRefresh.isRefreshing) {
                 mSwipeRefresh.isRefreshing = false
             }
-            if(it.size!=0){
+            if (it.size != 0) {
                 mBinding.channelExampleTagLayout.visibility = View.GONE
             }
         })
 
-        mChannelViewModel.liveMyChatImgUrl.observe(mBinding.lifecycleOwner!!,{
-            when(it){
+        mChannelViewModel.liveMyChatMiracle.observe(mBinding.lifecycleOwner!!, {
+            when (it) {
                 "M" -> {
-                    Glide.with(this).load(R.drawable.ic_challenge_sun).override(300).circleCrop().into(mBinding.channelMyroomImg)
+                    mBinding.channelMyroomImg.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_challenge_sun
+                        ),
+                        null,
+                        null
+                    )
+                    //Glide.with(this).load(R.drawable.ic_challenge_sun).override(300).circleCrop().into(mBinding.channelMyroomImg)
                     mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
                 }
                 "N" -> {
-                    Glide.with(this).load(R.drawable.ic_challenge_moon).override(300).circleCrop().into(mBinding.channelMyroomImg)
+                    mBinding.channelMyroomImg.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_challenge_moon
+                        ),
+                        null,
+                        null
+                    )
+                    //Glide.with(this).load(R.drawable.ic_challenge_moon).override(300).circleCrop().into(mBinding.channelMyroomImg)
                     mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
                 }
                 else -> {
-                    Log.e(CHECK_TAG,"myChatImg가 없습니다")
-                    Glide.with(this).load(R.drawable.bg_transparent).into(mBinding.channelMyroomImg)
+                    Log.e(CHECK_TAG, "myChatImg가 없습니다")
+                    //Glide.with(this).load(R.drawable.bg_transparent).into(mBinding.channelMyroomImg)
                     mBinding.channelMyroomNoRoomLayout.visibility = View.VISIBLE
                 }
             }
@@ -336,22 +356,39 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 //            }
         })
 
+        mChannelViewModel.liveMyChatAuthenticTime.observe(mBinding.lifecycleOwner!!, {
+            try {
+                var authTimeInt: Int = it.substring(0, 2).toInt()
+                var authTime = ""
+                if (authTimeInt >= 12) {
+                    authTimeInt -= 12
+                    authTime = "PM"
+                } else {
+                    authTime = "AM"
+                }
+                authTime += authTimeInt
+                mBinding.channelMyroomImg.text = authTime
+            } catch (e: Exception) {
+                Log.e(CHECK_TAG, "channel fragment authTime Exception : $e")
+            }
+        })
 
-        mChannelViewModel.dialogEvent.observe(mBinding.lifecycleOwner!!,{ event ->
+
+        mChannelViewModel.dialogEvent.observe(mBinding.lifecycleOwner!!, { event ->
             event.getContentIfNotHandled()?.let {
-                when(it){
-                    404 -> showDialog(getString(R.string.network_error),requireContext())
+                when (it) {
+                    404 -> showDialog(getString(R.string.network_error), requireContext())
                 }
 
             }
         })
 
-        mChannelViewModel.myChannelSetEvent.observe(mBinding.lifecycleOwner!!,{ event ->
-            Log.e(CHECK_TAG,"push setEvent handled1 : ${event.hasBeenHandled}")
-            event.getContentIfNotHandled()?.let{
-                Log.e(CHECK_TAG,"push setEvent handled2 : ${event.hasBeenHandled}")
-                (activity as MainActivity).getChannelUrlWithPush()?.let{ pushUrl ->
-                    Log.e(CHECK_TAG,"setChannelUrlWithPush called")
+        mChannelViewModel.myChannelSetEvent.observe(mBinding.lifecycleOwner!!, { event ->
+            Log.e(CHECK_TAG, "push setEvent handled1 : ${event.hasBeenHandled}")
+            event.getContentIfNotHandled()?.let {
+                Log.e(CHECK_TAG, "push setEvent handled2 : ${event.hasBeenHandled}")
+                (activity as MainActivity).getChannelUrlWithPush()?.let { pushUrl ->
+                    Log.e(CHECK_TAG, "setChannelUrlWithPush called")
                     mChannelViewModel.setChannelUrlWithPush(pushUrl)
                 }
             }
@@ -364,17 +401,17 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
             if(mChannelViewModel.getMyRoomCount()>0){
                 //makeSnackBar("이미 소속된 채팅방이 있습니다.")
                 mBinding.channelBlurView.visibility = RealtimeBlurView.VISIBLE
-                val intent = Intent(context,EnterChannelActivity::class.java)
-                intent.putExtra("roomInfo",otherRoom)
-                intent.putExtra("enterFlag",false)
+                val intent = Intent(context, EnterChannelActivity::class.java)
+                intent.putExtra("roomInfo", otherRoom)
+                intent.putExtra("enterFlag", false)
                 startActivity(intent)
                 return@setOnItemClickListener
             }
 
             mBinding.channelBlurView.visibility = RealtimeBlurView.VISIBLE
-            val intent = Intent(context,EnterChannelActivity::class.java)
-            intent.putExtra("roomInfo",otherRoom)
-            intent.putExtra("enterFlag",true)
+            val intent = Intent(context, EnterChannelActivity::class.java)
+            intent.putExtra("roomInfo", otherRoom)
+            intent.putExtra("enterFlag", true)
             startActivity(intent)
         }
     }
@@ -382,28 +419,37 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     //정보) onActivityResult는 반드시 onResume()이전에 실행된다.(경우에 따라 onStart()이전에 실행될수도 있음)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e(CHECK_TAG,"onActivityResult Code : $resultCode, request code : $requestCode")
+        Log.e(CHECK_TAG, "onActivityResult Code : $resultCode, request code : $requestCode")
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 100 -> { //방 만들고 나옴
-                    Log.e(CHECK_TAG,"방 만들고 방 refresh")
+                    Log.e(CHECK_TAG, "방 만들고 방 refresh")
                     val badgeTitle = data?.getStringExtra("badgeTitle")
-                    if(badgeTitle!=null){
-                        Log.e(CHECK_TAG,"배지 획득")
+                    if (badgeTitle != null) {
+                        Log.e(CHECK_TAG, "배지 획득")
                         val badgeUrl = data.getStringExtra("badgeUrl")
                         val badgeExplain = data.getStringExtra("badgeExplain")
                         val backgroundColor = data.getStringExtra("backgroundColor")
 
                         val badgeDialog = ChatBadgeDialog(requireContext())
-                        badgeDialog.callFunction(badgeTitle,badgeUrl!!,badgeExplain!!,backgroundColor!!)
+                        badgeDialog.callFunction(
+                            badgeTitle,
+                            badgeUrl!!,
+                            badgeExplain!!,
+                            backgroundColor!!
+                        )
                     }
                     mChannelViewModel.liveStatus.value = 1
                     //mChannelViewModel.refresh() 이거 하면안됨. 2번중복됨
                 }
                 101 -> { //채널 필터링 설정하고 나옴
-                    Log.e(CHECK_TAG,"필터 설정 완료")
-                    val filter: ChannelFilter = data?.getSerializableExtra("filter") as ChannelFilter
-                    Log.e(CHECK_TAG,"${filter.authCount}, ${filter.isTwoWeek}, ${filter.memberCount}, ${filter.isOngoing}")
+                    Log.e(CHECK_TAG, "필터 설정 완료")
+                    val filter: ChannelFilter =
+                        data?.getSerializableExtra("filter") as ChannelFilter
+                    Log.e(
+                        CHECK_TAG,
+                        "filter values : ${filter.authCount}, ${filter.isTwoWeek}, ${filter.memberCount}, ${filter.isOngoing}"
+                    )
                     mChannelViewModel.liveStatus.value = 3
                     mChannelViewModel.setFilter(filter)
                 }
@@ -412,7 +458,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         else if(resultCode == RESULT_CANCELED){
             when (requestCode){
                 101 -> {
-                    Log.e(CHECK_TAG,"필터 설정 해제")
+                    Log.e(CHECK_TAG, "필터 설정 해제")
                     mChannelViewModel.liveStatus.value = 2
                 }
             }
@@ -424,29 +470,41 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mBinding.channelTopSnackbarPositionLayout.snackbar(str)
     }
 
-    override fun callChatActivity(channelUrl:String, roomIdx:Int){
-        val intent = Intent(context,ChatActivity::class.java)
-        intent.putExtra("channelUrl",channelUrl)
-        intent.putExtra("roomIdx",roomIdx)
+    override fun callChatActivity(channelUrl: String, roomIdx: Int){
+        val intent = Intent(context, ChatActivity::class.java)
+        intent.putExtra("channelUrl", channelUrl)
+        intent.putExtra("roomIdx", roomIdx)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 
-    override fun makeSnackBar(str:String){
+    override fun makeSnackBar(str: String){
         mBinding.root.snackbar(str)
     }
 
     override fun showCardView(hasChatRoom: Boolean) {
         activity?.runOnUiThread {
             if(hasChatRoom){
-                mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_channel_myroom_duration_text)
-                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.channel_myroom_cardview_bg))
+                //mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_channel_myroom_duration_text)
+                mBinding.channelMychattingroomCardview.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.channel_myroom_cardview_bg
+                    )
+                )
+                mBinding.channelMyroomCountText.visibility = View.VISIBLE
 
             }
             else{
-                mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.color.transparent)
-                mBinding.channelMychattingroomCardview.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.channel_myroom_cardview_bg))
+                //mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.color.transparent)
+                mBinding.channelMychattingroomCardview.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.channel_myroom_cardview_bg
+                    )
+                )
+                mBinding.channelMyroomCountText.visibility = View.INVISIBLE
             }
         }
     }
@@ -459,22 +517,22 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     }
 
     override fun onBackPressed(): Boolean {
-        Log.e(CHECK_TAG,"channel fragment back pressed")
+        Log.e(CHECK_TAG, "channel fragment back pressed")
         when(mChannelViewModel.liveStatus.value){
-            1-> return true
-            2-> {
+            1 -> return true
+            2 -> {
                 mChannelViewModel.liveStatus.value = 1
                 setRecentChannelView()
                 mBinding.root.hideKeyboard()
                 return false
             }
-            3-> {
+            3 -> {
                 mChannelViewModel.liveStatus.value = 2
                 setAllChannelView()
                 mBinding.root.hideKeyboard()
                 return false
             }
-            4-> {
+            4 -> {
                 mChannelViewModel.liveStatus.value = 1
                 setRecentChannelView()
                 mBinding.root.hideKeyboard()

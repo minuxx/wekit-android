@@ -18,10 +18,8 @@ import com.coconutplace.wekit.utils.SharedPreferencesManager.Companion.ERROR_TAG
 import com.sendbird.android.GroupChannel
 import com.sendbird.android.GroupChannelListQuery
 import com.sendbird.android.SendBird
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class ChannelViewModel(private val repository: ChannelRepository, private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel() {
@@ -92,8 +90,12 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
         MutableLiveData<String>().apply{ postValue("")}
     }
 
-    //내가 속한 채팅방의 프로필 url
-    val liveMyChatImgUrl: MutableLiveData<String> by lazy{
+    //내가 속한 채팅방의 day or night
+    val liveMyChatMiracle: MutableLiveData<String> by lazy{
+        MutableLiveData<String>()
+    }
+
+    val liveMyChatAuthenticTime: MutableLiveData<String> by lazy{
         MutableLiveData<String>()
     }
 
@@ -188,7 +190,8 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                             liveMyChatRoomDuration.postValue("한달 도전방")
                         }
                         //liveMyChatImgUrl.postValue(myFirstRoom.chatRoomImg)//내가 속한 채팅방 이미지 Url
-                        liveMyChatImgUrl.postValue(myFirstRoom.miracle)
+                        liveMyChatMiracle.postValue(myFirstRoom.miracle)// 미라클 모닝/나잇
+                        liveMyChatAuthenticTime.postValue(myFirstRoom.authenticTime)// 미라클 시간대
                         myRoomUrl = myFirstRoom.chatUrl
                         channelListener?.showCardView(true)
                     }
@@ -197,7 +200,7 @@ class ChannelViewModel(private val repository: ChannelRepository, private val sh
                         liveMyChatMemberCount.postValue("")
                         liveMyChatRoomDuration.postValue("")
                         liveMyChatRoomName.postValue("")
-                        liveMyChatImgUrl.postValue("none")
+                        liveMyChatMiracle.postValue("none")
                         channelListener?.showCardView(false)
                     }
                 }
