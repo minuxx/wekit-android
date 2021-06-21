@@ -2,20 +2,19 @@ package com.coconutplace.wekit.ui.home
 
 import android.Manifest
 import android.content.Intent
-import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.BodyGraph
 import com.coconutplace.wekit.data.entities.Home
+import com.coconutplace.wekit.data.entities.MiracleStory
 import com.coconutplace.wekit.data.remote.home.listeners.HomeListener
 import com.coconutplace.wekit.databinding.FragmentHomeBinding
 import com.coconutplace.wekit.ui.BaseFragment
@@ -27,6 +26,7 @@ import com.coconutplace.wekit.utils.show
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.TedPermission
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Math.floor
 
 
 class HomeFragment : BaseFragment(), HomeListener {
@@ -48,6 +48,10 @@ class HomeFragment : BaseFragment(), HomeListener {
         viewModel.homeListener = this
 
         binding.homeSettingBtn.setOnClickListener(this)
+        binding.homeMiracleStory01Iv.setOnClickListener(this)
+        binding.homeMiracleStory02Iv.setOnClickListener(this)
+        binding.homeMiracleStory03Iv.setOnClickListener(this)
+        binding.homeMiracleStory04Iv.setOnClickListener(this)
 //        binding.homeTargetWeightMoreTv.setOnClickListener(this)
 
         return binding.root
@@ -63,7 +67,11 @@ class HomeFragment : BaseFragment(), HomeListener {
 
     override fun onResume() {
         super.onResume()
-        if(!TedPermission.isGranted(context, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)){
+        if(!TedPermission.isGranted(
+                context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )){
             val permissionDialog = PermissionDialog()
             permissionDialog.show(parentFragmentManager, permissionDialog.tag)
         }
@@ -78,6 +86,10 @@ class HomeFragment : BaseFragment(), HomeListener {
         super.onClick(v)
         when(v){
             binding.homeSettingBtn -> startSetActivity()
+            binding.homeMiracleStory01Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[0])
+            binding.homeMiracleStory02Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[1])
+            binding.homeMiracleStory03Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[2])
+            binding.homeMiracleStory04Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[3])
 //            binding.homeTargetWeightMoreTv -> startBodyGraphActivity()
         }
     }
@@ -85,13 +97,43 @@ class HomeFragment : BaseFragment(), HomeListener {
     private fun setCertificationBar(day: Int, totalDay: Int){
         if(totalDay > 0) {
             val counts = "$day/$totalDay"
+            val ratio: Double = kotlin.math.floor((day.toDouble() / totalDay.toDouble() * 100)) / 100
+
             binding.homeCertificationCountsTv.text = counts
 
-//            binding.homeCertificationPb.progress = (day / totalDay) * 100
             binding.homeCertificationPb.max = totalDay
             binding.homeCertificationPb.progress = day
 
+            (binding.homePercentView.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if(ratio.toFloat() >= 0.90f) 0.90f else ratio.toFloat()
+            binding.homePercentView.requestLayout()
+
+            (binding.homeCertificationPercentageTv.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if(ratio.toFloat() >= 0.90f) 0.10f else 1.0f - ratio.toFloat()
+            binding.homeCertificationPercentageTv.requestLayout()
+
+            binding.homeCertificationPercentageTv.text = (ratio * 100).toInt().toString() + "%"
         }
+    }
+
+    private fun setMiracleStory(miracleStories: ArrayList<MiracleStory>){
+        Glide.with(requireActivity()).load(miracleStories[0].imgUrl).into(binding.homeMiracleStory01Iv)
+        Glide.with(requireActivity()).load(miracleStories[1].imgUrl).into(binding.homeMiracleStory02Iv)
+        Glide.with(requireActivity()).load(miracleStories[2].imgUrl).into(binding.homeMiracleStory03Iv)
+        Glide.with(requireActivity()).load(miracleStories[3].imgUrl).into(binding.homeMiracleStory04Iv)
+
+        binding.homeMiracleStory01TitleTv.text = miracleStories[0].title
+        binding.homeMiracleStory02TitleTv.text = miracleStories[1].title
+        binding.homeMiracleStory03TitleTv.text = miracleStories[2].title
+        binding.homeMiracleStory04TitleTv.text = miracleStories[3].title
+
+        viewModel.miracleStoryLinks.add(miracleStories[0].link)
+        viewModel.miracleStoryLinks.add(miracleStories[1].link)
+        viewModel.miracleStoryLinks.add(miracleStories[2].link)
+        viewModel.miracleStoryLinks.add(miracleStories[3].link)
+    }
+
+    private fun openBrowserOfMiracleStory(link: String){
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        startActivity(intent)
     }
 
     private fun sendFcmToken(){
@@ -134,6 +176,7 @@ class HomeFragment : BaseFragment(), HomeListener {
         }
 
         setCertificationBar(home.day, home.totalDay)
+        setMiracleStory(home.miracleStories)
 
         //        val targetWeight = getString(R.string.home_target_weight_title) + " " + home.targetWeight + "kg"
 

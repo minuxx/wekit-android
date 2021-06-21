@@ -14,6 +14,7 @@ import kotlin.math.roundToInt
 
 class HomeViewModel(private val repository: HomeRepository, private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel()  {
     var homeListener: HomeListener? = null
+    val miracleStoryLinks = ArrayList<String>()
 
     init {
 //        home()

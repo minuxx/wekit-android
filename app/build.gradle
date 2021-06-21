@@ -139,4 +139,6 @@ dependencies {
 
     //paging library
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }

@@ -20,7 +20,7 @@
             android:id="@+id/home_root_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="10dp">
+            android:paddingBottom="20dp">
 
             <!--            <TextView-->
             <!--                android:id="@+id/home_title_tv"-->
@@ -197,6 +197,7 @@
                         android:text="@string/home_certification_words"
                         android:textColor="@color/home_certification_title"
                         android:textSize="12sp"
+                        android:layout_marginStart="3dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -208,6 +209,7 @@
                         android:text="@string/home_certification_counts"
                         android:textColor="@color/home_certification_counts"
                         android:textSize="12sp"
+                        android:layout_marginEnd="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/home_challenge_tv" />
 
@@ -230,7 +232,9 @@
                         android:id="@+id/home_percent_view"
                         android:layout_width="0dp"
                         android:layout_height="10dp"
+                        android:orientation="horizontal"
                         android:layout_marginTop="5dp"
+                        android:layout_marginStart="3dp"
                         app:layout_constraintEnd_toStartOf="@+id/home_certification_percentage_tv"
                         app:layout_constraintHorizontal_weight="0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -245,6 +249,7 @@
                         android:text="@string/home_certification_percentage"
                         android:textColor="@color/home_certification_percentage_inactive"
                         android:textSize="12sp"
+                        android:layout_marginEnd="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_weight="100"
                         app:layout_constraintStart_toEndOf="@+id/home_percent_view"
@@ -282,12 +287,12 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/home_miracle_story_01_iv"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
+                android:scaleType="centerCrop"
                 app:riv_corner_radius="13dp"
-                android:src="@drawable/home_illust"
                 android:contentDescription="@string/home_cd_miracle_story_banner"
                 app:layout_constraintHorizontal_weight="50"
                 app:layout_constraintStart_toStartOf="parent"
@@ -311,11 +316,11 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/home_miracle_story_02_iv"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 app:riv_corner_radius="13dp"
-                android:src="@drawable/home_illust"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/home_cd_miracle_story_banner"
                 app:layout_constraintHorizontal_weight="50"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -339,12 +344,12 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/home_miracle_story_03_iv"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="11dp"
                 android:layout_marginEnd="10dp"
                 app:riv_corner_radius="13dp"
-                android:src="@drawable/home_illust"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/home_cd_miracle_story_banner"
                 app:layout_constraintHorizontal_weight="50"
                 app:layout_constraintStart_toStartOf="parent"
@@ -368,11 +373,11 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/home_miracle_story_04_iv"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 app:riv_corner_radius="13dp"
-                android:src="@drawable/home_illust"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/home_cd_miracle_story_banner"
                 app:layout_constraintHorizontal_weight="50"
                 app:layout_constraintEnd_toEndOf="parent"

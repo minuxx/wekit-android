@@ -12,6 +12,7 @@ data class Home(
     @SerializedName(value = "gender") val gender: String,
     @SerializedName(value = "targetWeight") val targetWeight: Double,
     @SerializedName(value = "graphInfo") val graphInfo: ArrayList<BodyInfo>,
+    @SerializedName(value = "bannerList") val miracleStories: ArrayList<MiracleStory>,
 ){
     var bodyGraph: BodyGraph? = null
 }
