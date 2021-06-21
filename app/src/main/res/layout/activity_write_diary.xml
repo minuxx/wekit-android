@@ -132,7 +132,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/write_diary_pager"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/write_diary_time_tv"
@@ -145,7 +146,8 @@
                 android:layout_marginStart="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/write_diary_time_label_tv"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="오후 12시 46분"/>
+                tools:text="오후 12시 46분"
+                android:visibility="gone"/>
 
             <View
                 android:id="@+id/write_diary_time_line_view"
@@ -157,7 +159,8 @@
                 android:background="@color/diary_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/write_diary_time_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/write_diary_time_tv"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/write_diary_satisfaction_tv"
