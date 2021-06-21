@@ -28,7 +28,9 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name=".ui.splash.SplashActivity" android:theme="@style/ThemeSplash">
+        <activity android:name=".ui.splash.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ThemeSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,36 +38,52 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.coconutplace.wekit.ui.login.LoginActivity"/>
+        <activity android:name="com.coconutplace.wekit.ui.login.LoginActivity" android:screenOrientation="portrait"/>
 
-        <activity android:name="com.coconutplace.wekit.ui.signup.SignUpActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name="com.coconutplace.wekit.ui.signup.SignUpActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name="com.coconutplace.wekit.ui.poll.PollActivity"/>
+        <activity android:name="com.coconutplace.wekit.ui.poll.PollActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.miracle.MiracleActivity"/>
+        <activity android:name=".ui.miracle.MiracleActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.routine.RoutineActivity"/>
+        <activity android:name=".ui.routine.RoutineActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name="com.coconutplace.wekit.ui.tutorial.TutorialActivity" android:theme="@style/ThemeSplash"/>
+        <activity android:name="com.coconutplace.wekit.ui.tutorial.TutorialActivity"
+            android:theme="@style/ThemeSplash"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name="com.coconutplace.wekit.ui.onboarding.OnBoardingActivity"/>
+        <activity android:name="com.coconutplace.wekit.ui.onboarding.OnBoardingActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name="com.coconutplace.wekit.ui.chat.ChatActivity" />
+        <activity android:name="com.coconutplace.wekit.ui.chat.ChatActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.coconutplace.wekit.ui.main.MainActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.coconutplace.wekit.ui.create_channel.CreateChannelActivity"
             android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.enter_channel.EnterChannelActivity"
-            android:theme="@style/Transparent" />
+            android:theme="@style/Transparent"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.write_diary.WriteDiaryActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.choice_photo.ChoicePhotoActivity" />
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.choice_photo.ChoicePhotoActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -80,31 +98,57 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.set.SetActivity" />
+
+        <activity android:name=".ui.set.SetActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.profile.ProfileActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.body_graph.BodyGraphActivity" />
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.body_graph.BodyGraphActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.input_body.InputBodyActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.certify_email.CertifyEmailActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.edit_password.EditPasswordActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.notice.NoticeActivity" />
-        <activity android:name=".ui.rule.RuleActivity" />
-        <activity android:name=".ui.opensource.OpensourceActivity" />
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.notice.NoticeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.rule.RuleActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.opensource.OpensourceActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.photo_viewer.PhotoViewerActivity"
-            android:theme="@style/WhiteTheme" />
-        <activity android:name=".ui.member_gallery.MemberGalleryActivity" />
+            android:theme="@style/WhiteTheme"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.member_gallery.MemberGalleryActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.channel_filter.ChannelFilterActivity"
-            android:theme="@style/WhiteTheme" />
-        <activity android:name=".ui.badge.BadgeActivity" />
+            android:theme="@style/WhiteTheme"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.badge.BadgeActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
