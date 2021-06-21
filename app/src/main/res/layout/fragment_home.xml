@@ -290,7 +290,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 app:riv_corner_radius="13dp"
                 android:contentDescription="@string/home_cd_miracle_story_banner"
                 app:layout_constraintHorizontal_weight="50"
@@ -316,10 +316,10 @@
                 android:id="@+id/home_miracle_story_02_iv"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="20dp"
                 app:riv_corner_radius="13dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:contentDescription="@string/home_cd_miracle_story_banner"
                 app:layout_constraintHorizontal_weight="50"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -340,63 +340,63 @@
                 app:layout_constraintStart_toStartOf="@+id/home_miracle_story_02_iv"
                 tools:text="미라클 나잇 추천 루틴 20" />
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/home_miracle_story_03_iv"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="10dp"
-                app:riv_corner_radius="13dp"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/home_cd_miracle_story_banner"
-                app:layout_constraintHorizontal_weight="50"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/home_miracle_story_04_iv"
-                app:layout_constraintTop_toBottomOf="@+id/home_miracle_story_01_iv" />
+<!--            <com.makeramen.roundedimageview.RoundedImageView-->
+<!--                android:id="@+id/home_miracle_story_03_iv"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginTop="11dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                app:riv_corner_radius="13dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:contentDescription="@string/home_cd_miracle_story_banner"-->
+<!--                app:layout_constraintHorizontal_weight="50"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/home_miracle_story_04_iv"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_miracle_story_01_iv" />-->
 
-            <TextView
-                android:id="@+id/home_miracle_story_03_title_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/notosanskr_bold"
-                android:textColor="@color/home_miracle_story"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/home_miracle_story_03_iv"
-                app:layout_constraintEnd_toEndOf="@+id/home_miracle_story_03_iv"
-                app:layout_constraintStart_toStartOf="@+id/home_miracle_story_03_iv"
-                tools:text="미라클 나잇 추천 루틴 30" />
+<!--            <TextView-->
+<!--                android:id="@+id/home_miracle_story_03_title_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center|bottom"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:fontFamily="@font/notosanskr_bold"-->
+<!--                android:textColor="@color/home_miracle_story"-->
+<!--                android:textSize="12sp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/home_miracle_story_03_iv"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/home_miracle_story_03_iv"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/home_miracle_story_03_iv"-->
+<!--                tools:text="미라클 나잇 추천 루틴 30" />-->
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/home_miracle_story_04_iv"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:riv_corner_radius="13dp"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/home_cd_miracle_story_banner"
-                app:layout_constraintHorizontal_weight="50"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/home_miracle_story_03_iv"
-                app:layout_constraintTop_toTopOf="@+id/home_miracle_story_03_iv" />
+<!--            <com.makeramen.roundedimageview.RoundedImageView-->
+<!--                android:id="@+id/home_miracle_story_04_iv"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                app:riv_corner_radius="13dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:contentDescription="@string/home_cd_miracle_story_banner"-->
+<!--                app:layout_constraintHorizontal_weight="50"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/home_miracle_story_03_iv"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/home_miracle_story_03_iv" />-->
 
-            <TextView
-                android:id="@+id/home_miracle_story_04_title_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/notosanskr_bold"
-                android:textColor="@color/home_miracle_story"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/home_miracle_story_04_iv"
-                app:layout_constraintEnd_toEndOf="@+id/home_miracle_story_04_iv"
-                app:layout_constraintStart_toStartOf="@+id/home_miracle_story_04_iv"
-                tools:text="미라클 나잇 추천 루틴 10" />
-            
+<!--            <TextView-->
+<!--                android:id="@+id/home_miracle_story_04_title_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center|bottom"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:fontFamily="@font/notosanskr_bold"-->
+<!--                android:textColor="@color/home_miracle_story"-->
+<!--                android:textSize="12sp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/home_miracle_story_04_iv"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/home_miracle_story_04_iv"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/home_miracle_story_04_iv"-->
+<!--                tools:text="미라클 나잇 추천 루틴 10" />-->
+
 
             <!--            <TextView-->
             <!--                android:id="@+id/home_target_weight_title_tv"-->

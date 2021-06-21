@@ -53,8 +53,8 @@ class HomeFragment : BaseFragment(), HomeListener {
         binding.homeSettingBtn.setOnClickListener(this)
         binding.homeMiracleStory01Iv.setOnClickListener(this)
         binding.homeMiracleStory02Iv.setOnClickListener(this)
-        binding.homeMiracleStory03Iv.setOnClickListener(this)
-        binding.homeMiracleStory04Iv.setOnClickListener(this)
+//        binding.homeMiracleStory03Iv.setOnClickListener(this)
+//        binding.homeMiracleStory04Iv.setOnClickListener(this)
 //        binding.homeTargetWeightMoreTv.setOnClickListener(this)
         setToday()
 
@@ -92,8 +92,8 @@ class HomeFragment : BaseFragment(), HomeListener {
             binding.homeSettingBtn -> startSetActivity()
             binding.homeMiracleStory01Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[0])
             binding.homeMiracleStory02Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[1])
-            binding.homeMiracleStory03Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[2])
-            binding.homeMiracleStory04Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[3])
+//            binding.homeMiracleStory03Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[2])
+//            binding.homeMiracleStory04Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[3])
 //            binding.homeTargetWeightMoreTv -> startBodyGraphActivity()
         }
     }
@@ -131,18 +131,18 @@ class HomeFragment : BaseFragment(), HomeListener {
     private fun setMiracleStory(miracleStories: ArrayList<MiracleStory>){
         Glide.with(requireActivity()).load(miracleStories[0].imgUrl).into(binding.homeMiracleStory01Iv)
         Glide.with(requireActivity()).load(miracleStories[1].imgUrl).into(binding.homeMiracleStory02Iv)
-        Glide.with(requireActivity()).load(miracleStories[2].imgUrl).into(binding.homeMiracleStory03Iv)
-        Glide.with(requireActivity()).load(miracleStories[3].imgUrl).into(binding.homeMiracleStory04Iv)
+//        Glide.with(requireActivity()).load(miracleStories[2].imgUrl).into(binding.homeMiracleStory03Iv)
+//        Glide.with(requireActivity()).load(miracleStories[3].imgUrl).into(binding.homeMiracleStory04Iv)
 
         binding.homeMiracleStory01TitleTv.text = miracleStories[0].title
         binding.homeMiracleStory02TitleTv.text = miracleStories[1].title
-        binding.homeMiracleStory03TitleTv.text = miracleStories[2].title
-        binding.homeMiracleStory04TitleTv.text = miracleStories[3].title
+//        binding.homeMiracleStory03TitleTv.text = miracleStories[2].title
+//        binding.homeMiracleStory04TitleTv.text = miracleStories[3].title
 
         viewModel.miracleStoryLinks.add(miracleStories[0].link)
         viewModel.miracleStoryLinks.add(miracleStories[1].link)
-        viewModel.miracleStoryLinks.add(miracleStories[2].link)
-        viewModel.miracleStoryLinks.add(miracleStories[3].link)
+//        viewModel.miracleStoryLinks.add(miracleStories[2].link)
+//        viewModel.miracleStoryLinks.add(miracleStories[3].link)
     }
 
     private fun openBrowserOfMiracleStory(link: String){
