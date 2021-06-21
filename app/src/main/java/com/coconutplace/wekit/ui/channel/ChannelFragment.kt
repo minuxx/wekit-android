@@ -14,6 +14,8 @@ import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemAnimator
+import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.lujun.androidtagview.TagView
 import com.bumptech.glide.Glide
@@ -35,6 +37,7 @@ import com.coconutplace.wekit.utils.snackbar
 import com.github.mmin18.widget.RealtimeBlurView
 import kotlinx.android.synthetic.main.fragment_channel.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 
@@ -299,6 +302,7 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
     private fun setupViewModel(){
         mChannelViewModel.liveRoomList.observe(mBinding.lifecycleOwner!!, {
             Log.e(CHECK_TAG, "current channel count : " + it.size)
+
             adapter.setGroupChannelList(it)
 
             if (mSwipeRefresh.isRefreshing) {
@@ -321,7 +325,10 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 //                        null,
 //                        null
 //                    )
-                    Glide.with(this).load(R.drawable.ic_challenge_sun).override(300).circleCrop().into(mBinding.channelMyroomMiracleImg)
+                    Glide.with(this).load(R.drawable.ic_challenge_sun).override(300).circleCrop()
+                        .into(
+                            mBinding.channelMyroomMiracleImg
+                        )
                     mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
                 }
                 "N" -> {
@@ -334,7 +341,10 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
 //                        null,
 //                        null
 //                    )
-                    Glide.with(this).load(R.drawable.ic_challenge_moon).override(300).circleCrop().into(mBinding.channelMyroomMiracleImg)
+                    Glide.with(this).load(R.drawable.ic_challenge_moon).override(300).circleCrop()
+                        .into(
+                            mBinding.channelMyroomMiracleImg
+                        )
                     mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
                 }
                 else -> {
