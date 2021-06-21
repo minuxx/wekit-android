@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,7 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<ChannelRecycler
 
     class ItemViewHolder extends RecyclerView.ViewHolder{
         private TextView roomName, roomExplain, memberCount, roomTerm, miracleTime;
+        private ImageView miracleImg;
 
         ItemViewHolder(View itemView){
             super(itemView);
@@ -74,6 +76,7 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<ChannelRecycler
             memberCount = itemView.findViewById(R.id.channel_member_count_text);
             //roomTerm = itemView.findViewById(R.id.channel_duration_text);
             miracleTime = itemView.findViewById(R.id.channel_miracle_time_txt);
+            miracleImg = itemView.findViewById(R.id.channel_auth_time_img);
         }
 
         void onBind(ChatRoom mChannel, OnItemClickListener clickListener){
@@ -91,10 +94,12 @@ public class ChannelRecyclerAdapter extends RecyclerView.Adapter<ChannelRecycler
             String miracle = mChannel.getMiracle();
             if(miracle==null || miracle.equals("")){}
             else if(miracle.equals("M")){
-                miracleTime.setCompoundDrawablesWithIntrinsicBounds(null,ContextCompat.getDrawable(itemView.getContext(),R.drawable.ic_challenge_sun),null,null);
+                miracleImg.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(),R.drawable.ic_challenge_sun));
+                //miracleTime.setCompoundDrawablesWithIntrinsicBounds(null,ContextCompat.getDrawable(itemView.getContext(),R.drawable.ic_challenge_sun),null,null);
             }
             else if(miracle.equals("N")){
-                miracleTime.setCompoundDrawablesWithIntrinsicBounds(null,ContextCompat.getDrawable(itemView.getContext(),R.drawable.ic_challenge_moon),null,null);
+                miracleImg.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(),R.drawable.ic_challenge_moon));
+                //miracleTime.setCompoundDrawablesWithIntrinsicBounds(null,ContextCompat.getDrawable(itemView.getContext(),R.drawable.ic_challenge_moon),null,null);
             }
 
             try {

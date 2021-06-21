@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.lujun.androidtagview.TagView
+import com.bumptech.glide.Glide
 import com.coconutplace.wekit.R
 import com.coconutplace.wekit.data.entities.ChannelFilter
 import com.coconutplace.wekit.data.remote.channel.listeners.ChannelListener
@@ -311,29 +312,29 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
         mChannelViewModel.liveMyChatMiracle.observe(mBinding.lifecycleOwner!!, {
             when (it) {
                 "M" -> {
-                    mBinding.channelMyroomImg.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_challenge_sun
-                        ),
-                        null,
-                        null
-                    )
-                    //Glide.with(this).load(R.drawable.ic_challenge_sun).override(300).circleCrop().into(mBinding.channelMyroomImg)
+//                    mBinding.channelMyroomImg.setCompoundDrawablesWithIntrinsicBounds(
+//                        null,
+//                        ContextCompat.getDrawable(
+//                            requireContext(),
+//                            R.drawable.ic_challenge_sun
+//                        ),
+//                        null,
+//                        null
+//                    )
+                    Glide.with(this).load(R.drawable.ic_challenge_sun).override(300).circleCrop().into(mBinding.channelMyroomMiracleImg)
                     mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
                 }
                 "N" -> {
-                    mBinding.channelMyroomImg.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_challenge_moon
-                        ),
-                        null,
-                        null
-                    )
-                    //Glide.with(this).load(R.drawable.ic_challenge_moon).override(300).circleCrop().into(mBinding.channelMyroomImg)
+//                    mBinding.channelMyroomImg.setCompoundDrawablesWithIntrinsicBounds(
+//                        null,
+//                        ContextCompat.getDrawable(
+//                            requireContext(),
+//                            R.drawable.ic_challenge_moon
+//                        ),
+//                        null,
+//                        null
+//                    )
+                    Glide.with(this).load(R.drawable.ic_challenge_moon).override(300).circleCrop().into(mBinding.channelMyroomMiracleImg)
                     mBinding.channelMyroomNoRoomLayout.visibility = View.INVISIBLE
                 }
                 else -> {
@@ -367,7 +368,8 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
                     authTime = "AM"
                 }
                 authTime += authTimeInt
-                mBinding.channelMyroomImg.text = authTime
+                //mBinding.channelMyroomImg.text = authTime
+                mBinding.channelMyroomAuthTimeTxt.text = authTime
             } catch (e: Exception) {
                 Log.e(CHECK_TAG, "channel fragment authTime Exception : $e")
             }
@@ -494,7 +496,8 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
                     )
                 )
                 mBinding.channelMyroomCountText.visibility = View.VISIBLE
-
+                mBinding.channelMyroomMiracleImg.visibility = View.VISIBLE
+                mBinding.channelMyroomAuthTimeTxt.visibility = View.VISIBLE
             }
             else{
                 //mBinding.channelMyroomDurationText.background = ContextCompat.getDrawable(requireContext(),R.color.transparent)
@@ -505,6 +508,8 @@ class ChannelFragment : BaseFragment(), ChannelListener, BackPressListener {
                     )
                 )
                 mBinding.channelMyroomCountText.visibility = View.INVISIBLE
+                mBinding.channelMyroomMiracleImg.visibility = View.INVISIBLE
+                mBinding.channelMyroomAuthTimeTxt.visibility = View.INVISIBLE
             }
         }
     }

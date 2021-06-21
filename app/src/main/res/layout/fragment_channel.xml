@@ -295,20 +295,32 @@
 <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
 <!--                                app:layout_constraintTop_toTopOf="parent" />-->
 
-                            <TextView
-                                android:id="@+id/channel_myroom_img"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="29dp"
-                                android:layout_marginTop="22dp"
+                            <ImageView
+                                android:id="@+id/channel_myroom_miracle_img"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                android:text=""
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:layout_constraintBottom_toTopOf="@+id/channel_myroom_auth_time_txt"
+                                android:src="@drawable/ic_challenge_sun"
+                                android:layout_marginStart="29dp"/>
+
+                            <TextView
+                                android:id="@+id/channel_myroom_auth_time_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:layout_constraintStart_toStartOf="@+id/channel_myroom_miracle_img"
+                                app:layout_constraintEnd_toEndOf="@+id/channel_myroom_miracle_img"
+                                app:layout_constraintTop_toBottomOf="@+id/channel_myroom_miracle_img"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="AM 9"
                                 android:textSize="10sp"
                                 android:textColor="@color/channel_authTime_text"
                                 android:fontFamily="@font/notosanskr_medium"
                                 android:maxLines="1"
-                                android:drawablePadding="2dp"
                                 tools:ignore="SmallSp" />
 
                             <TextView
@@ -316,7 +328,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
-                                android:layout_marginTop="24dp"
                                 android:ellipsize="end"
                                 android:fontFamily="@font/notosanskr_medium"
                                 android:maxLength="20"
@@ -324,8 +335,9 @@
                                 android:text="@{mChannelViewModel.liveMyChatRoomName}"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
-                                app:layout_constraintLeft_toRightOf="@+id/channel_myroom_img"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="@+id/channel_myroom_miracle_img"
+                                app:layout_constraintBottom_toBottomOf="@+id/channel_myroom_miracle_img"
+                                app:layout_constraintLeft_toRightOf="@+id/channel_myroom_auth_time_txt" />
 
                             <TextView
                                 android:id="@+id/channel_myroom_count_text"
@@ -353,7 +365,6 @@
                                 android:layout_width="180dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
-                                android:layout_marginTop="4dp"
                                 android:layout_marginEnd="24dp"
                                 android:ellipsize="end"
                                 android:fontFamily="@font/notosanskr_regular"
@@ -361,8 +372,9 @@
                                 android:text="@{mChannelViewModel.liveMyChatRoomExplain}"
                                 android:textColor="@color/channel_myroom_explain_text"
                                 android:textSize="12sp"
-                                app:layout_constraintLeft_toRightOf="@+id/channel_myroom_img"
-                                app:layout_constraintTop_toBottomOf="@+id/channel_myroom_count_text"
+                                app:layout_constraintLeft_toRightOf="@+id/channel_myroom_auth_time_txt"
+                                app:layout_constraintTop_toTopOf="@+id/channel_myroom_auth_time_txt"
+                                app:layout_constraintBottom_toBottomOf="@+id/channel_myroom_auth_time_txt"
                                 app:layout_constraintVertical_weight="1" />
 
 <!--                            <TextView-->
