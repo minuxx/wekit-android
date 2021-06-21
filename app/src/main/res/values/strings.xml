@@ -214,7 +214,7 @@
     <string name="write_diary">식단일기</string>
     <string name="write_diary_write">식단작성</string>
     <string name="write_diary_edit">편집</string>
-    <string name="write_diary_satisfaction">음식 만족도</string>
+    <string name="write_diary_satisfaction">Stamp</string>
     <string name="write_diary_meal">식사</string>
     <string name="write_diary_breakfast">아침</string>
     <string name="write_diary_blunch">아점</string>
@@ -222,7 +222,7 @@
     <string name="write_diary_linner">점저</string>
     <string name="write_diary_dinner">저녁</string>
     <string name="write_diary_time">시간</string>
-    <string name="write_diary_memo">메모</string>
+    <string name="write_diary_memo">Memo</string>
     <string name="write_diary_memo_hint">간단한 메모를 남겨주세요.(선택)</string>
     <string name="write_diary_not_match_date">날짜가 일치하지 않습니다.</string>
     <string name="write_diary_max_photo_count">사진은 최대 5개까지 첨부가능합니다.</string>

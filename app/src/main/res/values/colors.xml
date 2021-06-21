@@ -163,6 +163,7 @@
     <color name="write_diary_selected_indicator">#7d6ce9</color>
     <color name="write_diary_unselected_indicator">#fff</color>
     <color name="write_diary_basic_text">#2f2f2f</color>
+    <color name="write_diary_time">#b9b9b9</color>
     <color name="write_diary_timezone_selected">#7d6ce9</color>
     <color name="write_diary_timezone_unselected">#b9b9b9</color>
 

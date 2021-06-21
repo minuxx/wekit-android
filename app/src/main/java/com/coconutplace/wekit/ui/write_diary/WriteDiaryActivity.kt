@@ -71,7 +71,7 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         initPhotoViewPager()
         setOnClickListenerAll()
         observeSatisfaction()
-        observeTimezone()
+//        observeTimezone()
 
         selectedDate = intent.getStringExtra("date")
         viewModel.setDate(selectedDate ?: "")
@@ -102,11 +102,11 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                 binding.writeDiarySatisfactionSadIv.isClickable = false
                 binding.writeDiarySatisfactionAngryIv.isClickable = false
 
-                binding.writeDiaryBreakfastTv.isClickable = false
-                binding.writeDiaryBlunchTv.isClickable = false
-                binding.writeDiaryLunchTv.isClickable = false
-                binding.writeDiaryLinnerTv.isClickable = false
-                binding.writeDiaryDinnerTv.isClickable = false
+//                binding.writeDiaryBreakfastTv.isClickable = false
+//                binding.writeDiaryBlunchTv.isClickable = false
+//                binding.writeDiaryLunchTv.isClickable = false
+//                binding.writeDiaryLinnerTv.isClickable = false
+//                binding.writeDiaryDinnerTv.isClickable = false
 
                 binding.writeDiaryMemoEt.isFocusableInTouchMode = false
 
@@ -146,11 +146,11 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
                 SATISFACTION_ANGRY
             )
 
-            binding.writeDiaryBreakfastTv -> viewModel.timezone.postValue(TIMEZONE_BREAKFAST)
-            binding.writeDiaryBlunchTv -> viewModel.timezone.postValue(TIMEZONE_BLUNCH)
-            binding.writeDiaryLunchTv -> viewModel.timezone.postValue(TIMEZONE_LUNCH)
-            binding.writeDiaryLinnerTv -> viewModel.timezone.postValue(TIMEZONE_LINNER)
-            binding.writeDiaryDinnerTv -> viewModel.timezone.postValue(TIMEZONE_DINNER)
+//            binding.writeDiaryBreakfastTv -> viewModel.timezone.postValue(TIMEZONE_BREAKFAST)
+//            binding.writeDiaryBlunchTv -> viewModel.timezone.postValue(TIMEZONE_BLUNCH)
+//            binding.writeDiaryLunchTv -> viewModel.timezone.postValue(TIMEZONE_LUNCH)
+//            binding.writeDiaryLinnerTv -> viewModel.timezone.postValue(TIMEZONE_LINNER)
+//            binding.writeDiaryDinnerTv -> viewModel.timezone.postValue(TIMEZONE_DINNER)
 
 
             binding.writeDiaryEventBtn -> {
@@ -174,11 +174,11 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiarySatisfactionSadIv.setOnClickListener(this)
         binding.writeDiarySatisfactionAngryIv.setOnClickListener(this)
 
-        binding.writeDiaryBreakfastTv.setOnClickListener(this)
-        binding.writeDiaryBlunchTv.setOnClickListener(this)
-        binding.writeDiaryLunchTv.setOnClickListener(this)
-        binding.writeDiaryLinnerTv.setOnClickListener(this)
-        binding.writeDiaryDinnerTv.setOnClickListener(this)
+//        binding.writeDiaryBreakfastTv.setOnClickListener(this)
+//        binding.writeDiaryBlunchTv.setOnClickListener(this)
+//        binding.writeDiaryLunchTv.setOnClickListener(this)
+//        binding.writeDiaryLinnerTv.setOnClickListener(this)
+//        binding.writeDiaryDinnerTv.setOnClickListener(this)
 
         binding.writeDiaryEventBtn.setOnClickListener(this)
         binding.writeDiaryEventBtn.isClickable = false
@@ -197,11 +197,11 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         binding.writeDiarySatisfactionSadIv.isClickable = isClickable
         binding.writeDiarySatisfactionAngryIv.isClickable = isClickable
 
-        binding.writeDiaryBreakfastTv.isClickable = isClickable
-        binding.writeDiaryBlunchTv.isClickable = isClickable
-        binding.writeDiaryLunchTv.isClickable = isClickable
-        binding.writeDiaryLinnerTv.isClickable = isClickable
-        binding.writeDiaryDinnerTv.isClickable = isClickable
+//        binding.writeDiaryBreakfastTv.isClickable = isClickable
+//        binding.writeDiaryBlunchTv.isClickable = isClickable
+//        binding.writeDiaryLunchTv.isClickable = isClickable
+//        binding.writeDiaryLinnerTv.isClickable = isClickable
+//        binding.writeDiaryDinnerTv.isClickable = isClickable
 
         binding.writeDiaryEventBtn.isClickable = isClickable
     }
@@ -315,23 +315,23 @@ class WriteDiaryActivity : BaseActivity(), WriteDiaryListener {
         })
     }
 
-    private fun observeTimezone() {
-        viewModel.timezone.observe(this, Observer { timezone ->
-            convertTimezoneView(binding.writeDiaryBreakfastTv, false)
-            convertTimezoneView(binding.writeDiaryBlunchTv, false)
-            convertTimezoneView(binding.writeDiaryLunchTv, false)
-            convertTimezoneView(binding.writeDiaryLinnerTv, false)
-            convertTimezoneView(binding.writeDiaryDinnerTv, false)
-
-            when (timezone) {
-                TIMEZONE_BREAKFAST -> convertTimezoneView(binding.writeDiaryBreakfastTv, true)
-                TIMEZONE_BLUNCH -> convertTimezoneView(binding.writeDiaryBlunchTv, true)
-                TIMEZONE_LUNCH -> convertTimezoneView(binding.writeDiaryLunchTv, true)
-                TIMEZONE_LINNER -> convertTimezoneView(binding.writeDiaryLinnerTv, true)
-                TIMEZONE_DINNER -> convertTimezoneView(binding.writeDiaryDinnerTv, true)
-            }
-        })
-    }
+//    private fun observeTimezone() {
+//        viewModel.timezone.observe(this, Observer { timezone ->
+//            convertTimezoneView(binding.writeDiaryBreakfastTv, false)
+//            convertTimezoneView(binding.writeDiaryBlunchTv, false)
+//            convertTimezoneView(binding.writeDiaryLunchTv, false)
+//            convertTimezoneView(binding.writeDiaryLinnerTv, false)
+//            convertTimezoneView(binding.writeDiaryDinnerTv, false)
+//
+//            when (timezone) {
+//                TIMEZONE_BREAKFAST -> convertTimezoneView(binding.writeDiaryBreakfastTv, true)
+//                TIMEZONE_BLUNCH -> convertTimezoneView(binding.writeDiaryBlunchTv, true)
+//                TIMEZONE_LUNCH -> convertTimezoneView(binding.writeDiaryLunchTv, true)
+//                TIMEZONE_LINNER -> convertTimezoneView(binding.writeDiaryLinnerTv, true)
+//                TIMEZONE_DINNER -> convertTimezoneView(binding.writeDiaryDinnerTv, true)
+//            }
+//        })
+//    }
 
     private fun convertTimezoneView(v: TextView, isActivated: Boolean) {
         v.isSelected = isActivated

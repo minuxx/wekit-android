@@ -25,8 +25,11 @@ import com.coconutplace.wekit.utils.hide
 import com.coconutplace.wekit.utils.show
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.TedPermission
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.lang.Math.floor
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : BaseFragment(), HomeListener {
@@ -53,6 +56,7 @@ class HomeFragment : BaseFragment(), HomeListener {
         binding.homeMiracleStory03Iv.setOnClickListener(this)
         binding.homeMiracleStory04Iv.setOnClickListener(this)
 //        binding.homeTargetWeightMoreTv.setOnClickListener(this)
+        setToday()
 
         return binding.root
     }
@@ -92,6 +96,16 @@ class HomeFragment : BaseFragment(), HomeListener {
             binding.homeMiracleStory04Iv -> openBrowserOfMiracleStory(viewModel.miracleStoryLinks[3])
 //            binding.homeTargetWeightMoreTv -> startBodyGraphActivity()
         }
+    }
+
+    private fun setToday(){
+        val cal = CalendarDay.today()
+        val month = if (cal.month < 10) "0${cal.month}" else "${cal.month}"
+        val day = if (cal.day < 10) "0${cal.day}" else "${cal.day}"
+
+        val today = "${cal.year}.${month}.${day}"
+
+        binding.homeTodayDateTv.text = today
     }
 
     private fun setCertificationBar(day: Int, totalDay: Int){
